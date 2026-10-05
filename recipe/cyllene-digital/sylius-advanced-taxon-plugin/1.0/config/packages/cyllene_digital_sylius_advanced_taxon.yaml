@@ -1,0 +1,33 @@
+# Cyllene Digital - Sylius Advanced Taxon Plugin
+#
+# The import below is what makes the plugin effective in your application: it declares the Sylius
+# resources the plugin extends (taxon, channel and taxon image model classes) and registers the
+# Twig Hooks used by its admin and shop templates.
+#
+# Keep it, and declare your own overrides of those resources below it, or in a file whose name sorts
+# after this one, so that your model classes are the last ones applied.
+imports:
+    - { resource: "@CylleneDigitalSyliusAdvancedTaxonPlugin/config/config.yaml" }
+
+# Filter set used by the storefront universe slider on mobile.
+# Adjust the dimensions to the format your design expects.
+liip_imagine:
+    filter_sets:
+        cyllene_universe_slider_mobile:
+            filters:
+                thumbnail:
+                    size: [640, 360]
+                    mode: outbound
+                strip: ~
+                quality:
+                    quality: 82
+
+# Optional: expose additional icon libraries coming from symfony/ux-icons in the admin icon picker.
+# The prefix must be one of the ones provided by the UX Icons sets installed in your application.
+#
+# cyllene_digital_sylius_advanced_taxon:
+#     icon_libraries:
+#         phosphor:
+#             label: 'Phosphor'
+#             icon_prefix: 'ph'
+#             icons: ['star', 'heart', 'tree-evergreen']

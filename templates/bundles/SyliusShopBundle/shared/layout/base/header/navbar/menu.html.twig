@@ -1,0 +1,302 @@
+{% set megaMenuEnabled = sylius.channel is defined and sylius.channel.hasMegaMenu %}
+
+{% if megaMenuEnabled %}
+
+{# ============================================================
+   MEGA MENU MODE — structure complètement autonome, sans Bootstrap
+   dropdown ni hooks Sylius. CSS hover pur, panels pleine largeur.
+   CSS compilé via assets/shop/scss/mega-menu.scss (plugin-shop-entry).
+   ============================================================ #}
+
+<div class="at-mn">
+    {% if taxons|length > 0 %}
+        <ul class="at-mn-list" {{ sylius_test_html_attribute('menu') }}>
+            {% for taxon in taxons %}
+                {% set hasChildren = taxon.enabledChildren|length > 0 %}
+                {% set level2Taxons = hasChildren ? advanced_taxon_ordered_children(taxon) : [] %}
+
+                {# Calcul des IDs des taxons mis en avant pour ce niveau 1 #}
+                {% set featuredIds = [] %}
+                {% for ft in taxon.featuredChildren|default([]) %}
+                    {% set featuredIds = featuredIds|merge([ft.id]) %}
+                {% endfor %}
+
+                {% set featuredL2 = [] %}
+                {% set regularL2 = [] %}
+                {% for l2 in level2Taxons %}
+                    {% if l2.id in featuredIds %}
+                        {% set featuredL2 = featuredL2|merge([l2]) %}
+                    {% else %}
+                        {% set regularL2 = regularL2|merge([l2]) %}
+                    {% endif %}
+                {% endfor %}
+
+                <li class="at-mn-item" {{ sylius_test_html_attribute('menu-item', taxon.name) }}>
+                    <a class="at-mn-link" href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': taxon.translation.locale}) }}">
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                            taxon: taxon,
+                            iconSize: 20,
+                            wrapperClass: 'd-inline-flex align-items-center gap-2',
+                            showCustomization: taxon.showCustomizationInMenu
+                        } only %}
+                        {% if hasChildren %}
+                            {{ ux_icon('tabler:chevron-down', { class: 'icon icon-sm' }) }}
+                        {% endif %}
+                    </a>
+
+                    {% if hasChildren %}
+                        <div class="at-mn-panel" data-controller="at-mega-menu">
+                            <div class="at-mn-panel-inner">
+                                {# Colonne des taxons niveau 2 mis en avant #}
+                                {% if featuredL2 is not empty %}
+                                    <div class="at-mn-featured"{% if taxon.showCustomizationInMenu and taxon.color %} style="background-color: {{ taxon.color }};"{% endif %}>
+                                        <div class="at-mn-featured-title">
+                                            {{ 'cyllene_digital_sylius_advanced_taxon.shop.mega_menu.featured_categories'|trans }}
+                                        </div>
+                                        {% for ft in featuredL2 %}
+                                            {% set ftMediaUrl = advanced_taxon_featured_media_url(ft)|default('') %}
+                                            <a
+                                                class="at-mn-featured-link"
+                                                href="{{ path('sylius_shop_product_index', {'slug': ft.slug, '_locale': ft.translation.locale}) }}"
+                                                data-mega-menu-image="{{ ftMediaUrl }}"
+                                                data-action="mouseenter->at-mega-menu#showImage mouseleave->at-mega-menu#clearImage"
+                                                {{ sylius_test_html_attribute('menu-item', ft.name) }}
+                                            >
+                                                {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                                                    taxon: ft,
+                                                    iconSize: 16,
+                                                    wrapperClass: 'd-inline-flex align-items-center gap-2',
+                                                    showCustomization: ft.showCustomizationInMenu,
+                                                    useTaxonColor: false,
+                                                    iconColor: '#ffffff',
+                                                    textColor: '#ffffff'
+                                                } only %}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                {# Colonnes des taxons niveau 2 normaux avec enfants niveau 3 #}
+                                <div class="at-mn-cols">
+                                    {% for l2 in regularL2 %}
+                                        {% set l3Taxons = advanced_taxon_ordered_children(l2)|slice(0, 5) %}
+                                        {% set l2MediaUrl = advanced_taxon_featured_media_url(l2)|default('') %}
+                                        <div
+                                            class="at-mn-col"
+                                            data-mega-menu-image="{{ l2MediaUrl }}"
+                                            data-action="mouseenter->at-mega-menu#showImage mouseleave->at-mega-menu#clearImage"
+                                        >
+                                            <a
+                                                class="at-mn-col-title"
+                                                href="{{ path('sylius_shop_product_index', {'slug': l2.slug, '_locale': l2.translation.locale}) }}"
+                                                {{ sylius_test_html_attribute('menu-item', l2.name) }}
+                                            >
+                                                {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                                                    taxon: l2,
+                                                    iconSize: 18,
+                                                    wrapperClass: 'd-inline-flex align-items-center gap-2',
+                                                    showCustomization: l2.showCustomizationInMenu
+                                                } only %}
+                                            </a>
+                                            {% if l3Taxons is not empty %}
+                                                <div class="at-mn-sub">
+                                                    {% for l3 in l3Taxons %}
+                                                        <a
+                                                            class="at-mn-sub-link"
+                                                            href="{{ path('sylius_shop_product_index', {'slug': l3.slug, '_locale': l3.translation.locale}) }}"
+                                                            {{ sylius_test_html_attribute('menu-item', l3.name) }}
+                                                        >{{ l3.name }}</a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            <a
+                                                class="at-mn-see-all"
+                                                href="{{ path('sylius_shop_product_index', {'slug': l2.slug, '_locale': l2.translation.locale}) }}"
+                                            >{{ 'cyllene_digital_sylius_advanced_taxon.shop.mega_menu.view_category'|trans }}</a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="at-mn-media-wrap">
+                                    <img class="at-mn-media" alt="" loading="lazy" hidden />
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+{# ============================================================
+   MOBILE DRAWER — visible only on mobile (< lg)
+   Pre-renders all navigation screens; JS handles transitions.
+   ============================================================ #}
+<div class="at-mn-drawer d-lg-none"
+     id="at-mn-drawer"
+     aria-hidden="true"
+     aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.aria_label'|trans }}"
+     data-controller="at-mobile-menu">
+
+    <div class="at-mn-drawer-backdrop"
+         data-action="click->at-mobile-menu#close"
+         aria-hidden="true"></div>
+
+    <div class="at-mn-drawer-panel">
+
+        {# ---- ROOT SCREEN: list of all L1 taxons ---- #}
+        <div class="at-mn-screen" id="at-mn-screen-root" data-mn-state="active">
+            <div class="at-mn-screen-head">
+                <span></span>
+                <button class="at-mn-head-close" data-action="click->at-mobile-menu#close"
+                        type="button"
+                        aria-label="{{ 'sylius.ui.close'|trans }}">
+                    {{ ux_icon('tabler:x', { class: 'icon icon-md' }) }}
+                </button>
+            </div>
+            <ul class="at-mn-screen-list">
+                {% for taxon in taxons %}
+                    {% set l1HasChildren = advanced_taxon_ordered_children(taxon)|length > 0 %}
+                    <li>
+                        {% if l1HasChildren %}
+                            <button class="at-mn-screen-btn"
+                                    data-action="at-mobile-menu#goTo"
+                                    data-at-mobile-menu-goto-param="at-mn-screen-{{ taxon.id }}"
+                                    type="button">
+                                <span>{{ taxon.name }}</span>
+                                {{ ux_icon('tabler:chevron-right', { class: 'icon icon-sm' }) }}
+                            </button>
+                        {% else %}
+                            <a class="at-mn-screen-link"
+                               href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': taxon.translation.locale}) }}">
+                                {{ taxon.name }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {# ---- L1 TAXON SCREENS (one per root taxon with children) ---- #}
+        {% for taxon in taxons %}
+            {% set l1Children = advanced_taxon_ordered_children(taxon) %}
+            {% if l1Children|length > 0 %}
+
+                <div class="at-mn-screen"
+                     id="at-mn-screen-{{ taxon.id }}"
+                     data-mn-state="right">
+                    <div class="at-mn-screen-head">
+                        <button class="at-mn-head-back" data-action="click->at-mobile-menu#goBack" type="button"
+                                aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.back'|trans }}">
+                            {{ ux_icon('tabler:chevron-left', { class: 'icon icon-sm' }) }}
+                            {{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.back'|trans }}
+                        </button>
+                        <button class="at-mn-head-close" data-action="click->at-mobile-menu#close" type="button"
+                                aria-label="{{ 'sylius.ui.close'|trans }}">
+                            {{ ux_icon('tabler:x', { class: 'icon icon-md' }) }}
+                        </button>
+                    </div>
+                    <div class="at-mn-screen-title-wrap">
+                        <h2 class="at-mn-screen-title">{{ taxon.name }}</h2>
+                        <a class="at-mn-screen-see-all"
+                           href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': taxon.translation.locale}) }}">
+                            {{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.see_all'|trans }}
+                        </a>
+                    </div>
+                    <ul class="at-mn-screen-list">
+                        {% for l2 in l1Children %}
+                            {% set l2HasChildren = advanced_taxon_ordered_children(l2)|length > 0 %}
+                            <li>
+                                {% if l2HasChildren %}
+                                    <button class="at-mn-screen-btn"
+                                            data-action="at-mobile-menu#goTo"
+                                            data-at-mobile-menu-goto-param="at-mn-screen-{{ l2.id }}"
+                                            type="button">
+                                        <span>{{ l2.name }}</span>
+                                        {{ ux_icon('tabler:chevron-right', { class: 'icon icon-sm' }) }}
+                                    </button>
+                                {% else %}
+                                    <a class="at-mn-screen-link"
+                                       href="{{ path('sylius_shop_product_index', {'slug': l2.slug, '_locale': l2.translation.locale}) }}">
+                                        {{ l2.name }}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {# ---- L2 TAXON SCREENS (for L2 taxons with children) ---- #}
+                {% for l2 in l1Children %}
+                    {% set l2Children = advanced_taxon_ordered_children(l2) %}
+                    {% if l2Children|length > 0 %}
+
+                        <div class="at-mn-screen"
+                             id="at-mn-screen-{{ l2.id }}"
+                             data-mn-state="right">
+                            <div class="at-mn-screen-head">
+                                <button class="at-mn-head-back" data-action="click->at-mobile-menu#goBack" type="button"
+                                        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.back'|trans }}">
+                                    {{ ux_icon('tabler:chevron-left', { class: 'icon icon-sm' }) }}
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.back'|trans }}
+                                </button>
+                                <button class="at-mn-head-close" data-action="click->at-mobile-menu#close" type="button"
+                                        aria-label="{{ 'sylius.ui.close'|trans }}">
+                                    {{ ux_icon('tabler:x', { class: 'icon icon-md' }) }}
+                                </button>
+                            </div>
+                            <div class="at-mn-screen-title-wrap">
+                                <h2 class="at-mn-screen-title">{{ l2.name }}</h2>
+                                <a class="at-mn-screen-see-all"
+                                   href="{{ path('sylius_shop_product_index', {'slug': l2.slug, '_locale': l2.translation.locale}) }}">
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.see_all'|trans }}
+                                </a>
+                            </div>
+                            <ul class="at-mn-screen-list">
+                                {% for l3 in l2Children %}
+                                    <li>
+                                        <a class="at-mn-screen-link"
+                                           href="{{ path('sylius_shop_product_index', {'slug': l3.slug, '_locale': l3.translation.locale}) }}">
+                                            {{ l3.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+
+    </div>{# /.at-mn-drawer-panel #}
+</div>{# /.at-mn-drawer #}
+
+
+{% else %}
+
+{# ============================================================
+   MODE STANDARD — rendu Sylius natif avec hooks et Bootstrap dropdown
+   ============================================================ #}
+
+<div class="w-100 border-bottom">
+    {% if taxons|length > 0 %}
+        <nav class="navbar offcanvas-lg offcanvas-start offcanvas-wide p-0" id="navbarNav" role="navigation" aria-label="{{ 'sylius.ui.taxon_navigation_desktop'|trans }}">
+            <div class="offcanvas-header w-full">
+                <h1 class="offcanvas-title fs-5">
+                    {{ 'sylius.ui.taxons'|trans }}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#navbarNav" aria-label="{{ 'sylius.ui.close'|trans }}"></button>
+            </div>
+            <div class="offcanvas-body justify-content-lg-center w-full py-0">
+                <div class="navbar-nav my-2 flex-column flex-lg-row gap-lg-4" {{ sylius_test_html_attribute('menu') }}>
+                    {% hook 'menu' with { taxons } %}
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+</div>
+
+{% endif %}

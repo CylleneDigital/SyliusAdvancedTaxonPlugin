@@ -1,0 +1,13 @@
+liip_imagine:
+    driver: gd
+    filter_sets:
+        cache: ~
+        cyllene_universe_slider_mobile:
+            filters:
+                thumbnail:
+                    # Tweak these dimensions per project needs.
+                    size: [640, 360]
+                    mode: outbound
+                strip: ~
+                quality:
+                    quality: 82

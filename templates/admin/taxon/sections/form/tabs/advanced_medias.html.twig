@@ -1,0 +1,5 @@
+{% set form = hookable_metadata.context.form %}
+
+<div class="tab-pane fade {% if hookable_metadata.configuration.active|default(false) %}show active{% endif %}" id="taxon-tab-advanced-medias" role="tabpanel" tabindex="0">
+    {{ include('@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/advanced_taxon/advanced_medias.html.twig', { form: form }) }}
+</div>

@@ -1,0 +1,25 @@
+{% if sylius.channel is defined and sylius.channel.hasMegaMenu %}
+{# Mega menu mode: ouvre le drawer drill-down #}
+<div class="col-auto d-lg-none">
+    <button id="at-mn-burger"
+            class="btn btn-icon btn-transparent px-0"
+            type="button"
+            aria-expanded="false"
+            aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.open'|trans }}">
+        {{ ux_icon('tabler:menu-2', { class: 'icon icon-md' }) }}
+    </button>
+</div>
+{% else %}
+{# Standard mode: opens the Bootstrap offcanvas navbar #}
+<div class="col-auto d-lg-none">
+    <button class="navbar-toggler btn btn-icon btn-transparent px-0"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+        {{ ux_icon('tabler:menu-2', { class: 'icon icon-md' }) }}
+    </button>
+</div>
+{% endif %}

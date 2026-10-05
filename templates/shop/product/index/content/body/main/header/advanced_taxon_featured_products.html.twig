@@ -1,0 +1,17 @@
+{% set taxon = hookable_metadata.context.taxon %}
+{% set featuredProducts = taxon.featuredProducts %}
+{% set featuredProductsTitle = taxon.featuredProductsTitle ? taxon.featuredProductsTitle : 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.title'|trans %}
+{% set featuredProductsDescription = taxon.featuredProductsDescription ? taxon.featuredProductsDescription : 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.description'|trans %}
+
+{% if taxon.isFeaturedProductsActive and featuredProducts|length > 0  %}
+    <h2 class="mt-3 mb-3">{{ featuredProductsTitle }}</h2>
+    <p>
+        {{ featuredProductsDescription }}
+    </p>
+
+    {% if taxon.isSlider %}
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/advanced_taxon_featured_products/slider.html.twig' with { hookable_metadata: hookable_metadata, featuredProducts: featuredProducts } %}
+    {% else %}
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/advanced_taxon_featured_products/grid.html.twig' with { hookable_metadata: hookable_metadata, featuredProducts: featuredProducts } %}
+    {% endif %}
+{% endif %}

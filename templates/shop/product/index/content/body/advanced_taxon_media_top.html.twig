@@ -1,0 +1,12 @@
+{% set taxon = hookable_metadata.context.taxon|default(taxon|default(null)) %}
+{% set zoneMedia = taxon is not null and taxon.images is defined ? taxon.images|filter(image => image.type == 'top' and image.path) : [] %}
+
+{% if taxon is not null and not taxon.isUniverse and zoneMedia|length > 0 %}
+    <div class="col-12 mb-4">
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/media/zone.html.twig' with {
+            taxon: taxon,
+            zone: 'top',
+            displayMode: taxon.mediaDisplayModeTop|default('stacked'),
+        } %}
+    </div>
+{% endif %}

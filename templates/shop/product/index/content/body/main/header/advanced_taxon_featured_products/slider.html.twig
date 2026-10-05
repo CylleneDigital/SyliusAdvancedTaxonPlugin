@@ -1,0 +1,80 @@
+{% if featuredProducts|length > 0 %}
+    {% set hasHeaderTitle = headerTitle is defined and headerTitle is not empty %}
+    {% set hasHeaderDescription = headerDescription is defined and headerDescription is not empty %}
+
+    <div class="at-featured-slider my-4" data-controller="at-featured-slider" {{ sylius_test_html_attribute('featured-products-slider') }}>
+        {% if hasHeaderTitle and not hasHeaderDescription %}
+            <div class="d-md-none mb-2">
+                <h2 class="h5 mb-0">{{ headerTitle }}</h2>
+            </div>
+
+            <div class="d-none d-md-flex align-items-center justify-content-between gap-3 mb-2">
+                <h2 class="h4 mb-0">{{ headerTitle }}</h2>
+                <div class="d-flex gap-2">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary at-featured-slider-nav"
+                        data-at-featured-slider-target="prev"
+                        data-action="click->at-featured-slider#previous"
+                        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.slider.desktop_previous'|trans }}"
+                    >
+                        {{ ux_icon('tabler:chevron-left') }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary at-featured-slider-nav"
+                        data-at-featured-slider-target="next"
+                        data-action="click->at-featured-slider#next"
+                        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.slider.desktop_next'|trans }}"
+                    >
+                        {{ ux_icon('tabler:chevron-right') }}
+                    </button>
+                </div>
+            </div>
+        {% else %}
+            {% if hasHeaderTitle %}
+                <h2 class="h4 mb-2">{{ headerTitle }}</h2>
+            {% endif %}
+            {% if hasHeaderDescription %}
+                <p class="mb-2 text-muted">{{ headerDescription }}</p>
+            {% endif %}
+
+            <div class="d-none d-md-flex justify-content-end gap-2 mb-2">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary at-featured-slider-nav"
+                    data-at-featured-slider-target="prev"
+                    data-action="click->at-featured-slider#previous"
+                    aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.slider.desktop_previous'|trans }}"
+                >
+                    {{ ux_icon('tabler:chevron-left') }}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary at-featured-slider-nav"
+                    data-at-featured-slider-target="next"
+                    data-action="click->at-featured-slider#next"
+                    aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.slider.desktop_next'|trans }}"
+                >
+                    {{ ux_icon('tabler:chevron-right') }}
+                </button>
+            </div>
+        {% endif %}
+
+        <div class="d-flex flex-nowrap gap-3 overflow-auto pb-2 at-featured-slider-track" data-at-featured-slider-target="track">
+            {% for product in featuredProducts %}
+                <div class="flex-shrink-0 at-featured-slider-item">
+                    {{ component('sylius_shop:product:card', {
+                        product: product,
+                        template: '@SyliusShop/product/common/card.html.twig',
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="d-md-none mt-2 at-featured-slider-hint text-muted small">
+            {{ 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.slider.mobile_scroll_hint'|trans }}
+            <span aria-hidden="true">&rarr;</span>
+        </div>
+    </div>
+{% endif %}

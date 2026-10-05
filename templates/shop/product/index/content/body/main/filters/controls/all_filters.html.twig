@@ -1,0 +1,19 @@
+{% set taxon = advanced_taxon_taxon_from_request() %}
+
+{% if taxon is not null and taxon.advancedFiltersEnabled %}
+    <div class="col">
+        <button
+            class="btn btn-outline-secondary"
+            type="button"
+            data-controller="at-advanced-filters"
+            data-at-advanced-filters-mode-value="trigger"
+            data-action="click->at-advanced-filters#toggle"
+            data-at-advanced-filters-role="toggle"
+            aria-expanded="false"
+            aria-controls="at-advanced-filters-panel"
+            {{ sylius_test_html_attribute('advanced-filters-toggle') }}
+        >
+         {{ ux_icon('mdi:format-list-bulleted')}} {{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.all_filters'|trans }}
+        </button>
+    </div>
+{% endif %}

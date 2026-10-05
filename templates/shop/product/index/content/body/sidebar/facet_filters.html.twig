@@ -1,0 +1,226 @@
+{% import _self as facet_helpers %}
+
+{#
+    Search input of a facet list. It has no name attribute on purpose: it must never be submitted
+    with the filter form, it only narrows down the rendered values.
+#}
+{% macro facet_search(label) %}
+    <input
+        type="search"
+        class="form-control form-control-sm at-facet-search mb-2"
+        placeholder="{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.search'|trans }}"
+        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.search_in'|trans({'%name%': label}) }}"
+        autocomplete="off"
+        data-at-facet-search-target="input"
+        data-action="input->at-facet-search#filter search->at-facet-search#filter"
+    >
+{% endmacro %}
+
+{% macro facet_empty_result() %}
+    <p class="small text-muted mb-0 mt-2 d-none" data-at-facet-search-target="empty">
+        {{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.no_result'|trans }}
+    </p>
+{% endmacro %}
+
+{% set taxon = advanced_taxon_taxon_from_request() %}
+{% set activeAdvancedFilters = app.request.query.all('advanced') %}
+
+{% if taxon is not null and taxon.isUniverse %}
+{% else %}
+
+{% if taxon is not null and taxon.advancedFiltersEnabled %}
+    {% set includeChildren = taxon.includeChildrenProducts %}
+    {% set filtersData = advanced_taxon_available_filters(taxon, app.request.locale, includeChildren, activeAdvancedFilters) %}
+    {% set selected = filtersData.selected %}
+    {% set facets = filtersData.facets %}
+
+    <div data-controller="at-advanced-filters" data-at-advanced-filters-mode-value="panel">
+        <div
+            class="at-advanced-filters"
+            id="at-advanced-filters-panel"
+            {{ sylius_test_html_attribute('advanced-filters-sidebar') }}
+        >
+            <div class="at-advanced-filters-mobile-header">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-action="click->at-advanced-filters#close"
+                    aria-label="{{ 'sylius.ui.close'|trans }}"
+                >
+                    &times;
+                </button>
+            </div>
+
+            <form method="get" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})) }}" class="d-flex flex-column gap-3">
+            {% if app.request.query.get('view') %}
+                <input type="hidden" name="view" value="{{ app.request.query.get('view') }}">
+            {% endif %}
+            {% if app.request.query.get('limit') %}
+                <input type="hidden" name="limit" value="{{ app.request.query.get('limit') }}">
+            {% endif %}
+            {% if app.request.query.all()['sorting'] is defined and app.request.query.all()['sorting'] is iterable %}
+                {% for sortingName, sortingValue in app.request.query.all()['sorting'] %}
+                    <input type="hidden" name="sorting[{{ sortingName }}]" value="{{ sortingValue }}">
+                {% endfor %}
+            {% endif %}
+
+            <div>
+                <h3 class="h6 mb-2">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.title'|trans }}</h3>
+                <p class="text-muted small mb-0">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.help'|trans }}</p>
+            </div>
+
+            {% if facets.price.min is not null or facets.price.max is not null %}
+                <div class="border rounded p-3">
+                    <p class="fw-semibold mb-2">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.price'|trans }}</p>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small mb-1">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.min'|trans }}</label>
+                            <input
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                class="form-control form-control-sm"
+                                name="advanced[price][min]"
+                                value="{{ selected.price.min is not null ? (selected.price.min / 100) }}"
+                                placeholder="{{ facets.price.min is not null ? facets.price.min|number_format(2, '.', ' ') }}"
+                            >
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.max'|trans }}</label>
+                            <input
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                class="form-control form-control-sm"
+                                name="advanced[price][max]"
+                                value="{{ selected.price.max is not null ? (selected.price.max / 100) }}"
+                                placeholder="{{ facets.price.max is not null ? facets.price.max|number_format(2, '.', ' ') }}"
+                            >
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if facets.taxons is not empty %}
+                {% set taxonsLabel = 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.taxons'|trans %}
+                <div class="border rounded p-3" data-controller="at-facet-search">
+                    <p class="fw-semibold mb-2">{{ taxonsLabel }}</p>
+                    {{ facet_helpers.facet_search(taxonsLabel) }}
+                    <div class="d-flex flex-column gap-1 at-facet-values">
+                        {% for taxonFacet in facets.taxons %}
+                            <label class="form-check d-flex justify-content-between gap-2 align-items-center mb-0" data-at-facet-search-target="item">
+                                <span>
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input me-2"
+                                        name="advanced[taxons][]"
+                                        value="{{ taxonFacet.id }}"
+                                        {% if taxonFacet.active %}checked{% endif %}
+                                    >
+                                    <span class="form-check-label" data-at-facet-search-target="label">{{ taxonFacet.label }}</span>
+                                </span>
+                                <span class="badge bg-light text-dark">{{ taxonFacet.count }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    {{ facet_helpers.facet_empty_result() }}
+                </div>
+            {% endif %}
+
+            {% if facets.attributes is not empty %}
+                <div class="d-flex flex-column gap-2">
+                    {% for attributeFacet in facets.attributes %}
+                        <div class="border rounded p-3" data-controller="at-facet-search">
+                            <p class="fw-semibold mb-2">{{ attributeFacet.label }}</p>
+                            {{ facet_helpers.facet_search(attributeFacet.label) }}
+                            <div class="d-flex flex-column gap-1 at-facet-values">
+                                {% for valueFacet in attributeFacet.values %}
+                                    <label class="form-check d-flex justify-content-between gap-2 align-items-center mb-0" data-at-facet-search-target="item">
+                                        <span>
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input me-2"
+                                                name="advanced[attributes][{{ attributeFacet.code }}][]"
+                                                value="{{ valueFacet.value }}"
+                                                {% if valueFacet.active %}checked{% endif %}
+                                            >
+                                            <span class="form-check-label" data-at-facet-search-target="label">{{ valueFacet.value }}</span>
+                                        </span>
+                                        <span class="badge bg-light text-dark">{{ valueFacet.count }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            {{ facet_helpers.facet_empty_result() }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if facets.options is not empty %}
+                <div class="d-flex flex-column gap-2">
+                    {% for optionFacet in facets.options %}
+                        <div class="border rounded p-3" data-controller="at-facet-search">
+                            <p class="fw-semibold mb-2">{{ optionFacet.label }}</p>
+                            {{ facet_helpers.facet_search(optionFacet.label) }}
+                            <div class="d-flex flex-column gap-1 at-facet-values">
+                                {% for valueFacet in optionFacet.values %}
+                                    <label class="form-check d-flex justify-content-between gap-2 align-items-center mb-0" data-at-facet-search-target="item">
+                                        <span>
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input me-2"
+                                                name="advanced[options][{{ optionFacet.code }}][]"
+                                                value="{{ valueFacet.value }}"
+                                                {% if valueFacet.active %}checked{% endif %}
+                                            >
+                                            <span class="form-check-label" data-at-facet-search-target="label">{{ valueFacet.value }}</span>
+                                        </span>
+                                        <span class="badge bg-light text-dark">{{ valueFacet.count }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            {{ facet_helpers.facet_empty_result() }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-1">
+                <button type="submit" class="btn btn-md w-100 btn-primary">{{ 'sylius.ui.filter'|trans }}</button>
+                <a
+                    href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})) }}"
+                    class="btn btn-md w-100 btn-outline-secondary"
+                >{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.reset'|trans }}</a>
+            </div>
+            </form>
+        </div>
+        <div class="at-advanced-filters-backdrop" data-action="click->at-advanced-filters#close"></div>
+    </div>
+{% elseif taxon is not null %}
+    {# -------------------------------------------------------
+       Reproduce native taxonomy sidebar
+       (child links + "go level up")
+       ------------------------------------------------------- #}
+    {% if taxon is not null %}
+    <div {{ sylius_test_html_attribute('vertical-menu') }}>
+        <div class="d-flex flex-column">
+            {% for child in taxon.enabledChildren %}
+                <a href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}"
+                   class="d-inline-block py-1 link-reset"
+                   {{ sylius_test_html_attribute('vertical-menu-item') }}>
+                    {{ child.name }}
+                </a>
+            {% endfor %}
+
+            {% if taxon.parent is not empty and not taxon.parent.isRoot() and taxon.parent.enabled %}
+                <a href="{{ path('sylius_shop_product_index', {'slug': taxon.parent.slug, '_locale': taxon.parent.translation.locale}) }}"
+                   class="d-inline-block py-1 link-reset"
+                   {{ sylius_test_html_attribute('vertical-menu-go-level-up') }}>
+                    {{ 'sylius.ui.go_level_up'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+{% endif %}

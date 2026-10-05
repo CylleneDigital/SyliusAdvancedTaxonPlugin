@@ -1,0 +1,2 @@
+cyllene_digital_sylius_advanced_taxon_admin:
+    resource: "@CylleneDigitalSyliusAdvancedTaxonPlugin/config/routes/admin.yaml"

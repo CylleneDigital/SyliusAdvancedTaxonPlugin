@@ -1,0 +1,18 @@
+imports:
+    - { resource: services/** }
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    CylleneDigital\SyliusAdvancedTaxonPlugin\:
+        resource: '../src/*'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Migrations/'
+
+    # The conditional taxon synchronizer is the single implementation of its interface.
+    CylleneDigital\SyliusAdvancedTaxonPlugin\Service\ConditionalTaxonSynchronizerInterface:
+        alias: CylleneDigital\SyliusAdvancedTaxonPlugin\Service\ConditionalTaxonProductAssigner

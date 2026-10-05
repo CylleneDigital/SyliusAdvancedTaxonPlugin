@@ -1,0 +1,5 @@
+cyllene_digital_sylius_advanced_taxon_admin_facet_preview:
+    path: /admin/advanced-taxon/facet-conditions/preview
+    methods: [POST]
+    defaults:
+        _controller: CylleneDigital\SyliusAdvancedTaxonPlugin\Controller\AdminFacetPreviewController

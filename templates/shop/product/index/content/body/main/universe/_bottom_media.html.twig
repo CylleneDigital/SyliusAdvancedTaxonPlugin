@@ -1,0 +1,9 @@
+{% if bottomMedia is not empty %}
+    <section class="at-universe-page-bottom">
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/media/zone.html.twig' with {
+            taxon: taxon,
+            zone: 'bottom',
+            displayMode: taxon.mediaDisplayModeBottom|default('stacked')
+        } only %}
+    </section>
+{% endif %}

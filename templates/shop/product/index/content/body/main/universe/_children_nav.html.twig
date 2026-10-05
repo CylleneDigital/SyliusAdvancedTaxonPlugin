@@ -1,0 +1,9 @@
+<section class="at-universe-children-nav mb-3">
+    <div class="row g-3">
+        {% for child in children %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_child_card.html.twig' with {
+                child: child
+            } %}
+        {% endfor %}
+    </div>
+</section>

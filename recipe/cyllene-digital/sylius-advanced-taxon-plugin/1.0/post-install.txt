@@ -1,0 +1,41 @@
+<fg=blue;options=bold>Sylius Advanced Taxon Plugin</> is installed.
+
+  <options=bold>Four steps are left:</>
+
+    1. Migrate the database: the plugin extends the taxon, channel and taxon image tables.
+
+       <comment>bin/console doctrine:migrations:migrate</>
+
+    2. Build the plugin assets. The plugin ships the entrypoints <comment>plugin-admin-entry</> and
+       <comment>plugin-shop-entry</>, and its templates load <comment>app-admin-entry</> and
+       <comment>app-shop-entry</>, so importing them from your own entrypoints is enough:
+
+       <comment>assets/admin/entrypoint.js</comment>
+       import '../../vendor/cyllene-digital/sylius-advanced-taxon-plugin/assets/admin/entrypoint.js';
+
+       <comment>assets/shop/entrypoint.js</comment>
+       import '../../vendor/cyllene-digital/sylius-advanced-taxon-plugin/assets/shop/entrypoint.js';
+
+       Then rebuild your assets as usual (<comment>yarn build</> or <comment>yarn encore dev</>).
+       Without this build, the taxon customizations render but stay unstyled and the icon picker,
+       facet conditions and storefront sliders stay inert.
+
+    3. Create the pictogram directory and make it writable: the plugin stores uploaded pictograms
+       there and never creates it itself.
+
+       <comment>mkdir -p public/media/advanced-taxon/icons</>
+
+    4. Schedule the conditional taxon synchronization: it keeps the products assigned to
+       conditional taxons up to date when products, attributes or stock change afterwards.
+
+       <comment>bin/console cyllene:advanced-taxon:sync-conditional-taxons</>
+
+  <options=bold>One thing to know:</> the plugin routes and the product links it renders use the
+  default <comment>/admin</> back office path. If your back office lives elsewhere, the conditions
+  preview endpoint and the product shortcuts of the taxon form have to be adapted.
+
+  Then clear the cache (<comment>bin/console cache:clear</>) and open
+  <comment>Catalog > Taxons</> in the back office to configure a taxon.
+
+  Documentation:
+  https://github.com/CylleneDigital/AdvancedTaxonPlugin/blob/main/docs/installation.md

@@ -1,0 +1,39 @@
+{% set variant = product.enabledVariants.empty() ? null : product.enabledVariants.first %}
+
+<article class="card mb-3" {{ sylius_test_html_attribute('product-list-item', '%s'|format(product.code)) }}>
+    <div class="card-body">
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-3 col-lg-2">
+                <a class="d-block overflow-hidden bg-light rounded-3 at-product-card-visual-3x4" href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}">
+                    {{ component('sylius_shop:main_image', { product: product, class: 'w-100 h-100 object-fit-cover' }) }}
+                </a>
+            </div>
+            <div class="col-12 col-md-6 col-lg-7">
+                <h3 class="h5 mb-1">
+                    <a class="link-reset" href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}" {{ sylius_test_html_attribute('product-name', product.name) }}>
+                        {{ product.name }}
+                    </a>
+                </h3>
+                {% if product.shortDescription is not empty %}
+                    {% set plainDescription = product.shortDescription|striptags %}
+                    <p class="text-muted mb-0">{{ plainDescription|slice(0, 180) }}{% if plainDescription|length > 180 %}...{% endif %}</p>
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-3 text-md-end">
+                <div class="mb-2 fs-5 fw-semibold">
+                    {% if variant is not null %}
+                        {{ component('sylius_shop:product:card:price', {
+                            variant: variant,
+                            template: '@SyliusShop/product/common/price.html.twig'
+                        }) }}
+                    {% else %}
+                        <span>{{ 'sylius.ui.unavailable'|trans }}</span>
+                    {% endif %}
+                </div>
+                <a class="btn btn-outline-primary btn-md" href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}">
+                  {{ ux_icon('mdi:search') }} {{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_product'|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+</article>

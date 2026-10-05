@@ -1,0 +1,107 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.base#stylesheets':
+            advanced_taxon_styles:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/shared/layout/base/styles.html.twig'
+                priority: -100
+
+        'sylius_admin.base#javascripts':
+            advanced_taxon_scripts:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/shared/layout/base/scripts.html.twig'
+                priority: -100
+
+        'sylius_admin.taxon.create.content.sections#right':
+            form:
+                component: 'sylius_admin:taxon:form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form_with_tabs.html.twig'
+                priority: 0
+
+        'sylius_admin.taxon.update.content.sections#right':
+            form:
+                component: 'sylius_admin:taxon:form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form_with_tabs.html.twig'
+                configuration:
+                    method: 'PUT'
+                priority: 0
+
+        'sylius_admin.taxon.create.content.sections#left':
+            side_navigation:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
+                priority: 200
+
+        'sylius_admin.taxon.update.content.sections#left':
+            side_navigation:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
+                priority: 200
+
+        'sylius_admin.taxon.create.content.sections.form':
+            general:
+                enabled: false
+            translations:
+                enabled: false
+            images:
+                enabled: false
+            taxon_tab_general:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/general.html.twig'
+                configuration:
+                    active: true
+                priority: 500
+            taxon_tab_display:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/display.html.twig'
+                priority: 400
+            taxon_tab_featured_items:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/featured_items.html.twig'
+                priority: 300
+            taxon_tab_advanced_medias:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/advanced_medias.html.twig'
+                priority: 200
+            taxon_tab_virtual_conditions:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/virtual_conditions.html.twig'
+                priority: 100
+            taxon_tab_universe:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/universe.html.twig'
+                priority: 100
+
+        'sylius_admin.taxon.update.content.sections.form':
+            general:
+                enabled: false
+            translations:
+                enabled: false
+            images:
+                enabled: false
+            taxon_tab_general:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/general.html.twig'
+                configuration:
+                    active: true
+                priority: 500
+            taxon_tab_display:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/display.html.twig'
+                priority: 400
+            taxon_tab_featured_items:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/featured_items.html.twig'
+                priority: 300
+            taxon_tab_advanced_medias:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/advanced_medias.html.twig'
+                priority: 200
+            taxon_tab_virtual_conditions:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/virtual_conditions.html.twig'
+                priority: 100
+            taxon_tab_universe:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/universe.html.twig'
+                priority: 100
+
+        'sylius_admin.channel.create.content.form.sections.look_and_feel':
+            has_mega_menu:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/channel/form/sections/look_and_feel/has_mega_menu.html.twig'
+                priority: 150
+
+        'sylius_admin.channel.update.content.form.sections.look_and_feel':
+            has_mega_menu:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/channel/form/sections/look_and_feel/has_mega_menu.html.twig'
+                priority: 150

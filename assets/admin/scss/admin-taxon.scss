@@ -1,0 +1,66 @@
+.at-admin-sticky-side-nav {
+    top: 7.6rem;
+    z-index: 990;
+}
+
+/*
+ * The compiled Sylius admin CSS sets `--tblr-btn-line-height` to a unitless value on `.btn-sm`,
+ * which makes the `min-width`/`min-height` calc() of `.btn-icon` invalid. Icon-only buttons then
+ * collapse to a couple of pixels and their icons overlap (this is what happens to the taxon tree
+ * action buttons). Restoring a length keeps icon buttons square.
+ */
+.btn.btn-icon {
+    --tblr-btn-line-height: 1.25rem;
+}
+
+/*
+ * The left column of the taxon form stacks the tab list above the taxon tree. Only the tab list was
+ * sticky, so the tree scrolled underneath it and ended up hidden behind the tabs. The whole column
+ * is made sticky instead, and scrolls on its own when it does not fit in the viewport, which keeps
+ * the tabs and the tree visible at the same time.
+ *
+ * Position sticky creates a stacking context, so without an explicit z-index the whole column (and
+ * every dropdown opened from the tree) is painted underneath the form column that comes later in
+ * the DOM. The z-index keeps the tree and its action menu above the rest of the form.
+ *
+ * Browsers without :has() fall back to the sticky tab list above.
+ */
+@media (min-width: 768px) {
+    .col-12:has(> #side-nav) {
+        position: sticky;
+        top: 7.6rem;
+        align-self: flex-start;
+        z-index: 1;
+        max-height: calc(100vh - 8.6rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .col-12:has(> #side-nav) #side-nav {
+        position: static;
+    }
+}
+
+.at-admin-icon-modal-dialog {
+    max-height: 550px;
+}
+
+.at-admin-icon-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.at-admin-icon-grid-button {
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    padding: 0;
+}
+
+.at-admin-media-preview {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 0 auto;
+}

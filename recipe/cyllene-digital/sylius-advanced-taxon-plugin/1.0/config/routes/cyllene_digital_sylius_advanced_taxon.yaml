@@ -1,0 +1,7 @@
+# Imported automatically: the Flex Kernel loads every config/routes/*.yaml file.
+#
+# The plugin exposes a single admin route, used by the conditions preview of the taxon form. It
+# keeps its path inside the plugin and uses the default /admin back office path, so no prefix is
+# declared here.
+cyllene_digital_sylius_advanced_taxon_admin:
+    resource: "@CylleneDigitalSyliusAdvancedTaxonPlugin/config/routes/admin.yaml"

@@ -1,0 +1,15 @@
+{% set taxon = hookable_metadata.context.taxon %}
+
+<a class="nav-link d-flex align-items-center gap-1 advanced-taxon-header-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {% if taxon.showCustomizationInMenu %}
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+            taxon: taxon,
+            iconSize: 20,
+            wrapperClass: 'd-inline-flex align-items-center gap-2',
+            showCustomization: true
+        } only %}
+    {% else %}
+        <span class="d-inline-flex align-items-center gap-2 text-body">{{ taxon.name }}</span>
+    {% endif %}
+    {{ ux_icon('tabler:chevron-down', { class: 'icon icon-sm' }) }}
+</a>

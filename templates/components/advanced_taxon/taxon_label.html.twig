@@ -1,0 +1,41 @@
+{% set taxonColor = taxon.color|default(null) %}
+{% set iconValue = taxon.icon|default(null) %}
+{% set iconType = taxon.iconType|default('icon') %}
+{% set iconSize = iconSize|default(30) %}
+{% set wrapperClass = wrapperClass|default('d-inline-flex align-items-center gap-2') %}
+{% set textClass = textClass|default('') %}
+{% set textColor = textColor|default(null) %}
+{% set iconColor = iconColor|default(null) %}
+{% set useTaxonColor = useTaxonColor|default(true) %}
+{% set showCustomization = showCustomization is defined ? showCustomization : true %}
+{% set hasIcon = iconValue is not empty %}
+{# Remote or protocol relative icons are ignored: only local pictograms and glyph names are rendered. #}
+{% set iconIsRemote = hasIcon and (iconValue starts with 'http://' or iconValue starts with 'https://' or iconValue starts with '//') %}
+{% set iconIsLocalPath = hasIcon and iconValue starts with '/' and not iconValue starts with '//' %}
+{% set hasCustomImage = hasIcon and not iconIsRemote and (iconType in ['image', 'pictogram'] or iconIsLocalPath) %}
+{% set hasIconGlyph = hasIcon and not hasCustomImage and not iconIsRemote %}
+{% set resolvedIconColor = iconColor ?? (showCustomization and useTaxonColor and taxonColor ? taxonColor : '#000000') %}
+{% set resolvedImageSrc = hasCustomImage ? asset(iconValue) : iconValue %}
+
+<span class="{{ wrapperClass }}">
+    {% if showCustomization and hasCustomImage %}
+        <img
+            src="{{ resolvedImageSrc }}"
+            alt="{{ taxon.name }}"
+            width="{{ iconSize }}"
+            height="{{ iconSize }}"
+            style="width: {{ iconSize }}px; height: {{ iconSize }}px; object-fit: contain;"
+            loading="lazy"
+        >
+    {% elseif showCustomization and hasIconGlyph %}
+        {% set iconName = ':' in iconValue ? iconValue : 'tabler:' ~ iconValue %}
+        {{ ux_icon(iconName, {
+            class: 'advanced-taxon-icon-svg',
+            style: 'width: ' ~ iconSize ~ 'px; height: ' ~ iconSize ~ 'px; color: ' ~ resolvedIconColor ~ ';'
+        }) }}
+    {% endif %}
+
+    <span class="{{ textClass }}"{% if textColor is not null %} style="color: {{ textColor }};"{% elseif showCustomization and useTaxonColor and taxonColor %} style="color: {{ taxonColor }};"{% endif %}>
+        {{ taxon.name }}
+    </span>
+</span>

@@ -1,0 +1,11 @@
+{% set taxon = hookable_metadata.context.taxon|default(taxon|default(null)) %}
+
+<div class="mt-4">
+    {% if taxon is not null and not taxon.isUniverse and taxon.images is defined %}
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/media/zone.html.twig' with {
+            taxon: taxon,
+            zone: 'left',
+            displayMode: taxon.mediaDisplayModeLeft|default('stacked'),
+        } %}
+    {% endif %}
+</div>

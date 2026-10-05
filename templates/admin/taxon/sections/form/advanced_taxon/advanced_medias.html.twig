@@ -1,0 +1,190 @@
+{% set form = form is defined ? form : hookable_metadata.context.form %}
+{% form_theme form '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/collection_theme.html.twig' %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'cyllene_digital_sylius_advanced_taxon.ui.advanced_medias'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="border rounded p-3 h-100">
+                    <h3 class="h2 mb-1 d-flex align-items-center gap-2">
+                        <span class="d-inline-flex align-items-center">{{ ux_icon('bxs:dock-top') }}</span>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.top.title'|trans }}</span>
+                    </h3>
+                    <div class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.top.description'|trans }}</div>
+                    <div class="form-text mb-0 help-text"></div>
+                    {{ form_row(form.mediaDisplayModeTop) }}
+                    <div class="accordion" id="advanced-taxon-media-top-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="advanced-taxon-media-top-heading">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#advanced-taxon-media-top-collapse"
+                                    aria-expanded="false"
+                                    aria-controls="advanced-taxon-media-top-collapse"
+                                >
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.top.items'|trans }}
+
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('mdi:chevron-down') }}
+                                    </div>        
+                                </button>
+                            </h2>
+                            <div id="advanced-taxon-media-top-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-top-heading">
+                                <div class="accordion-body px-0 pt-3 pb-0">
+                                    {{ form_row(form.mediaTop) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="border rounded p-3 h-100">
+                    <h3 class="h2 mb-1 d-flex align-items-center gap-2">
+                        <span class="d-inline-flex align-items-center">{{ ux_icon('bxs:dock-bottom') }}</span>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.bottom.title'|trans }}</span>
+                    </h3>
+                    <div class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.bottom.description'|trans }}</div>
+                    {{ form_row(form.mediaDisplayModeBottom) }}
+                    <div class="accordion" id="advanced-taxon-media-bottom-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="advanced-taxon-media-bottom-heading">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#advanced-taxon-media-bottom-collapse"
+                                    aria-expanded="false"
+                                    aria-controls="advanced-taxon-media-bottom-collapse"
+                                >
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.bottom.items'|trans }}
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('mdi:chevron-down') }}
+                                    </div> 
+                                </button>
+                            </h2>
+                            <div id="advanced-taxon-media-bottom-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-bottom-heading">
+                                <div class="accordion-body px-0 pt-3 pb-0">
+                                    {{ form_row(form.mediaBottom) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="border rounded p-3 h-100">
+                    <h3 class="h2 mb-1 d-flex align-items-center gap-2">
+                        <span class="d-inline-flex align-items-center">{{ ux_icon('boxicons:dock-left-filled') }}</span>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.left.title'|trans }}</span>
+                    </h3>
+                    <div class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.left.description'|trans }}</div>
+                    {{ form_row(form.mediaDisplayModeLeft) }}
+                    <div class="accordion" id="advanced-taxon-media-left-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="advanced-taxon-media-left-heading">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#advanced-taxon-media-left-collapse"
+                                    aria-expanded="false"
+                                    aria-controls="advanced-taxon-media-left-collapse"
+                                >
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.left.items'|trans }}
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('mdi:chevron-down') }}
+                                    </div> 
+                                </button>
+                            </h2>
+                            <div id="advanced-taxon-media-left-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-left-heading">
+                                <div class="accordion-body px-0 pt-3 pb-0">
+                                    {{ form_row(form.mediaLeft) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="border rounded p-3 h-100">
+                    <h3 class="h2 mb-3 d-flex align-items-center gap-2">
+                        <span class="d-inline-flex align-items-center">{{ ux_icon('ant-design:product-filled') }}</span>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.right.title'|trans }}</span>
+                    </h3>
+                    <div class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.right.description'|trans }}</div>
+                    {{ form_row(form.mediaDisplayModeProduct) }}
+                    <div class="accordion" id="advanced-taxon-media-right-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="advanced-taxon-media-right-heading">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#advanced-taxon-media-right-collapse"
+                                    aria-expanded="false"
+                                    aria-controls="advanced-taxon-media-right-collapse"
+                                >
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.right.items'|trans }}
+                                    <div class="accordion-button-toggle">
+                                        {{ ux_icon('mdi:chevron-down') }}
+                                    </div> 
+                                </button>
+                            </h2>
+                            <div id="advanced-taxon-media-right-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-right-heading">
+                                <div class="accordion-body px-0 pt-3 pb-0">
+                                    {{ form_row(form.mediaProduct) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="border rounded p-3 h-100">
+                    <h3 class="h2 mb-1 d-flex align-items-center gap-2">
+                        <span class="d-inline-flex align-items-center">{{ ux_icon('garden:menu-fill-12') }}</span>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.featured.title'|trans }}</span>
+                    </h3>
+                    <div class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.featured.description'|trans }}</div>
+                    {{ form_row(form.mediaDisplayModeFeatured) }}
+                    <div class="accordion" id="advanced-taxon-media-featured-accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="advanced-taxon-media-featured-heading">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#advanced-taxon-media-featured-collapse"
+                                    aria-expanded="false"
+                                    aria-controls="advanced-taxon-media-featured-collapse"
+                                >
+                                    {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.featured.items'|trans }}
+                                    <div class="accordion-button-toggle">
+                                       {{ ux_icon('mdi:chevron-down') }}
+                                    </div> 
+                                </button>
+                            </h2>
+                            <div id="advanced-taxon-media-featured-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-featured-heading">
+                                <div class="accordion-body px-0 pt-3 pb-0">
+                                    {{ form_row(form.mediaFeatured) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

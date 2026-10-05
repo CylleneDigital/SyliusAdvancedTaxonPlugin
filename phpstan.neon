@@ -1,0 +1,11 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests/Behat
+        - tests/Unit
+
+    excludePaths:
+        # Test dependencies
+        - 'tests/TestApplication/src/**.php'
+

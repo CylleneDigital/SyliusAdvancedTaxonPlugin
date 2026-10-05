@@ -1,0 +1,21 @@
+{% set taxon = hookable_metadata.context.taxon %}
+{% set childTaxons = taxon is not null ? taxon.featuredChildren : [] %}
+{% set featuredChildrenTitle = taxon is not null and taxon.featuredChildrenTitle ? taxon.featuredChildrenTitle : 'cyllene_digital_sylius_advanced_taxon.shop.featured_children.title'|trans %}
+{% set featuredChildrenDescription = taxon is not null and taxon.featuredChildrenDescription ? taxon.featuredChildrenDescription : 'cyllene_digital_sylius_advanced_taxon.shop.featured_children.description'|trans %}
+
+{% if childTaxons is not empty %}
+    <section class="my-2 at-universe-children-nav">
+        <h2 class="h4 mb-2">{{ featuredChildrenTitle }}</h2>
+        {% if featuredChildrenDescription is not empty %}
+            <p class="text-muted mb-3">{{ featuredChildrenDescription }}</p>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for child in childTaxons %}
+                {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/child_taxon_card.html.twig' with {
+                    child: child
+                } only %}
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}

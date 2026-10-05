@@ -1,0 +1,7 @@
+{% set taxon = hookable_metadata.context.taxon|default(advanced_taxon_taxon_from_request()) %}
+
+{% if taxon is not null and taxon.isUniverse %}
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe.html.twig' with {
+        taxon: taxon
+    } only %}
+{% endif %}

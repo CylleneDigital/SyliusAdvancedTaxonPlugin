@@ -1,0 +1,10 @@
+{% set taxon = hookable_metadata.context.taxon %}
+
+<h1 class="mb-1 text-break">
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+        taxon: taxon,
+        iconSize: 60,
+        wrapperClass: 'd-inline-flex align-items-center gap-3',
+        showCustomization: taxon.showCustomizationOnTaxonPage
+    } only %}
+</h1>

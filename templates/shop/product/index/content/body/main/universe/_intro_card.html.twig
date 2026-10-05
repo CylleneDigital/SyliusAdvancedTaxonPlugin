@@ -1,0 +1,8 @@
+<div class="{% if universeData.titleBackgroundEnabled %}at-universe-intro-card mb-4{% endif %}" style="--at-universe-color: {{ universeData.universeAccentColor }};">
+    {% if universeData.universePageTitle is not empty %}
+        <h1 class="h2 mb-3">{{ universeData.universePageTitle }}</h1>
+    {% endif %}
+    {% if universeData.universePageDescription is not empty %}
+        <p class="mb-0">{{ universeData.universePageDescription }}</p>
+    {% endif %}
+</div>

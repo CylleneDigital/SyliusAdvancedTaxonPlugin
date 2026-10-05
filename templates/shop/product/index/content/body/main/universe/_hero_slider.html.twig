@@ -1,0 +1,31 @@
+{% if sliderUniversMedia|length > 0 %}
+    <section class="at-universe-hero-slider" data-controller="at-universe-slider" data-at-universe-slider-interval-value="5000">
+        <div class="at-universe-hero-slider-track" data-at-universe-slider-target="track">
+            {% for media in sliderUniversMedia %}
+                {% set desktopImage = advanced_taxon_media_url(media.path) %}
+                {% set mobileImage = advanced_taxon_media_mobile_url(media.path) %}
+                {% set translatedTitle = media.titleForLocale(app.request.locale|default(null)) %}
+                {% set translatedDescription = media.descriptionForLocale(app.request.locale|default(null)) %}
+                {% set mediaLink = media.url is defined and media.url is not empty ? media.url : null %}
+
+                <article class="at-universe-hero-slide{% if loop.first %} is-active{% endif %}" data-at-universe-slider-target="slide">
+                    {% if mediaLink %}<a href="{{ mediaLink }}" class="at-universe-hero-slide-link">{% endif %}
+                    <picture>
+                        <source media="(max-width: 767.98px)" srcset="{{ mobileImage }}">
+                        <img src="{{ desktopImage }}" alt="{{ translatedDescription ?: translatedTitle ?: taxon.name }}" title="{{ translatedTitle ?: taxon.name }}" class="at-universe-hero-image" loading="lazy">
+                    </picture>
+                    {% if mediaLink %}</a>{% endif %}
+                </article>
+            {% endfor %}
+        </div>
+
+        {% if sliderUniversMedia|length > 1 %}
+            <button type="button" class="at-universe-hero-nav at-universe-hero-nav--prev" data-action="click->at-universe-slider#previous" aria-label="Previous slide">
+                {{ ux_icon('tabler:chevron-left') }}
+            </button>
+            <button type="button" class="at-universe-hero-nav at-universe-hero-nav--next" data-action="click->at-universe-slider#next" aria-label="Next slide">
+                {{ ux_icon('tabler:chevron-right') }}
+            </button>
+        {% endif %}
+    </section>
+{% endif %}

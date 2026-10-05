@@ -1,0 +1,65 @@
+{% set form = form is defined ? form : hookable_metadata.context.form %}
+{% form_theme form '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/autocomplete_theme.html.twig' %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'cyllene_digital_sylius_advanced_taxon.ui.featured_elements'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-12">
+                {{ form_row(form.featuredChildren) }}
+            </div>
+            <hr>
+            <div class="col-12">
+                {{ form_row(form.featuredProducts) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.isFeaturedProductsActive) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.featuredProductsPosition) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.isSlider) }}
+            </div>
+            <div class="col-12">
+                <h3 class="h3 mb-3">{{ 'sylius.ui.translations'|trans }}</h3>
+                <div class="accordion" id="taxon-featured-items-translations">
+                    {% for localeCode, translationForm in form.featuredItemsTranslations %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="taxon-featured-items-translations-heading-{{ localeCode }}">
+                                <button
+                                    class="accordion-button {% if not loop.first %}collapsed{% endif %}"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#taxon-featured-items-translations-collapse-{{ localeCode }}"
+                                    aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+                                    aria-controls="taxon-featured-items-translations-collapse-{{ localeCode }}"
+                                >
+                                    {{ localeCode|sylius_locale_name }}
+                                </button>
+                            </h2>
+                            <div
+                                id="taxon-featured-items-translations-collapse-{{ localeCode }}"
+                                class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                                aria-labelledby="taxon-featured-items-translations-heading-{{ localeCode }}"
+                                data-bs-parent="#taxon-featured-items-translations"
+                            >
+                                <div class="accordion-body">
+                                    {{ form_row(translationForm.featuredProductsTitle) }}
+                                    {{ form_row(translationForm.featuredProductsDescription) }}
+                                    {{ form_row(translationForm.featuredChildrenTitle) }}
+                                    {{ form_row(translationForm.featuredChildrenDescription) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

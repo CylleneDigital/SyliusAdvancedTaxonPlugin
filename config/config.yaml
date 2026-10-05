@@ -1,0 +1,24 @@
+imports:
+    - { resource: "twig_hooks/**/*.yaml" }
+
+sylius_taxonomy:
+    resources:
+        taxon:
+            classes:
+                model: CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\Taxon
+                interface: Sylius\Component\Core\Model\TaxonInterface
+                controller: Sylius\Bundle\ResourceBundle\Controller\ResourceController
+                repository: Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository
+
+sylius_channel:
+    resources:
+        channel:
+            classes:
+                model: CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\Channel
+
+sylius_core:
+    resources:
+        taxon_image:
+            classes:
+                model: CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\TaxonImage
+                interface: Sylius\Component\Core\Model\TaxonImageInterface

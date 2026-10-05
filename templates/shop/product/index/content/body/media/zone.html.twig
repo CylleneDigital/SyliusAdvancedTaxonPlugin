@@ -1,0 +1,19 @@
+{% set zoneMedia = taxon.images|filter(image => image.type == zone and image.path) %}
+
+{% set zoneMedia = zoneMedia|sort((left, right) => left.position <=> right.position) %}
+{% if zoneMedia|length > 0 %}
+    {% if displayMode == 'random' %}
+        {% set zoneMedia = zoneMedia|shuffle %}
+    {% endif %}
+
+    <div class="d-flex flex-column gap-3">
+        {% for media in zoneMedia %}
+            {% set mediaUrl = media.path starts with 'http://' or media.path starts with 'https://' ? media.path : asset('media/image/' ~ media.path) %}
+            {% set translatedTitle = media.titleForLocale(app.request.locale|default(null)) %}
+            {% set translatedDescription = media.descriptionForLocale(app.request.locale|default(null)) %}
+            <div class="my-2">
+                <img src="{{ mediaUrl }}" title="{{ translatedTitle ?? taxon.name }}" alt="{{ translatedDescription ?? taxon.name }}" class="w-100" loading="lazy">
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

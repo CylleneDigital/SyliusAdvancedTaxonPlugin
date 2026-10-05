@@ -1,0 +1,22 @@
+{% set taxon = advanced_taxon_taxon_from_request() %}
+
+{% if taxon is null or (not taxon.isUniverse and not taxon.includeChildrenProducts and not taxon.advancedFiltersEnabled) %}
+    {% set resources = hookable_metadata.context.resources %}
+    {% set canUseNativePagination = true %}
+
+    {% if taxon is not null %}
+        {% set directProducts = resources.data|filter(product =>
+            (product.mainTaxon is defined and product.mainTaxon is not null and product.mainTaxon.id == taxon.id)
+            or
+            ((product.productTaxons is defined)
+                and ((product.productTaxons|filter(productTaxon => productTaxon.taxon is not null and productTaxon.taxon.id == taxon.id))|length > 0))
+        ) %}
+        {% set canUseNativePagination = directProducts|length == resources.data|length %}
+    {% endif %}
+
+    {# Pagination standard — masquée pour les modes de listing non paginés #}
+    {% if canUseNativePagination %}
+        {% import '@SyliusShop/shared/pagination/pagination.html.twig' as pagination %}
+        {{ pagination.simple(resources.data) }}
+    {% endif %}
+{% endif %}

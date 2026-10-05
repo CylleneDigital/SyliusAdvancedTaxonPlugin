@@ -1,0 +1,12 @@
+{% set product = hookable_metadata.context.product %}
+
+<div class="position-relative" {{ sylius_test_html_attribute('product', '%s'|format(product.code)) }}>
+    {% hook 'card' with {_prefixes: hookable_metadata.prefixes|default([])|merge(['sylius_shop.shared.product'])} %}
+
+    <a
+        class="stretched-link"
+        href="{{ path('sylius_shop_product_show', {'slug': product.slug, '_locale': product.translation.locale}) }}"
+        aria-label="{{ product.name }}"
+        {{ sylius_test_html_attribute('product-content') }}
+    ></a>
+</div>

@@ -1,0 +1,93 @@
+{% set form = form is defined ? form : hookable_metadata.context.form %}
+{% form_theme form '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/collection_theme.html.twig' %}
+
+<div data-controller="at-admin-taxon-icon-picker">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">
+                {{ 'cyllene_digital_sylius_advanced_taxon.ui.universe'|trans }}
+            </h2>
+        </div>
+        <div class="card-body">
+            {{ form_row(form.isUniverse) }}
+            {{ form_row(form.universeBackgroundUseTaxonColor) }}
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">
+                {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.slider_univers.title'|trans }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <p class="form-text mb-3 help-text">{{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.slider_univers.description'|trans }}</p>
+
+            <div class="accordion" id="advanced-taxon-media-slider-univers-accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="advanced-taxon-media-slider-univers-heading">
+                        <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#advanced-taxon-media-slider-univers-collapse"
+                            aria-expanded="false"
+                            aria-controls="advanced-taxon-media-slider-univers-collapse"
+                        >
+                            {{ 'cyllene_digital_sylius_advanced_taxon.form.media.zones.slider_univers.items'|trans }}
+                            <div class="accordion-button-toggle">
+                                {{ ux_icon('mdi:chevron-down') }}
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="advanced-taxon-media-slider-univers-collapse" class="accordion-collapse collapse p-2" aria-labelledby="advanced-taxon-media-slider-univers-heading">
+                        <div class="accordion-body px-0 pt-3 pb-0">
+                            {{ form_row(form.mediaSliderUnivers) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">
+                {{ 'sylius.ui.translations'|trans }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="accordion" id="advanced-taxon-universe-translations">
+                {% for localeCode, translationForm in form.featuredItemsTranslations %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="advanced-taxon-universe-translations-heading-{{ localeCode }}">
+                            <button
+                                class="accordion-button {% if not loop.first %}collapsed{% endif %}"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#advanced-taxon-universe-translations-collapse-{{ localeCode }}"
+                                aria-expanded="{{ loop.first ? 'true' : 'false' }}"
+                                aria-controls="advanced-taxon-universe-translations-collapse-{{ localeCode }}"
+                            >
+                                {{ localeCode|sylius_locale_name }}
+                            </button>
+                        </h2>
+                        <div
+                            id="advanced-taxon-universe-translations-collapse-{{ localeCode }}"
+                            class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                            aria-labelledby="advanced-taxon-universe-translations-heading-{{ localeCode }}"
+                            data-bs-parent="#advanced-taxon-universe-translations"
+                        >
+                            <div class="accordion-body">
+                                {{ form_row(translationForm.universePageTitle) }}
+                                {{ form_row(translationForm.universePageDescription) }}
+                                {{ form_row(translationForm.universeFeaturedProductsTitle) }}
+                                {{ form_row(translationForm.universeFeaturedProductsDescription) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

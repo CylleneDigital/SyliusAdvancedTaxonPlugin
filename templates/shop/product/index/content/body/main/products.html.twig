@@ -1,0 +1,93 @@
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
+{% set taxon = advanced_taxon_taxon_from_request() %}
+{% set currentView = app.request.query.get('view', 'grid') %}
+{% set products = [] %}
+{% set advancedFilters = app.request.query.all('advanced') %}
+
+{% set rightZoneMedia = taxon is not null and taxon.images is defined ? taxon.images|filter(image => image.type == 'right' and image.path) : [] %}
+{% set rightZoneMedia = rightZoneMedia|sort((left, right) => left.position <=> right.position) %}
+
+{% set rightMediaMode = taxon is not null ? taxon.mediaDisplayModeProduct|default('products_end') : 'products_end' %}
+
+{% if taxon is not null and taxon.isUniverse %}
+{% else %}
+    {# -------------------------------------------------------
+       Standard and conditional taxons: use taxon-product
+       associations (with optional advanced filters)
+       ------------------------------------------------------- #}
+    {% set resources = hookable_metadata.context.resources %}
+    {% if taxon is not null and taxon.advancedFiltersEnabled %}
+        {% set products = advanced_taxon_filtered_products(taxon, app.request.locale, taxon.includeChildrenProducts, advancedFilters) %}
+    {% elseif taxon is not null and taxon.includeChildrenProducts %}
+        {% set products = advanced_taxon_taxon_products(taxon, app.request.locale, true) %}
+    {% else %}
+        {% set products = resources.data %}
+        {% if taxon is not null %}
+            {% set products = products|filter(product =>
+                (product.mainTaxon is defined and product.mainTaxon is not null and product.mainTaxon.id == taxon.id)
+                or
+                ((product.productTaxons is defined)
+                    and ((product.productTaxons|filter(productTaxon => productTaxon.taxon is not null and productTaxon.taxon.id == taxon.id))|length > 0))
+            ) %}
+
+            {% if products|length == 0 %}
+                {% set products = advanced_taxon_taxon_products(taxon, app.request.locale, false) %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if products|length > 0 %}
+        {% set productItems = [] %}
+        {% for product in products %}
+            {% set productItems = productItems|merge([{ type: 'product', product: product }]) %}
+        {% endfor %}
+
+        {% set mediaItems = [] %}
+        {% for media in rightZoneMedia %}
+            {% set mediaItems = mediaItems|merge([{ type: 'media', media: media }]) %}
+        {% endfor %}
+
+        {% set renderItems = productItems %}
+        {% if mediaItems is not empty %}
+            {% if rightMediaMode == 'products_start' %}
+                {% set renderItems = mediaItems|merge(productItems) %}
+            {% elseif rightMediaMode == 'products_random_middle' and productItems|length > 1 %}
+                {% for mediaItem in mediaItems %}
+                    {% set maxIndex = renderItems|length - 1 %}
+                    {% set insertionIndex = maxIndex > 1 ? random(range(1, maxIndex)) : 1 %}
+                    {% set renderItems = renderItems|slice(0, insertionIndex)|merge([mediaItem])|merge(renderItems|slice(insertionIndex)) %}
+                {% endfor %}
+            {% else %}
+                {% set renderItems = productItems|merge(mediaItems) %}
+            {% endif %}
+        {% endif %}
+
+        {% if currentView == 'list' %}
+            <div {{ sylius_test_html_attribute('products-list') }}>
+                {% for item in renderItems %}
+                    {% if item.type == 'product' %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/list_item.html.twig' with { product: item.product } only %}
+                    {% else %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/media_list_item.html.twig' with { media: item.media, taxon: taxon } only %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="products-grid" {{ sylius_test_html_attribute('products') }}>
+                {% for item in renderItems %}
+                    {% if item.type == 'product' %}
+                        {{ component('sylius_shop:product:card', {
+                        product: item.product,
+                        template: hookable_metadata.configuration.product_template|default('@SyliusShop/product/common/card.html.twig'),
+                        hookableMetadata: hookable_metadata
+                    }) }}
+                    {% else %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/media_card.html.twig' with { media: item.media, taxon: taxon } only %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% else %}
+        {{ messages.info('sylius.ui.no_results_to_display') }}
+    {% endif %}
+{% endif %}

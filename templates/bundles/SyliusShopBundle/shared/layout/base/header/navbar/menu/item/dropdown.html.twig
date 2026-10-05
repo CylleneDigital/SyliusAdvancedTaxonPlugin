@@ -1,0 +1,13 @@
+{# Utilisé uniquement en mode standard (non-méga) via le hook item#dropdown.
+   hookable_metadata.context.taxon est le taxon niveau 1. #}
+{% set taxon = hookable_metadata is defined ? hookable_metadata.context.taxon : null %}
+
+{% if taxon is not null %}
+    {% set level2Taxons = advanced_taxon_ordered_children(taxon) %}
+
+    <div class="dropdown-menu">
+        {% for child_taxon in level2Taxons %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu/item/tree.html.twig' with { taxon: child_taxon } only %}
+        {% endfor %}
+    </div>
+{% endif %}

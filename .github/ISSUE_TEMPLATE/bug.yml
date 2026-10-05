@@ -1,0 +1,67 @@
+name: Report a bug
+description: Unexpected behaviour of the plugin
+labels: ["bug"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              ⚠️ **A security flaw is not reported here.** See [SECURITY.md](https://github.com/CylleneDigital/AdvancedTaxonPlugin/blob/main/SECURITY.md).
+
+              **Never include** a real customer name, order reference, product export or database dump
+              in a public issue.
+    - type: input
+      id: plugin-version
+      attributes:
+          label: Plugin version
+      validations:
+          required: true
+    - type: input
+      id: sylius-version
+      attributes:
+          label: Sylius version
+      validations:
+          required: true
+    - type: input
+      id: php-version
+      attributes:
+          label: PHP version
+      validations:
+          required: true
+    - type: dropdown
+      id: area
+      attributes:
+          label: Area
+          options:
+              - Back office (taxon form, media zones, conditions)
+              - Storefront (taxon page, media zones, filters)
+              - Universe page
+              - Mega menu
+              - Conditional taxons (mass assignment / sync command)
+              - Installation / configuration
+              - I do not know
+      validations:
+          required: true
+    - type: textarea
+      id: expected
+      attributes:
+          label: Expected behaviour
+      validations:
+          required: true
+    - type: textarea
+      id: actual
+      attributes:
+          label: Observed behaviour
+      validations:
+          required: true
+    - type: textarea
+      id: steps
+      attributes:
+          label: Steps to reproduce
+      validations:
+          required: true
+    - type: textarea
+      id: logs
+      attributes:
+          label: Relevant logs
+          description: "Redact every sensitive value before pasting."
+          render: text
