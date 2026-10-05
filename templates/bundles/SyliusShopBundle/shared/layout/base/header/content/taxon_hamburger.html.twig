@@ -1,0 +1,27 @@
+{% if sylius.channel is defined and sylius.channel.hasMegaMenu %}
+{# Mega menu mode: opens the drill-down drawer #}
+<div class="col-auto d-lg-none">
+    <button id="at-mn-burger"
+            class="btn btn-icon btn-transparent px-0"
+            type="button"
+            aria-controls="at-mn-drawer"
+            {{ sylius_test_html_attribute('mobile-menu-button') }}
+            aria-expanded="false"
+            aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.open'|trans }}">
+        {{ ux_icon('tabler:menu-2', { class: 'icon icon-md', 'aria-hidden': 'true' }) }}
+    </button>
+</div>
+{% else %}
+{# Standard mode: opens the Bootstrap offcanvas navbar #}
+<div class="col-auto d-lg-none">
+    <button class="navbar-toggler btn btn-icon btn-transparent px-0"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.mobile_menu.toggle_navigation'|trans }}">
+        {{ ux_icon('tabler:menu-2', { class: 'icon icon-md', 'aria-hidden': 'true' }) }}
+    </button>
+</div>
+{% endif %}

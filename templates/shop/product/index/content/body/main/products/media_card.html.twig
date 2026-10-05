@@ -1,0 +1,25 @@
+{% set mediaUrl = advanced_taxon_media_url(media.path) %}
+{% set mediaTitle = media.titleForLocale(app.request.locale|default(null))|default(taxon.name) %}
+{% set mediaDescription = media.descriptionForLocale(app.request.locale|default(null)) %}
+{% set mediaHref = advanced_taxon_media_href(media.url) %}
+{% set showCardText = media.showCardText ?? true %}
+{% set excerpt = mediaDescription|striptags|trim %}
+
+<div class="card h-100 border-0 position-relative d-flex flex-column" {{ sylius_test_html_attribute('media-product-card', mediaTitle) }}>
+    <div class="d-block overflow-hidden at-media-card-visual {{ showCardText ? '' : 'flex-grow-1 h-100 at-media-card-visual--full' }}">
+        <img src="{{ mediaUrl }}" alt="{{ mediaDescription ?? mediaTitle }}" class="w-100 h-100 object-fit-cover rounded" loading="lazy">
+    </div>
+
+    {% if showCardText %}
+        <div class="card-body">
+            <h3 class="h6 text-break">{{ mediaTitle }}</h3>
+            {% if excerpt is not empty %}
+                <p class="text-muted small mb-0">{{ excerpt|slice(0, 140) }}{% if excerpt|length > 140 %}…{% endif %}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if mediaHref %}
+        <a href="{{ mediaHref }}" class="stretched-link" aria-label="{{ mediaTitle }}"></a>
+    {% endif %}
+</div>

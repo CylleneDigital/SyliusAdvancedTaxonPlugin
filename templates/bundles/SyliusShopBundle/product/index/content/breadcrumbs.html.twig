@@ -1,0 +1,46 @@
+{% set items = [{ path: path('sylius_shop_homepage'), label: 'sylius.ui.home'|trans }] %}
+{% set ancestors = taxon.ancestors|reverse %}
+
+<ol class="breadcrumb" aria-label="breadcrumbs">
+    {% for item in items %}
+        <li class="breadcrumb-item fw-normal">
+            <a class="link-reset" href="{{ item.path }}">{{ item.label }}</a>
+        </li>
+    {% endfor %}
+
+    {% for ancestor in ancestors %}
+        {% set showCustomization = ancestor.showCustomizationInBreadcrumbs %}
+        <li class="breadcrumb-item fw-normal">
+            {% if ancestor.isRoot() or not ancestor.enabled %}
+                <span class="text-body-tertiary text-break">
+                    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                        taxon: ancestor,
+                        iconSize: 14,
+                        wrapperClass: 'd-inline-flex align-items-center gap-1',
+                        showCustomization: showCustomization
+                    } only %}
+                </span>
+            {% else %}
+                <a class="link-reset" href="{{ path('sylius_shop_product_index', {'slug': ancestor.slug, '_locale': ancestor.translation.locale}) }}">
+                    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                        taxon: ancestor,
+                        iconSize: 14,
+                        wrapperClass: 'd-inline-flex align-items-center gap-1',
+                        showCustomization: showCustomization
+                    } only %}
+                </a>
+            {% endif %}
+        </li>
+    {% endfor %}
+
+    <li class="breadcrumb-item fw-normal active">
+        <span class="text-body-tertiary text-break">
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+                taxon: taxon,
+                iconSize: 14,
+                wrapperClass: 'd-inline-flex align-items-center gap-1',
+                showCustomization: taxon.showCustomizationInBreadcrumbs
+            } only %}
+        </span>
+    </li>
+</ol>

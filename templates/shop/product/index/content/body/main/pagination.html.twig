@@ -1,0 +1,6 @@
+{% set taxon = advanced_taxon_taxon_from_request() %}
+
+{% if taxon is null or not taxon.isUniverse %}
+    {% import '@SyliusShop/shared/pagination/pagination.html.twig' as pagination %}
+    {{ pagination.simple(hookable_metadata.context.resources.data) }}
+{% endif %}

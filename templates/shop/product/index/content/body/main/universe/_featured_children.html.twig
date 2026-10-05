@@ -1,0 +1,43 @@
+{% set hasFeaturedChildProducts = advanced_taxon_has_featured_children_products(children) %}
+
+{% if hasFeaturedChildProducts and (universeData.universeFeaturedTitle is not empty or universeData.universeFeaturedDescription is not empty) %}
+    <div class="at-universe-featured-intro-card mb-4" style="--at-universe-color: {{ universeData.universeAccentColor }};">
+        {% if universeData.universeFeaturedTitle is not empty %}
+            <h2 class="h3 mb-2">{{ universeData.universeFeaturedTitle }}</h2>
+        {% endif %}
+        {% if universeData.universeFeaturedDescription is not empty %}
+            <p class="mb-0">{{ universeData.universeFeaturedDescription }}</p>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if hasFeaturedChildProducts %}
+    <section class="at-universe-children-featured d-flex flex-column gap-5">
+        {% for child in children %}
+            {% set childFeaturedProducts = child.isFeaturedProductsActive|default(false) ? advanced_taxon_visible_products(child.featuredProducts|default([])) : [] %}
+            {% set featuredProductsTitle = child.featuredProductsTitle is not empty ? child.featuredProductsTitle : child.name %}
+            {% set featuredProductsDescription = child.featuredProductsDescription is not empty ? child.featuredProductsDescription : null %}
+
+            {% if childFeaturedProducts|length > 0 %}
+                <section class="at-universe-child-block" {{ sylius_test_html_attribute('universe-child-block', child.name) }}>
+                    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/advanced_taxon_featured_products/slider.html.twig' with {
+                        featuredProducts: childFeaturedProducts,
+                        headerTitle: featuredProductsTitle,
+                        headerDescription: featuredProductsDescription,
+                    } only %}
+
+                    <div class="mt-2 d-flex justify-content-center">
+                        <a
+                            class="btn at-universe-child-cta"
+                            style="--at-universe-btn-color: {{ universeData.universeButtonColor }};"
+                            href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}"
+                            {{ sylius_test_html_attribute('universe-child-link', child.name) }}
+                        >
+                            {{ 'cyllene_digital_sylius_advanced_taxon.shop.mega_menu.view_category'|trans }}
+                        </a>
+                    </div>
+                </section>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endif %}

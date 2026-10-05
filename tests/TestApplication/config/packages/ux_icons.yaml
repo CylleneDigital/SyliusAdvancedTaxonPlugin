@@ -1,0 +1,5 @@
+# The tests never fetch icons from iconify.design: only the local icon sets are read.
+when@test:
+    ux_icons:
+        iconify:
+            enabled: false

@@ -1,0 +1,127 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.taxon.create.content.sections#right':
+            form:
+                component: 'sylius_admin:taxon:form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form_with_tabs.html.twig'
+                priority: 0
+
+        'sylius_admin.taxon.update.content.sections#right':
+            form:
+                component: 'sylius_admin:taxon:form'
+                props:
+                    form: '@=_context.form'
+                    resource: '@=_context.resource'
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form_with_tabs.html.twig'
+                configuration:
+                    method: 'PUT'
+                priority: 0
+
+        'sylius_admin.taxon.create.content.sections#left':
+            side_navigation:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
+                priority: 200
+
+        'sylius_admin.taxon.update.content.sections#left':
+            side_navigation:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
+                priority: 200
+
+        'sylius_admin.taxon.create.content.sections.form': &taxon_form_sections
+            general:
+                enabled: false
+            translations:
+                enabled: false
+            images:
+                enabled: false
+            taxon_tab_general:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/general.html.twig'
+                configuration:
+                    active: true
+                priority: 500
+            taxon_tab_display:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/display.html.twig'
+                priority: 400
+            taxon_tab_featured_items:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/featured_items.html.twig'
+                priority: 300
+            taxon_tab_advanced_medias:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/advanced_medias.html.twig'
+                priority: 200
+            taxon_tab_virtual_conditions:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/virtual_conditions.html.twig'
+                priority: 100
+            taxon_tab_universe:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/tabs/universe.html.twig'
+                priority: 90
+
+        'sylius_admin.taxon.update.content.sections.form': *taxon_form_sections
+
+        # Plugin fields added to the Sylius General card of the taxon form.
+        'sylius_admin.taxon.create.content.sections.form.general': &taxon_form_general
+            advanced_filters_enabled:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/field.html.twig'
+                configuration:
+                    field: advancedFiltersEnabled
+                priority: -100
+            include_children_products:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/field.html.twig'
+                configuration:
+                    field: includeChildrenProducts
+                priority: -200
+
+        'sylius_admin.taxon.update.content.sections.form.general': *taxon_form_general
+
+        'sylius_admin.taxon.create.content.sections.side_navigation': &taxon_side_navigation
+            general:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: general
+                    label: sylius.ui.general
+                    active: true
+                priority: 500
+            display:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: display
+                    label: cyllene_digital_sylius_advanced_taxon.ui.advanced_customizations
+                priority: 400
+            featured_items:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: featured-items
+                    label: cyllene_digital_sylius_advanced_taxon.ui.featured_elements
+                priority: 300
+            advanced_medias:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: advanced-medias
+                    label: cyllene_digital_sylius_advanced_taxon.ui.advanced_medias
+                priority: 200
+            virtual_conditions:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: virtual-conditions
+                    label: cyllene_digital_sylius_advanced_taxon.ui.facet_section_title
+                priority: 100
+            universe:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation/tab.html.twig'
+                configuration:
+                    tab: universe
+                    label: cyllene_digital_sylius_advanced_taxon.ui.universe
+                priority: 90
+
+        'sylius_admin.taxon.update.content.sections.side_navigation': *taxon_side_navigation
+
+        'sylius_admin.channel.create.content.form.sections.look_and_feel':
+            has_mega_menu:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/channel/form/sections/look_and_feel/has_mega_menu.html.twig'
+                priority: 150
+
+        'sylius_admin.channel.update.content.form.sections.look_and_feel':
+            has_mega_menu:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/channel/form/sections/look_and_feel/has_mega_menu.html.twig'
+                priority: 150

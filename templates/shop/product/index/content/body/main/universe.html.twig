@@ -1,0 +1,26 @@
+{% do advanced_taxon_preload_universe(taxon) %}
+{% set universeData = advanced_taxon_universe_data(taxon) %}
+{% set sliderUniverseMedia = advanced_taxon_universe_slider_media(taxon) %}
+{% set bottomMedia = advanced_taxon_universe_bottom_media(taxon) %}
+{% set children = advanced_taxon_ordered_children(taxon) %}
+
+<div
+    {{ sylius_test_html_attribute('universe-page') }}
+    class="at-universe-page d-flex flex-column gap-4{% if universeData.useTaxonColorBackground %} at-universe-page--with-taxon-color{% endif %}"
+    {% if universeData.useTaxonColorBackground %}style="--at-universe-bg-color: {{ taxon.color }};"{% endif %}
+>
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_hero_slider.html.twig' %}
+
+    <section class="at-universe-page-content">
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_intro_card.html.twig' %}
+
+        {% if children is not empty %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_children_nav.html.twig' %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_featured_children.html.twig' %}
+        {% else %}
+            <p class="text-muted mb-0">{{ 'sylius.ui.no_results_to_display'|trans }}</p>
+        {% endif %}
+    </section>
+
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe/_bottom_media.html.twig' %}
+</div>

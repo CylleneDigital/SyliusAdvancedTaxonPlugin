@@ -1,0 +1,16 @@
+{% set tab = hookable_metadata.configuration.tab %}
+{% set active = hookable_metadata.configuration.active|default(false) %}
+
+<button
+    type="button"
+    class="list-group-item list-group-item-action{% if active %} active{% endif %}"
+    id="taxon-tab-{{ tab }}-button"
+    data-bs-toggle="tab"
+    data-bs-target="#taxon-tab-{{ tab }}"
+    role="tab"
+    aria-controls="taxon-tab-{{ tab }}"
+    aria-selected="{{ active ? 'true' : 'false' }}"
+    {{ sylius_test_html_attribute('side-navigation-tab', tab) }}
+>
+    {{ hookable_metadata.configuration.label|trans }}
+</button>

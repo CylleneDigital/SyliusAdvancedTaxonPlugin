@@ -1,0 +1,132 @@
+{#
+    Search input of a facet list. It has no name attribute on purpose: it must never be submitted
+    with the filter form, it only narrows down the rendered values.
+#}
+{% macro facet_search(label) %}
+    <input
+        type="search"
+        class="form-control form-control-sm at-facet-search mb-2"
+        placeholder="{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.search'|trans }}"
+        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.search_in'|trans({'%name%': label}) }}"
+        autocomplete="off"
+        data-at-facet-search-target="input"
+        data-action="input->at-facet-search#filter search->at-facet-search#filter"
+    >
+{% endmacro %}
+
+{# A group of checkboxes: values are { label, value, count, active }. #}
+{% macro facet_group(label, name, values) %}
+    <fieldset class="border rounded p-3" data-controller="at-facet-search" {{ sylius_test_html_attribute('facet', label) }}>
+        <legend class="fs-6 fw-semibold mb-2 float-none w-auto p-0">{{ label }}</legend>
+        {{ _self.facet_search(label) }}
+        <div class="d-flex flex-column gap-1 at-facet-values">
+            {% for facetValue in values %}
+                <label class="form-check d-flex justify-content-between gap-2 align-items-center mb-0" data-at-facet-search-target="item" {{ sylius_test_html_attribute('facet-value', facetValue.label) }}>
+                    <span>
+                        <input type="checkbox" class="form-check-input me-2" name="{{ name }}" value="{{ facetValue.value }}" {% if facetValue.active %}checked{% endif %}>
+                        <span class="form-check-label" data-at-facet-search-target="label">{{ facetValue.label }}</span>
+                    </span>
+                    <span class="badge bg-light text-dark" {{ sylius_test_html_attribute('facet-value-count') }}>{{ facetValue.count }}</span>
+                </label>
+            {% endfor %}
+        </div>
+        <p class="small text-muted mb-0 mt-2 d-none" data-at-facet-search-target="empty">
+            {{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.no_result'|trans }}
+        </p>
+    </fieldset>
+{% endmacro %}
+
+{% set taxon = advanced_taxon_taxon_from_request() %}
+
+{% if taxon is null or taxon.isUniverse %}
+    {# Universe pages have no product list to filter. #}
+{% elseif not taxon.advancedFiltersEnabled %}
+    {{ include('@SyliusShop/product/index/content/body/sidebar/taxonomy.html.twig', { taxon }) }}
+{% else %}
+    {% set filtersData = advanced_taxon_available_filters(taxon, app.request.locale, taxon.includeChildrenProducts, app.request.query.all('advanced')) %}
+    {% set selected = filtersData.selected %}
+    {% set facets = filtersData.facets %}
+    {% set listingPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})) %}
+
+    <div data-controller="at-advanced-filters" data-at-advanced-filters-mode-value="panel">
+        <div class="at-advanced-filters" id="at-advanced-filters-panel" {{ sylius_test_html_attribute('advanced-filters-sidebar') }}>
+            <div class="at-advanced-filters-mobile-header">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-action="click->at-advanced-filters#close"
+                    aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.ui.close'|trans }}"
+                >
+                    {{ ux_icon('tabler:x', { class: 'icon m-0', 'aria-hidden': 'true' }) }}
+                </button>
+            </div>
+
+            <form method="get" action="{{ listingPath }}" class="d-flex flex-column gap-3">
+                {# The grid parameters the filters must keep. #}
+                {% if app.request.query.get('view') %}
+                    <input type="hidden" name="view" value="{{ app.request.query.get('view') }}">
+                {% endif %}
+                {% set gridSearch = app.request.query.all('criteria').search.value|default('') %}
+                {% if gridSearch is not empty %}
+                    <input type="hidden" name="criteria[search][value]" value="{{ gridSearch }}">
+                {% endif %}
+                {% if app.request.query.get('limit') %}
+                    <input type="hidden" name="limit" value="{{ app.request.query.get('limit') }}">
+                {% endif %}
+                {% for sortingName, sortingValue in app.request.query.all('sorting') %}
+                    <input type="hidden" name="sorting[{{ sortingName }}]" value="{{ sortingValue }}">
+                {% endfor %}
+
+                <div>
+                    <h2 class="h6 mb-2">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.title'|trans }}</h2>
+                    <p class="text-muted small mb-0">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.help'|trans }}</p>
+                </div>
+
+                {% if facets.price.min is not null or facets.price.max is not null %}
+                    <fieldset class="border rounded p-3">
+                        <legend class="fs-6 fw-semibold mb-2 float-none w-auto p-0">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.price'|trans }}</legend>
+                        <div class="row g-2">
+                            {% for bound in ['min', 'max'] %}
+                                <div class="col-6">
+                                    <label class="form-label small mb-1" for="at-advanced-filters-price-{{ bound }}">{{ ('cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.' ~ bound)|trans }}</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        id="at-advanced-filters-price-{{ bound }}"
+                                        name="advanced[price][{{ bound }}]"
+                                        value="{{ selected.price[bound] is not null ? (selected.price[bound] / 100) }}"
+                                        placeholder="{{ facets.price[bound] is not null ? facets.price[bound]|number_format(2, '.', ' ') }}"
+                                    >
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                {% endif %}
+
+                {% if facets.taxons is not empty %}
+                    {{ _self.facet_group(
+                        'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.taxons'|trans,
+                        'advanced[taxons][]',
+                        facets.taxons|map(taxonFacet => { label: taxonFacet.label, value: taxonFacet.id, count: taxonFacet.count, active: taxonFacet.active }),
+                    ) }}
+                {% endif %}
+
+                {% for attributeFacet in facets.attributes %}
+                    {{ _self.facet_group(attributeFacet.label, 'advanced[attributes][' ~ attributeFacet.code ~ '][]', attributeFacet.values) }}
+                {% endfor %}
+
+                {% for optionFacet in facets.options %}
+                    {{ _self.facet_group(optionFacet.label, 'advanced[options][' ~ optionFacet.code ~ '][]', optionFacet.values) }}
+                {% endfor %}
+
+                <div class="d-flex gap-1">
+                    <button type="submit" class="btn btn-md w-100 btn-primary">{{ 'sylius.ui.filter'|trans }}</button>
+                    <a href="{{ listingPath }}" class="btn btn-md w-100 btn-outline-secondary">{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.reset'|trans }}</a>
+                </div>
+            </form>
+        </div>
+        <div class="at-advanced-filters-backdrop" data-action="click->at-advanced-filters#close"></div>
+    </div>
+{% endif %}

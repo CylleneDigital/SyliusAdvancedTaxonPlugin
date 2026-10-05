@@ -1,0 +1,14 @@
+cyllene_digital_sylius_advanced_taxon:
+    facet_condition:
+        invalid_type: 'This condition type is not supported.'
+        invalid_operator: 'This operator cannot be used with this condition type.'
+        reference_required: 'Select the attribute, option or taxon this condition applies to.'
+        reference_not_found: 'The attribute, option or taxon "%code%" does not exist, or cannot be used in a condition.'
+        self_reference: 'A taxon cannot be the reference of its own condition.'
+        value_required: 'Enter the value this condition compares to.'
+        too_long: 'This value is too long: %limit% characters at most.'
+    product:
+        main_taxon_universe: 'The universe "%taxon%" cannot be the main taxon of a product: a universe page does not list products.'
+    icon:
+        invalid_file: 'The pictogram must be a PNG, JPEG, WebP or GIF image of 2 MB at most.'
+        not_found: 'The icon "%icon%" cannot be found in the icon libraries of the shop.'

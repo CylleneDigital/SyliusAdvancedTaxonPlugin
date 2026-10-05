@@ -1,0 +1,411 @@
+// =============================================================================
+// MEGA MENU — desktop hover panels + mobile drill-down drawer
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// Desktop mega menu
+// -----------------------------------------------------------------------------
+
+// Wrapper providing the positioning context for absolute panels.
+.at-mn {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #dee2e6;
+}
+
+// Horizontal navigation bar.
+.at-mn-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+}
+
+// Each nav item — position: static so that panels are positioned relative to
+// .at-mn rather than to the individual item.
+.at-mn-item {
+    position: static;
+    display: flex;
+    align-items: stretch;
+}
+
+.at-mn-link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.7rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease;
+}
+
+.at-mn-item:hover > .at-mn-link,
+.at-mn-item:focus-within > .at-mn-link {
+    border-bottom-color: currentColor;
+}
+
+// Panel — full-viewport-width using the 100vw trick.
+.at-mn-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    z-index: 1050;
+    background: #ffffff;
+    border-top: 1px solid #e9ecef;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.at-mn-item:hover > .at-mn-panel,
+.at-mn-item:focus-within > .at-mn-panel {
+    display: block;
+}
+
+// Centred inner container.
+.at-mn-panel-inner {
+    display: flex;
+    align-items: flex-start;
+    max-width: 100%;
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    gap: 1.5rem;
+}
+
+// "Featured" column on the left.
+.at-mn-featured {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 0.5rem;
+    padding: 1rem 1.125rem;
+    background: #6c757d;
+    color: #ffffff;
+}
+
+.at-mn-featured-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.75rem;
+    opacity: 0.75;
+}
+
+.at-mn-featured-link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.3rem 0;
+    font-size: 0.825rem;
+    line-height: 1.3;
+
+    &:hover { opacity: 0.8; }
+}
+
+// Regular columns.
+.at-mn-cols {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    max-width: 850px;
+    gap: 0;
+    align-items: flex-start;
+    min-width: 0;
+    row-gap: 1rem;
+}
+
+.at-mn-col {
+    flex: 0 0 calc((100% - 3 * 1.25rem) / 4);
+    max-width: calc((100% - 3 * 1.25rem) / 4);
+    min-width: 0;
+    padding: 0 1.25rem;
+    box-sizing: border-box;
+
+    & + & {
+        border-left: 1px solid #e9ecef;
+    }
+}
+
+.at-mn-col-title {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+
+    &:hover { text-decoration: underline; }
+}
+
+.at-mn-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.at-mn-sub-link {
+    font-size: 0.8rem;
+    color: #555;
+    text-decoration: none;
+    padding: 0.1rem 0;
+    line-height: 1.35;
+
+    &:hover { color: #111; }
+}
+
+.at-mn-see-all {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: underline;
+    color: inherit;
+}
+
+.at-mn-media-wrap {
+    flex: 0 0 320px;
+    width: 320px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    min-width: 320px;
+    min-height: 220px;
+}
+
+// The panel previews the media of the hovered link: empty, it would read as a broken image.
+.at-mn-media-wrap:has(> .at-mn-media[hidden]) {
+    background: transparent;
+}
+
+.at-mn-media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0.75rem;
+}
+
+// On mobile: hide the desktop list; navigation goes through the drawer.
+@media (max-width: 991.98px) {
+    .at-mn-list { display: none !important; }
+    .at-mn { border-bottom: 0; }
+}
+
+
+// -----------------------------------------------------------------------------
+// Mobile drawer — drill-down navigation
+// -----------------------------------------------------------------------------
+
+// Overlay container (full-screen, fixed).
+.at-mn-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    pointer-events: none;
+    visibility: hidden;
+
+    &.at-mn-drawer--open {
+        pointer-events: auto;
+        visibility: visible;
+    }
+}
+
+// Semi-transparent backdrop.
+.at-mn-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.28s ease;
+    cursor: pointer;
+
+    .at-mn-drawer--open & { opacity: 1; }
+}
+
+// White panel (slides in from the left).
+.at-mn-drawer-panel {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+
+    .at-mn-drawer--open & { transform: translateX(0); }
+}
+
+// Individual navigation screens stacked inside the panel.
+.at-mn-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    will-change: transform;
+
+    &[data-mn-state="active"] { transform: translateX(0);   pointer-events: auto;  }
+    &[data-mn-state="left"]   { transform: translateX(-30%); pointer-events: none;  }
+    &[data-mn-state="right"]  { transform: translateX(100%); pointer-events: none;  }
+}
+
+// Screen header bar.
+.at-mn-screen-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+    min-height: 3rem;
+}
+
+.at-mn-head-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0;
+    line-height: 1;
+}
+
+.at-mn-head-close {
+    display: inline-flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: inherit;
+    line-height: 1;
+}
+
+// Title block (parent name + "see all" link).
+.at-mn-screen-title-wrap {
+    padding: 1rem 1rem 0.75rem;
+    flex-shrink: 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.at-mn-screen-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 0.375rem;
+    line-height: 1.2;
+}
+
+.at-mn-screen-see-all {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--bs-primary, #c0392b);
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+}
+
+// List of navigation items.
+.at-mn-screen-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+
+    > li { border-bottom: 1px solid #f0f0f0; }
+}
+
+// Drill-down button (has children).
+.at-mn-screen-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: inherit;
+    text-align: left;
+    font-family: inherit;
+}
+
+// Leaf link (no children).
+.at-mn-screen-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1rem;
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.9375rem;
+}
+
+.at-mn-screen-btn:hover,
+.at-mn-screen-link:hover { background: #f8f9fa; }
+
+// Scroll lock applied to <body> when the drawer is open.
+body.at-mn-no-scroll { overflow: hidden; }
+
+
+// -----------------------------------------------------------------------------
+// Standard (non-mega) menu — minimal overrides for the native Sylius nav
+// -----------------------------------------------------------------------------
+
+.advanced-taxon-header-link {
+    transition: opacity 0.2s ease;
+
+    &:hover { opacity: 0.82; }
+}
+
+.advanced-taxon-dropdown-submenu {
+    position: relative;
+}
+
+@media (min-width: 992px) {
+    .navbar-nav > .nav-item.dropdown:hover > .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}
+
+.advanced-taxon-submenu-indicator { color: inherit; }
+
+
+.advanced-taxon-dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -0.25rem;
+}
+
+.advanced-taxon-dropdown-submenu:hover > .dropdown-menu,
+.advanced-taxon-dropdown-submenu:focus-within > .dropdown-menu {
+    display: block;
+}

@@ -1,0 +1,7 @@
+{% set taxon = hookable_metadata.context.taxon|default(advanced_taxon_taxon_from_request()) %}
+
+{% if taxon is null or not taxon.isUniverse %}
+    <div id="at-advanced-filters-sidebar-column" class="col-12 col-lg-3 order-lg-1">
+        {% hook 'sidebar' %}
+    </div>
+{% endif %}

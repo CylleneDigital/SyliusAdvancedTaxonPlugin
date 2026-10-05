@@ -1,0 +1,210 @@
+cyllene_digital_sylius_advanced_taxon:
+    shop:
+        advanced_filters:
+            title: Filtres avancés
+            help: Affinez la liste avec plusieurs valeurs par filtre.
+            all_filters: Tous les filtres
+            price: Prix
+            min: Min
+            max: Max
+            taxons: Sous-taxons
+            reset: Réinitialiser
+            search: Rechercher
+            search_in: 'Rechercher dans %name%'
+            no_result: Aucune valeur correspondante
+            clear_search: Effacer la recherche
+        products:
+            view_mode:
+                aria_label: Mode d'affichage des produits
+                grid: Grille
+                list: Liste
+            view_product: Voir
+        featured_children:
+            title: Catégories phares
+            description: Découvrez ici les catégories phares de ce taxon, mises en avant pour vous guider plus rapidement vers les univers les plus importants.
+        mega_menu:
+            aria_label: Navigation principale
+            featured_categories: Catégories phares
+            view_category: Voir la catégorie
+        mobile_menu:
+            toggle_navigation: Afficher la navigation
+            open: Ouvrir le menu
+            back: Retour
+            see_all: Voir tous les produits
+            aria_label: Menu de navigation
+        featured_products:
+            title: Nos produits mis en avant
+            description: Retrouvez ici nos produits mis en avant, sélectionnés pour vous offrir une expérience d'achat exceptionnelle. Ces produits sont soigneusement choisis pour leur qualité, leur popularité et leur pertinence par rapport à vos besoins. Profitez de cette sélection exclusive et découvrez des articles qui se démarquent par leur excellence.
+            slider:
+                desktop_previous: Voir les produits précédents
+                desktop_next: Voir les produits suivants
+                mobile_scroll_hint: Faites glisser horizontalement pour découvrir plus de produits
+        slider:
+            previous: Diapositive précédente
+            next: Diapositive suivante
+    ui:
+        close: Fermer
+        advanced_customizations: Personnalisations avancées
+        featured_elements: Éléments mis en avant
+        advanced_medias: Médias avancés
+        facet_section_title: Conditions d'assignation de masse
+        facet_section_description: Définissez des conditions pour rattacher automatiquement les produits correspondants à ce taxon.
+        facet_conditions_title: Conditions de filtrage
+        facet_conditions_help: Toutes les conditions sont cumulatives (ET)
+        facet_mass_assignment_warning_title: Attention
+        facet_mass_assignment_warning: Les produits correspondant à ces conditions sont rattachés à ce taxon à son enregistrement, puis tenus à jour à chaque modification des conditions. Pour suivre ensuite le catalogue (nouveaux produits, attributs ou stock modifiés), la commande de synchronisation doit être planifiée.
+        universe: Mode univers
+    form:
+        choose_icon: Choisir une icône
+        color: Couleur
+        has_color: Utiliser une couleur
+        has_color_help: La couleur accompagne l'icône là où les options d'affichage ci-dessous le permettent.
+        icon: Icône
+        icon_help: Un nom d'icône Tabler comme « shirt », ou « préfixe:nom » pour une autre bibliothèque. Le bouton ouvre le sélecteur d'icônes.
+        icon_type: Type de visuel
+        icon_type_help: Change seulement le champ ci-dessous. C'est l'icône ou le pictogramme enregistré sur le taxon qui est affiché.
+        icon_type_choices:
+            icon: Icône
+            image: Image
+        icon_file: Fichier du pictogramme
+        current_pictogram: Pictogramme actuel
+        icon_file_help: PNG, JPEG, WebP ou GIF, 2 Mo au plus. Il remplace le pictogramme précédent.
+        advanced_filters_enabled: Activer les filtres avancés sur la boutique
+        advanced_filters_enabled_help: Si activé, la page du taxon affiche le bouton « Tous les filtres » et les filtres dans la colonne de gauche.
+        is_universe: Ce taxon est un univers
+        is_universe_help: Si activé, la page du taxon en boutique utilise une mise en page pleine largeur dédiée aux univers, sans colonne de gauche.
+        universe_background_use_taxon_color: Utiliser la couleur du taxon comme fond de la page univers
+        universe_background_use_taxon_color_help: Si activé, la couleur du taxon est appliquée en fond décoratif sur la page univers.
+        universe_title_background_enabled: Afficher un fond coloré derrière le titre de la page univers
+        universe_title_background_enabled_help: Si activé et que le taxon a une couleur, cette couleur est utilisée en fond du titre de la page univers.
+        show_customization_in_menu: Afficher la personnalisation couleur et icône dans le menu principal et le méga menu
+        show_customization_in_menu_help: Si désactivé, le taxon sera affiché avec son nom uniquement dans les menus.
+        show_customization_on_taxon_page: Afficher la personnalisation couleur et icône sur la page taxon
+        show_customization_on_taxon_page_help: Si désactivé, la page taxon affichera les libellés sans couleur ni icône.
+        show_customization_in_breadcrumbs: Afficher la personnalisation couleur et icône dans le fil d'Ariane
+        show_customization_in_breadcrumbs_help: Si désactivé, le fil d'Ariane affichera les libellés sans couleur ni icône.
+        conditional: Taxon conditionnel (assignation de masse)
+        conditional_auto_help: Ce statut est calculé automatiquement à partir des conditions ci-dessous.
+        include_children_products: Inclure les produits des taxons enfants
+        include_children_products_description: Si activé, la liste des produits du taxon inclut aussi les produits rattachés à ses taxons enfants.
+        featured_children: Sous-taxons mis en avant
+        featured_children_description: Ces taxons seront mis en avant dans le menu principal ainsi que sur les pages de taxons.
+        featured_products: Produits mis en avant
+        featured_products_description: Ces produits apparaîtront en haut des pages de taxons, différemment des autres produits, et pourront être utilisés par les thèmes pour des affichages personnalisés.
+        is_featured_products_active: Activer l'affichage des produits mis en avant
+        is_featured_products_active_description: Permet d'afficher ou non les produits mis en avant de ce taxon sur la boutique.
+        featured_products_position: Position des produits mis en avant
+        featured_products_position_description: Choisissez si les produits mis en avant apparaissent avant ou après les filtres natifs Sylius sur la page taxon.
+        featured_products_position_choices:
+            before_filters: Avant les filtres
+            after_filters: Après les filtres
+        featured_items:
+            featured_products_title: Titre du bloc produits mis en avant
+            featured_products_title_help: 'Vide : « Nos produits mis en avant » ; sur la page univers parente, le nom du taxon.'
+            featured_products_description: Description du bloc produits mis en avant
+            featured_children_title: Titre du bloc taxons mis en avant
+            featured_children_title_help: 'Vide : « Catégories phares ».'
+            featured_children_description: Description du bloc taxons mis en avant
+            universe_page_title: Titre page univers
+            universe_page_title_help: 'Vide : le nom du taxon.'
+            universe_page_description: Description page univers
+            universe_featured_products_title: Titre produits mis en avant (univers)
+            universe_featured_products_title_help: Affiché seulement s'il est rempli.
+            universe_featured_products_description: Description produits mis en avant (univers)
+        is_slider: Afficher les produits mis en avant sous forme de carrousel
+        is_slider_description: Si activé, les produits mis en avant sont affichés dans un carrousel horizontal au lieu d'une grille.
+        has_mega_menu: Activer le méga menu
+        has_mega_menu_description: Si activé pour ce canal, le menu principal de la boutique passe en méga menu, avec les taxons de niveaux 2 et 3 en colonnes.
+        facet:
+            condition_type: Type de condition
+            operator: Opérateur
+            reference: Référence (attr / opt / etc.)
+            value: Valeur
+            value_placeholder: Saisir une valeur…
+            add_condition: Ajouter une condition
+            remove_condition: Supprimer cette condition
+            preview_conditions: Tester les conditions
+            preview_modal_title: Aperçu des produits correspondants
+            preview_waiting: Lancez le test pour calculer le nombre de produits.
+            preview_loading: Calcul en cours…
+            preview_matching: '%count% produit(s) correspondent aux critères.'
+            preview_unavailable: Aperçu indisponible.
+            preview_error: "Impossible de calculer l'aperçu pour le moment."
+            preview_empty: Aucun produit trouvé.
+            preview_more: '… et %count% autre(s) produit(s).'
+            preview_view: Voir
+            preview_unnamed: (Sans nom)
+        media:
+            display_mode_help: 'Empilé : dans l''ordre des positions. Aléatoire : un nouvel ordre à chaque affichage de la page.'
+            slider_display_mode_help: 'Empilé : dans l''ordre des positions. Aléatoire : un nouvel ordre à chaque affichage de la page. Carrousel : un média à la fois, dans l''ordre des positions, qui change toutes les 5 secondes.'
+            spotlight_display_mode_help: 'Empilé : le média de plus petite position. Aléatoire : un média tiré au sort à chaque affichage de la page.'
+            add: Ajouter un média
+            remove: Supprimer
+            title: Titre
+            title_help: 'Titre de l''image (affiché au survol) et texte de la carte ; la description sert de texte alternatif. Vide : le nom du taxon.'
+            description: Description
+            path: Chemin du média
+            position: Position
+            position_help: Le plus petit en premier.
+            url: URL de destination
+            url_help: 'https://…, http://… ou un chemin de la boutique commençant par « / ». Toute autre valeur est ignorée.'
+            show_card_text: Afficher le titre et la description dans la carte
+            show_card_text_help: Si désactivé, la carte n'affiche que l'image.
+            right_products_position_choices:
+                start: Afficher au début de la liste de produits
+                end: Afficher à la fin de la liste de produits
+                random_middle: Afficher aléatoirement au milieu des produits
+            display_mode_choices:
+                stacked: Empilés
+                random: Aléatoire
+                slider: Carrousel
+            zones:
+                main:
+                    title: Image principale
+                    description: Image affichée en haut de la page du taxon, au-dessus de son nom. Avec plusieurs images, celle de plus petite position est utilisée.
+                    items: Images de la zone
+                top:
+                    title: Haut de la page du taxon
+                    description: Les médias de cette zone s'afficheront en haut de la page taxon.
+                    display_mode: Mode d'affichage des médias en haut de page
+                    items: Médias du haut de page
+                bottom:
+                    title: Bas de la page du taxon
+                    description: Les médias de cette zone s'afficheront en bas de la page taxon.
+                    display_mode: Mode d'affichage des médias en bas de page
+                    items: Médias du bas de page
+                left:
+                    title: Colonne de gauche de la page du taxon
+                    description: Les médias de cette zone s'afficheront dans la colonne de gauche de la page taxon, sous les filtres avancés ou la liste des taxons enfants.
+                    display_mode: Mode d'affichage des médias de la colonne de gauche
+                    items: Médias de la colonne de gauche
+                right:
+                    title: Afficher en tant que produit
+                    description: Les médias de cette zone sont insérés comme des cartes produit dans la liste des produits du taxon.
+                    products_position: Position d'insertion dans la liste des produits
+                    items: Médias à insérer dans la liste des produits
+                featured:
+                    title: Zone mise en avant
+                    description: Cette image est affichée dans le méga menu et dans les cartes des pages univers.
+                    display_mode: Mode d'affichage des médias de la zone mise en avant
+                    items: Médias de la zone mise en avant
+                slider_universe:
+                    title: Carrousel univers
+                    description: Médias larges pour le carrousel principal des pages univers, avec un lien possible par média.
+                    items: Médias du carrousel univers
+    facet:
+        type:
+            attribute: Attribut de produit
+            option: Option de produit
+            name: Nom du produit
+            description: Description du produit
+            stock: Disponibilité en stock
+            taxon_membership: Appartenance à un taxon
+        operator:
+            equals: Égal à
+            not_equals: Différent de
+            contains: Contient
+            not_contains: Ne contient pas
+            in: Dans
+            not_in: Pas dans
+            is_in_stock: En stock

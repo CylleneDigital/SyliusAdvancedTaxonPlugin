@@ -1,0 +1,22 @@
+{# The Sylius search form, sending back the other parameters of the listing (advanced filters, sorting, limit, view). #}
+{% macro hidden_fields(name, value) %}
+    {% if value is iterable %}
+        {% for key, item in value %}
+            {{ _self.hidden_fields(name ~ '[' ~ key ~ ']', item) }}
+        {% endfor %}
+    {% else %}
+        <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {% endif %}
+{% endmacro %}
+
+<div class="col">
+    <form method="get" action="{{ path('sylius_shop_product_index', {'slug': app.request.attributes.get('slug')}) }}">
+        {# A new search starts again from the first page. #}
+        {% for name, value in app.request.query.all|filter((value, name) => name not in ['criteria', 'page']) %}
+            {{ _self.hidden_fields(name, value) }}
+        {% endfor %}
+        <div class="input-group">
+            {% hook 'search' %}
+        </div>
+    </form>
+</div>

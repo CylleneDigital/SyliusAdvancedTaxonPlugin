@@ -1,0 +1,5 @@
+{# Clears the search only: the other parameters of the listing (advanced filters, sorting, limit, view) stay. #}
+{% set kept = app.request.query.all|filter((value, name) => name not in ['criteria', 'page']) %}
+<a class="btn btn-outline-secondary btn-sm" href="{{ path('sylius_shop_product_index', {'slug': app.request.attributes.get('slug')}|merge(kept)) }}" {{ sylius_test_html_attribute('clear') }} aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.advanced_filters.clear_search'|trans }}">
+    {{ ux_icon('tabler:x', {'aria-hidden': 'true'}) }}
+</a>

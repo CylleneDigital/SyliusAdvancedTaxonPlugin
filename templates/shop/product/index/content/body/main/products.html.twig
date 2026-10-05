@@ -1,0 +1,67 @@
+{% import '@SyliusShop/shared/messages.html.twig' as messages %}
+{% set taxon = advanced_taxon_taxon_from_request() %}
+{% set currentView = app.request.query.get('view', 'grid') %}
+
+{% set rightZoneMedia = taxon is not null ? taxon.images|filter(image => image.type == 'right' and image.path)|sort((left, right) => left.position <=> right.position) : [] %}
+{% set rightMediaMode = taxon is not null ? taxon.mediaDisplayModeProduct|default('products_end') : 'products_end' %}
+
+{# A universe page renders its own content instead of the product list. #}
+{% if taxon is null or not taxon.isUniverse %}
+    {% set products = hookable_metadata.context.resources.data %}
+
+    {% if products|length > 0 %}
+        {% set productItems = products|map(product => { type: 'product', product: product }) %}
+
+        {# The zone media are listed once: on the first page, or on the last one when they close the list. #}
+        {% set isFirstPage = products.currentPage is not defined or products.currentPage == 1 %}
+        {% set isLastPage = products.hasNextPage is not defined or not products.hasNextPage %}
+        {% if (rightMediaMode == 'products_end' and not isLastPage) or (rightMediaMode != 'products_end' and not isFirstPage) %}
+            {% set rightZoneMedia = [] %}
+        {% endif %}
+
+        {% set mediaItems = rightZoneMedia|map(media => { type: 'media', media: media }) %}
+
+        {% set renderItems = productItems %}
+        {% if mediaItems is not empty %}
+            {% if rightMediaMode == 'products_start' %}
+                {% set renderItems = mediaItems|merge(productItems) %}
+            {% elseif rightMediaMode == 'products_random_middle' and productItems|length > 1 %}
+                {% for mediaItem in mediaItems %}
+                    {% set maxIndex = renderItems|length - 1 %}
+                    {% set insertionIndex = maxIndex > 1 ? random(range(1, maxIndex)) : 1 %}
+                    {% set renderItems = renderItems|slice(0, insertionIndex)|merge([mediaItem])|merge(renderItems|slice(insertionIndex)) %}
+                {% endfor %}
+            {% else %}
+                {% set renderItems = productItems|merge(mediaItems) %}
+            {% endif %}
+        {% endif %}
+
+        {% if currentView == 'list' %}
+            <div {{ sylius_test_html_attribute('products-list') }}>
+                {% for item in renderItems %}
+                    {% if item.type == 'product' %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/list_item.html.twig' with { product: item.product } only %}
+                    {% else %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/media_list_item.html.twig' with { media: item.media, taxon: taxon } only %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="products-grid" {{ sylius_test_html_attribute('products') }}>
+                {% for item in renderItems %}
+                    {% if item.type == 'product' %}
+                        {{ component('sylius_shop:product:card', {
+                            product: item.product,
+                            template: hookable_metadata.configuration.product_template|default('@SyliusShop/product/common/card.html.twig'),
+                            hookableMetadata: hookable_metadata
+                        }) }}
+                    {% else %}
+                        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products/media_card.html.twig' with { media: item.media, taxon: taxon } only %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% else %}
+        {{ messages.info('sylius.ui.no_results_to_display') }}
+    {% endif %}
+{% endif %}

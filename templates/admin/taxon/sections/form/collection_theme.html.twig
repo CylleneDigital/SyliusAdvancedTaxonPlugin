@@ -1,0 +1,79 @@
+{# Media collections of the taxon form: one row per media, added and removed by at-admin-form-collection. #}
+{% extends '@SyliusAdmin/shared/form_theme.html.twig' %}
+
+{% block collection_widget -%}
+    {% from '@SyliusResource/Macros/notification.html.twig' import error %}
+    {% set attr = attr|merge({'class': attr.class|default ~ ' controls collection-widget'}) %}
+
+    <div data-form-type="collection" data-controller="at-admin-form-collection" {{ block('widget_container_attributes') }}
+        {% if prototype is defined and allow_add %}
+            data-prototype='{{ _self.collection_item(prototype, allow_delete, button_delete_label, prototype.vars.name)|e }}'
+            data-prototype-name='{{ prototype.vars.name }}'
+        {%- endif -%}
+    >
+        {{ error(form.vars.errors) }}
+
+        <div data-form-collection="list" class="row g-3">
+            {% for child in form %}
+                {{ _self.collection_item(child, allow_delete, button_delete_label, loop.index0) }}
+            {% endfor %}
+        </div>
+
+        {% if prototype is defined and allow_add %}
+            <button type="button" class="btn btn-outline-primary mt-2" data-form-collection="add" data-action="at-admin-form-collection#add">
+                {{ button_add_label|trans }}
+            </button>
+        {% endif %}
+    </div>
+{%- endblock collection_widget %}
+
+{% macro collection_item(form, allow_delete, button_delete_label, index) %}
+    {% set existingPath = form.vars.value.path ?? null %}
+
+    <div data-form-collection="item" data-form-collection-index="{{ index }}" class="col-12 border rounded p-3 bg-surface-secondary">
+        {% if existingPath %}
+            <div class="mb-3">
+                <img src="{{ existingPath|imagine_filter('sylius_medium') }}" alt="" class="img-thumbnail at-admin-media-preview">
+            </div>
+        {% endif %}
+
+        {{ _self.media_item_fields(form) }}
+
+        {% if allow_delete %}
+            <button type="button" class="btn btn-outline-danger btn-md mt-3" data-form-collection="delete" data-action="at-admin-form-collection#remove">
+                {{ button_delete_label|trans }}
+            </button>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro media_item_fields(form) %}
+    {% import '@SyliusAdmin/shared/helper/translations.html.twig' as translations %}
+
+    {% if form.url is defined %}
+        {{ form_row(form.url) }}
+    {% endif %}
+    {{ form_row(form.file) }}
+    {{ form_row(form.position) }}
+    {% if form.showCardText is defined %}
+        {{ form_row(form.showCardText) }}
+    {% endif %}
+
+    <div class="mt-3">
+        <h4 class="h5 mb-2">{{ 'sylius.ui.translations'|trans }}</h4>
+        <div class="accordion accordion-flush" id="media-translations-{{ form.vars.id }}">
+            {% for locale, translationForm in form.translations %}
+                <div class="accordion-item">
+                    {{ translations.accordion_header(locale, 'media-translations-' ~ form.vars.id, false) }}
+                    <div id="translation-media-translations-{{ form.vars.id }}-{{ locale }}" class="accordion-collapse collapse" data-bs-parent="#media-translations-{{ form.vars.id }}">
+                        <div class="accordion-body">
+                            {% for field in translationForm %}
+                                {{ form_row(field) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}

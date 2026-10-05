@@ -1,0 +1,31 @@
+# Dev shop (`sylius:fixtures:load default`): two channels, the main one in two locales, to compare
+# the per-channel settings (mega menu) and the translated taxon texts. The main channel answers on
+# SYLIUS_FIXTURES_HOSTNAME (Sylius default: localhost); the second one on `b2b.` + it, or through
+# `?_channel_code=B2B_WEB` (dev only).
+sylius_fixtures:
+    suites:
+        default:
+            fixtures:
+                channel:
+                    options:
+                        custom:
+                            fashion_web_store:
+                                locales:
+                                    - '%locale%'
+                                    - 'fr_FR'
+                                # Otherwise picked at random among the locales.
+                                default_locale: '%locale%'
+                            b2b_web_store:
+                                name: 'B2B Web Store'
+                                code: 'B2B_WEB'
+                                locales:
+                                    - '%locale%'
+                                currencies:
+                                    - 'USD'
+                                enabled: true
+                                hostname: 'b2b.%env(resolve:SYLIUS_FIXTURES_HOSTNAME)%'
+                                menu_taxon: 'category'
+                # Sylius' order fixture fetch-joins product translations in the order's locale only,
+                # then saves an empty en_US translation: orders in fr_FR fail at random. The plugin
+                # needs no order.
+                order: false

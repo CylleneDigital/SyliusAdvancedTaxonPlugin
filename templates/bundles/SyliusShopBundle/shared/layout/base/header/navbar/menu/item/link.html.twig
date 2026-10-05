@@ -1,0 +1,10 @@
+{% set taxon = hookable_metadata.context.taxon %}
+
+<a class="nav-link advanced-taxon-header-link" href="{{ path('sylius_shop_product_index', {'slug': taxon.slug, '_locale': taxon.translation.locale}) }}" {{ sylius_test_html_attribute('menu-item', taxon.name) }}>
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/taxon_label.html.twig' with {
+        taxon: taxon,
+        iconSize: 20,
+        showCustomization: taxon.showCustomizationInMenu,
+        textClass: taxon.showCustomizationInMenu ? '' : 'text-body',
+    } only %}
+</a>

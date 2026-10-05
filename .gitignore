@@ -1,0 +1,33 @@
+/vendor/
+/var/
+/node_modules
+/phpunit.xml
+
+.idea/
+.env.local
+*.swp
+
+# Local overrides of behat.dist.php and compose.yml (copy from compose.override.dist.yml)
+/behat.php
+/compose.override.yml
+
+# Behat failure screenshots and pages, kept as a directory for the CI artifacts
+/etc/build/*
+!/etc/build/.gitignore
+
+# Browser drivers downloaded by dbrekelmans/bdi
+/drivers/
+
+/tests/TestApplication/.env.local
+/tests/TestApplication/.env.*.local
+
+# Local Cyllene stack (FrankenPHP + Castor), not distributed
+/.docker/
+/castor.php
+/.castor.stub.php
+/CLAUDE.local.md
+/composer.lock
+
+# Symfony CLI
+/.php-version
+/php.ini

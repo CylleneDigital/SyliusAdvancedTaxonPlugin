@@ -1,0 +1,35 @@
+{% import '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/macros.html.twig' as macros %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'cyllene_digital_sylius_advanced_taxon.ui.universe'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        {{ form_row(form.isUniverse) }}
+        {{ form_row(form.universeBackgroundUseTaxonColor) }}
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        {{ macros.media_zone('slider_universe', 'at:photo', form.mediaSliderUniverse) }}
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'sylius.ui.translations'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        {{ macros.translation_fields(form.featuredItemsTranslations, 'advanced-taxon-universe-translations', [
+            'universePageTitle',
+            'universePageDescription',
+            'universeFeaturedProductsTitle',
+            'universeFeaturedProductsDescription',
+        ]) }}
+    </div>
+</div>

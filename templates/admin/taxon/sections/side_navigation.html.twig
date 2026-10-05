@@ -1,0 +1,8 @@
+{# The tabs come from the side_navigation hook of the page, next to their panes in the form hook. #}
+{% set sectionsPrefixes = hookable_metadata.prefixes|map(prefix => prefix|split('#')|first) %}
+
+<div id="side-nav" class="sticky-md-top at-admin-sticky-side-nav">
+    <div class="list-group bg-body mb-3" role="tablist" aria-orientation="vertical">
+        {% hook 'side_navigation' with { _prefixes: sectionsPrefixes } %}
+    </div>
+</div>

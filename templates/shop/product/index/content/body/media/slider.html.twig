@@ -1,0 +1,39 @@
+{#
+    One media at a time, changing every 5 seconds, with previous / next buttons: the universe hero
+    slider and the slider display mode of the top and bottom zones. Expects `media` (sorted list of
+    taxon images), `taxon`, and optionally `zone` (marks the media for the tests).
+#}
+<section class="at-universe-hero-slider" data-controller="at-universe-slider" data-at-universe-slider-interval-value="5000" {% if zone is defined %}{{ sylius_test_html_attribute('media-zone', zone) }}{% endif %}>
+    <div class="at-universe-hero-slider-track">
+        {% for slide in media %}
+            {% set translatedTitle = slide.titleForLocale(app.request.locale|default(null)) %}
+            {% set translatedDescription = slide.descriptionForLocale(app.request.locale|default(null)) %}
+            {% set slideLink = advanced_taxon_media_href(slide.url) %}
+
+            <article class="at-universe-hero-slide{% if loop.first %} is-active{% endif %}" data-at-universe-slider-target="slide">
+                {% if slideLink %}<a href="{{ slideLink }}" class="at-universe-hero-slide-link">{% endif %}
+                <picture>
+                    <source media="(max-width: 767.98px)" srcset="{{ advanced_taxon_media_mobile_url(slide.path) }}">
+                    <img
+                        src="{{ advanced_taxon_media_url(slide.path) }}"
+                        alt="{{ translatedDescription ?: translatedTitle ?: taxon.name }}"
+                        title="{{ translatedTitle ?: taxon.name }}"
+                        class="at-universe-hero-image"
+                        {% if zone is defined %}{{ sylius_test_html_attribute('media', translatedTitle ?? taxon.name) }}{% endif %}
+                        {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                    >
+                </picture>
+                {% if slideLink %}</a>{% endif %}
+            </article>
+        {% endfor %}
+    </div>
+
+    {% if media|length > 1 %}
+        <button type="button" class="at-universe-hero-nav at-universe-hero-nav--prev" data-action="click->at-universe-slider#previous" aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.slider.previous'|trans }}">
+            {{ ux_icon('tabler:chevron-left', { 'aria-hidden': 'true' }) }}
+        </button>
+        <button type="button" class="at-universe-hero-nav at-universe-hero-nav--next" data-action="click->at-universe-slider#next" aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.slider.next'|trans }}">
+            {{ ux_icon('tabler:chevron-right', { 'aria-hidden': 'true' }) }}
+        </button>
+    {% endif %}
+</section>

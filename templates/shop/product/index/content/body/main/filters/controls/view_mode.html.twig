@@ -1,0 +1,29 @@
+{% set currentView = app.request.query.get('view', 'grid') %}
+{% set route = app.request.attributes.get('_route') %}
+{% set routeParams = app.request.attributes.get('_route_params')|default({}) %}
+{% set queryParams = app.request.query.all %}
+{% set gridUrl = path(route, routeParams|merge(queryParams)|merge({'view': 'grid'})) %}
+{% set listUrl = path(route, routeParams|merge(queryParams)|merge({'view': 'list'})) %}
+
+<div class="btn-group" role="group" aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_mode.aria_label'|trans }}">
+    <a
+        href="{{ gridUrl }}"
+        class="btn {% if currentView != 'list' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+        {{ sylius_test_html_attribute('products-view-mode', 'grid') }}
+        title="{{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_mode.grid'|trans }}"
+        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_mode.grid'|trans }}"
+        {% if currentView != 'list' %}aria-current="page"{% endif %}
+    >
+        {{ ux_icon('at:layout-grid', { 'aria-hidden': 'true' }) }}
+    </a>
+    <a
+        href="{{ listUrl }}"
+        class="btn {% if currentView == 'list' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+        {{ sylius_test_html_attribute('products-view-mode', 'list') }}
+        title="{{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_mode.list'|trans }}"
+        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.shop.products.view_mode.list'|trans }}"
+        {% if currentView == 'list' %}aria-current="page"{% endif %}
+    >
+        {{ ux_icon('tabler:layout-list', { 'aria-hidden': 'true' }) }}
+    </a>
+</div>

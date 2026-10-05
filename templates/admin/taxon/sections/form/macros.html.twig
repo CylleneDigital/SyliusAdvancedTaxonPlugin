@@ -1,0 +1,51 @@
+{# A media zone of the taxon form: title, description, display mode, then its media in an accordion. #}
+{% macro media_zone(zone, icon, collection, displayMode = null) %}
+    {% set id = 'advanced-taxon-media-' ~ zone|replace({'_': '-'}) %}
+    {% set key = 'cyllene_digital_sylius_advanced_taxon.form.media.zones.' ~ zone %}
+
+    <h3 class="h2 mb-1 d-flex align-items-center gap-2">
+        {{ ux_icon(icon, {'aria-hidden': 'true'}) }}
+        <span>{{ (key ~ '.title')|trans }}</span>
+    </h3>
+    <p class="form-text mb-3">{{ (key ~ '.description')|trans }}</p>
+    {% if displayMode is not null %}
+        {{ form_row(displayMode) }}
+    {% endif %}
+    <div class="accordion" id="{{ id }}-accordion">
+        <div class="accordion-item">
+            <h4 class="accordion-header" id="{{ id }}-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ id }}-collapse" aria-expanded="false" aria-controls="{{ id }}-collapse">
+                    {{ (key ~ '.items')|trans }}
+                    <div class="accordion-button-toggle">
+                        {{ ux_icon('tabler:chevron-down', {'aria-hidden': 'true'}) }}
+                    </div>
+                </button>
+            </h4>
+            <div id="{{ id }}-collapse" class="accordion-collapse collapse p-2" aria-labelledby="{{ id }}-heading">
+                <div class="accordion-body px-0 pt-3 pb-0">
+                    {{ form_row(collection) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{# Some fields of the featured items translations, one accordion item per locale as in the Sylius forms. #}
+{% macro translation_fields(translations, accordionId, fields) %}
+    {% import '@SyliusAdmin/shared/helper/translations.html.twig' as sylius_translations %}
+
+    <div class="accordion" id="{{ accordionId }}">
+        {% for locale, translationForm in translations %}
+            <div class="accordion-item">
+                {{ sylius_translations.accordion_header(locale, accordionId, loop.first) }}
+                <div id="translation-{{ accordionId }}-{{ locale }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" data-bs-parent="#{{ accordionId }}">
+                    <div class="accordion-body">
+                        {% for field in fields %}
+                            {{ form_row(translationForm[field]) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

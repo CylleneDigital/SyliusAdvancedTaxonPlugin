@@ -1,0 +1,24 @@
+{% set zoneMedia = taxon.images|filter(image => image.type == zone and image.path)|sort((left, right) => left.position <=> right.position) %}
+
+{% if displayMode == 'slider' and zoneMedia|length > 1 %}
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/media/slider.html.twig' with {
+        media: zoneMedia,
+        taxon: taxon,
+        zone: zone,
+    } only %}
+{% elseif zoneMedia|length > 0 %}
+    {% if displayMode == 'random' %}
+        {% set zoneMedia = zoneMedia|shuffle %}
+    {% endif %}
+
+    <div class="d-flex flex-column gap-3" {{ sylius_test_html_attribute('media-zone', zone) }}>
+        {% for media in zoneMedia %}
+            {% set mediaUrl = advanced_taxon_media_url(media.path) %}
+            {% set translatedTitle = media.titleForLocale(app.request.locale|default(null)) %}
+            {% set translatedDescription = media.descriptionForLocale(app.request.locale|default(null)) %}
+            <div class="my-2">
+                <img {{ sylius_test_html_attribute('media', translatedTitle ?? taxon.name) }} src="{{ mediaUrl }}" title="{{ translatedTitle ?? taxon.name }}" alt="{{ translatedDescription ?? taxon.name }}" class="w-100" loading="lazy">
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

@@ -1,0 +1,14 @@
+cyllene_digital_sylius_advanced_taxon:
+    icon_libraries:
+        mdi:
+            label: "Material Design Icons"
+            icon_prefix: "mdi"
+            icons: ['home', 'cart', 'star']
+        phosphor:
+            label: "Phosphor"
+            icon_prefix: "ph"
+            icons: ['activity', 'airplane', 'alarm']
+        octicons:
+            label: "Octicons"
+            icon_prefix: "octicon"
+            icons: ['bell-fill-16', 'codespaces-24', 'device-camera-16']

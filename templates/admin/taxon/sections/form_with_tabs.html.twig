@@ -1,0 +1,19 @@
+{# Rendered with \Sylius\Bundle\AdminBundle\Twig\Component\Taxon\FormComponent #}
+
+{% form_theme form '@SyliusAdmin/taxon/form_theme.html.twig' '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/collection_theme.html.twig' %}
+
+<div {{ attributes }}>
+    {{ form_start(form, {'attr': {'class': 'ui loadable form', 'novalidate': 'novalidate', 'id': form.vars.id}}) }}
+    {% if hookable_metadata.configuration.method is defined %}
+        <input type="hidden" name="_method" value="{{ hookable_metadata.configuration.method }}" />
+    {% endif %}
+    {{ form_errors(form) }}
+    {# Rendered explicitly as in the Sylius 2.1 template: with render_rest off, nothing else guarantees it. #}
+    {{ form_widget(form._token) }}
+
+    <div class="tab-content" data-controller="at-admin-taxon-form-errors">
+        {% hook 'form' with { form } %}
+    </div>
+
+    {{ form_end(form, {render_rest: hookable_metadata.configuration.render_rest|default(false)}) }}
+</div>

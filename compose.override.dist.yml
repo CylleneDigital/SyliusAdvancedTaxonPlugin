@@ -1,0 +1,26 @@
+services:
+    php:
+        volumes:
+            - .:/app:rw,cached
+        working_dir: /app
+        environment:
+            APP_ENV: test
+            DATABASE_URL: mysql://root@mysql/cyllene_digital_sylius_advanced_taxon_plugin_test
+            BEHAT_BASE_URL: http://nginx/
+        depends_on:
+            mysql:
+                condition: service_healthy
+    mysql:
+        # Host 3306 is often already taken; Behat talks to mysql:3306 on the Compose network.
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: cyllene_digital_sylius_advanced_taxon_plugin_test
+    nginx:
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/app:rw,cached
+        depends_on:
+            - php

@@ -1,0 +1,9 @@
+<section class="at-universe-children-nav mb-3">
+    <div class="row g-3">
+        {% for child in children %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/components/advanced_taxon/child_taxon_card.html.twig' with {
+                child: child
+            } only %}
+        {% endfor %}
+    </div>
+</section>

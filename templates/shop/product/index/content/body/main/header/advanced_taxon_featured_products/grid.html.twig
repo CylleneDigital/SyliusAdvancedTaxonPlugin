@@ -1,0 +1,10 @@
+{% if featuredProducts|length > 0 %}
+    <div class="products-grid" {{ sylius_test_html_attribute('featured-products') }}>
+        {% for product in featuredProducts %}
+            {{ component('sylius_shop:product:card', {
+                product: product,
+                template: '@SyliusShop/product/common/card.html.twig',
+            }) }}
+        {% endfor %}
+    </div>
+{% endif %}

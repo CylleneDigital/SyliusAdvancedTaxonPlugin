@@ -1,0 +1,109 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.product.index.content':
+            breadcrumbs:
+                component: 'sylius_shop:product:show:breadcrumbs'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/product/index/content/breadcrumbs.html.twig'
+                priority: 100
+
+        'sylius_shop.product.index.content.body':
+            main:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main_column.html.twig'
+                priority: 100
+            advanced_taxon_media_top:
+                component: 'sylius_shop:product:show:header'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/advanced_taxon_media_top.html.twig'
+                priority: 200
+            sidebar:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/sidebar.html.twig'
+                priority: 0
+
+        'sylius_shop.product.index.content.body.main':
+            advanced_taxon_featured_products_before_filters:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/featured_products.html.twig'
+                configuration:
+                    position: 'before_filters'
+                priority: 250
+            advanced_taxon_featured_products_after_filters:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/featured_products.html.twig'
+                configuration:
+                    position: 'after_filters'
+                priority: 150
+            products:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/products.html.twig'
+                priority: 100
+            pagination:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/pagination.html.twig'
+                priority: 0
+            advanced_taxon_media_bottom:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/bottom_media.html.twig'
+                priority: -100
+
+        'sylius_shop.product.index.content.body.sidebar':
+            advanced_taxon_media_left:
+                component: 'sylius_shop:product:show:header'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/sidebar/advanced_taxon_media_left.html.twig'
+                priority: -100
+            taxonomy:
+                enabled: false
+            advanced_taxon_taxonomy:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/sidebar/facet_filters.html.twig'
+                priority: 0
+
+        'sylius_shop.product.index.content.body.main.header':
+            image:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/product/index/content/body/main/header/image.html.twig'
+                priority: 200
+            # After the taxon name and description: the featured children introduce the listing.
+            featured_children:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/featured_children.html.twig'
+                priority: -100
+            name:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/product/index/content/body/main/header/name.html.twig'
+                priority: 100
+
+        'sylius_shop.product.index.content.body.main.filters':
+            all_filters:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/filters/controls/all_filters.html.twig'
+                priority: 150
+            # The search form and its clear button keep the other parameters of the listing.
+            search:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/filters/search.html.twig'
+
+        'sylius_shop.product.index.content.body.main.filters.search':
+            clear:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/filters/search/clear.html.twig'
+                priority: 0
+
+        'sylius_shop.product.index.content.body.main.filters.controls':
+            view_mode:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/filters/controls/view_mode.html.twig'
+                priority: -100
+
+        'sylius_shop.base.header.content':
+            taxon_hamburger:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/content/taxon_hamburger.html.twig'
+                priority: 0
+
+        'sylius_shop.base.header.navbar':
+            menu:
+                component: 'sylius_shop:common:taxon_menu'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu.html.twig'
+                priority: 0
+
+        'sylius_shop.base.header.navbar.menu.item#link':
+            link:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu/item/link.html.twig'
+                priority: 0
+
+        'sylius_shop.base.header.navbar.menu.item#dropdown':
+            toggle:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu/item/toggle.html.twig'
+                priority: 100
+            dropdown:
+                template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu/item/dropdown.html.twig'
+                priority: 0

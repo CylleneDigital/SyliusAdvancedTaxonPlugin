@@ -1,0 +1,6 @@
+{% if sliderUniverseMedia|length > 0 %}
+    {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/media/slider.html.twig' with {
+        media: sliderUniverseMedia,
+        taxon: taxon,
+    } only %}
+{% endif %}

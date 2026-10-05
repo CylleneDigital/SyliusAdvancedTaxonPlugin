@@ -1,0 +1,134 @@
+{
+    "name": "cyllene-digital/sylius-advanced-taxon-plugin",
+    "type": "sylius-plugin",
+    "description": "Turns Sylius taxons into merchandising pages: branding, featured content, media zones, universe pages, advanced filters, conditional taxons and a mega menu.",
+    "keywords": [
+        "sylius",
+        "sylius-plugin",
+        "taxon",
+        "taxonomy",
+        "merchandising",
+        "mega-menu",
+        "facets",
+        "filters"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin",
+    "authors": [
+        {
+            "name": "Cyllene",
+            "homepage": "https://github.com/CylleneDigital"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/issues",
+        "source": "https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin",
+        "security": "https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/security/policy"
+    },
+    "require": {
+        "php": "^8.3",
+        "ext-gd": "*",
+        "doctrine/collections": "^2.0",
+        "doctrine/dbal": "^3.0 || ^4.0",
+        "doctrine/doctrine-bundle": "^2.13 || ^3.1",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
+        "doctrine/migrations": "^3.6",
+        "doctrine/orm": "^2.20 || ^3.6",
+        "liip/imagine-bundle": "^2.15",
+        "sylius/sylius": "^2.1",
+        "sylius/twig-hooks": "^0.8 || ^0.9 || ^0.12 || ^0.14",
+        "symfony/config": "^7.4 || ^8.0",
+        "symfony/console": "^7.4 || ^8.0",
+        "symfony/dependency-injection": "^7.4 || ^8.0",
+        "symfony/form": "^7.4 || ^8.0",
+        "symfony/http-foundation": "^7.4 || ^8.0",
+        "symfony/http-kernel": "^7.4 || ^8.0",
+        "symfony/messenger": "^7.4 || ^8.0",
+        "symfony/options-resolver": "^7.4 || ^8.0",
+        "symfony/routing": "^7.4 || ^8.0",
+        "symfony/security-csrf": "^7.4 || ^8.0",
+        "symfony/security-http": "^7.4 || ^8.0",
+        "symfony/service-contracts": "^3.5",
+        "symfony/translation-contracts": "^3.5",
+        "symfony/ux-autocomplete": "^2.36 || ^3.0",
+        "symfony/ux-icons": "^2.36 || ^3.0",
+        "symfony/validator": "^7.4 || ^8.0",
+        "twig/twig": "^3.10"
+    },
+    "require-dev": {
+        "behat/behat": "^3.22 || ^4.0",
+        "behat/mink": "^1.11",
+        "behat/mink-browserkit-driver": "^2.2",
+        "dbrekelmans/bdi": "^1.4",
+        "dmore/chrome-mink-driver": "^2.9",
+        "friends-of-behat/mink-debug-extension": "^2.1",
+        "friends-of-behat/mink-extension": "^2.7 || ^3.0@alpha",
+        "friends-of-behat/page-object-extension": "^0.4",
+        "friends-of-behat/suite-settings-extension": "^1.1",
+        "friends-of-behat/symfony-extension": "^2.6.2",
+        "friends-of-behat/variadic-extension": "^1.7",
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-webmozart-assert": "^2.0",
+        "phpunit/phpunit": "^10.5",
+        "sylius-labs/behat-chrome-extension": "^1.5",
+        "sylius-labs/coding-standard": "^4.4",
+        "sylius-labs/suite-tags-extension": "~0.2",
+        "sylius/test-application": "~2.1.0@alpha || ~2.2.0@alpha || ~2.3.0@alpha",
+        "symfony/browser-kit": "^7.4 || ^8.0",
+        "symfony/debug-bundle": "^7.4 || ^8.0",
+        "symfony/dotenv": "^7.4 || ^8.0",
+        "symfony/runtime": "^7.4 || ^8.0",
+        "symfony/ux-twig-component": "^2.36 || >=3.0 <3.5",
+        "symfony/web-profiler-bundle": "^7.4 || ^8.0",
+        "symfony/webpack-encore-bundle": "^2.2"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "php-http/discovery": false,
+            "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        },
+        "public-dir": "vendor/sylius/test-application/public",
+        "symfony": {
+            "require": "^7.4 || ^8.0"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "CylleneDigital\\SyliusAdvancedTaxonPlugin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\CylleneDigital\\SyliusAdvancedTaxonPlugin\\": [
+                "tests/",
+                "tests/TestApplication/src/"
+            ]
+        }
+    },
+    "scripts": {
+        "database-reset": [
+            "vendor/bin/console doctrine:database:drop --force --if-exists",
+            "vendor/bin/console doctrine:database:create",
+            "vendor/bin/console doctrine:migrations:migrate -n",
+            "vendor/bin/console sylius:fixtures:load -n"
+        ],
+        "frontend-clear": [
+            "cd vendor/sylius/test-application && yarn install && yarn build",
+            "vendor/bin/console assets:install"
+        ],
+        "test-app-init": [
+            "@database-reset",
+            "@frontend-clear"
+        ]
+    }
+}

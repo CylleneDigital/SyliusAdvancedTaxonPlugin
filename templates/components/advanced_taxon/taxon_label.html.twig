@@ -1,0 +1,41 @@
+{% set taxonColor = taxon.color|default(null) %}
+{% set iconValue = taxon.icon|default(null) %}
+{% set iconSize = iconSize|default(30) %}
+{% set wrapperClass = wrapperClass|default('d-inline-flex align-items-center gap-2') %}
+{% set textClass = textClass|default('') %}
+{% set textColor = textColor|default(null) %}
+{% set iconColor = iconColor|default(null) %}
+{% set useTaxonColor = useTaxonColor|default(true) %}
+{% set showCustomization = showCustomization is defined ? showCustomization : true %}
+{% set hasIcon = iconValue is not empty %}
+{# The icon is sanitized on write: either "image:" followed by the path of an uploaded pictogram in the Sylius image storage, or a glyph name. #}
+{% set iconImagePath = hasIcon and iconValue starts with 'image:' ? iconValue|slice(6) : null %}
+{% set hasCustomImage = iconImagePath is not null %}
+{% set hasIconGlyph = hasIcon and not hasCustomImage %}
+{# Without a color, the glyph takes the color of the text around it. #}
+{% set resolvedIconColor = iconColor ?? (showCustomization and useTaxonColor and taxonColor ? taxonColor : null) %}
+{% set resolvedImageSrc = hasCustomImage ? iconImagePath|imagine_filter('cyllene_advanced_taxon_icon') : null %}
+
+<span class="{{ wrapperClass }}">
+    {% if showCustomization and hasCustomImage %}
+        <img
+            src="{{ resolvedImageSrc }}"
+            alt=""
+            width="{{ iconSize }}"
+            height="{{ iconSize }}"
+            style="width: {{ iconSize }}px; height: {{ iconSize }}px; object-fit: contain;"
+            loading="lazy"
+        >
+    {% elseif showCustomization and hasIconGlyph %}
+        {% set iconName = ':' in iconValue ? iconValue : 'tabler:' ~ iconValue %}
+        {{ ux_icon(iconName, {
+            class: 'advanced-taxon-icon-svg',
+            style: 'width: ' ~ iconSize ~ 'px; height: ' ~ iconSize ~ 'px;' ~ (resolvedIconColor ? ' color: ' ~ resolvedIconColor ~ ';' : ''),
+            'aria-hidden': 'true',
+        }) }}
+    {% endif %}
+
+    <span class="{{ textClass }}"{% if textColor is not null %} style="color: {{ textColor }};"{% elseif showCustomization and useTaxonColor and taxonColor %} style="color: {{ taxonColor }};"{% endif %}>
+        {{ taxon.name }}
+    </span>
+</span>

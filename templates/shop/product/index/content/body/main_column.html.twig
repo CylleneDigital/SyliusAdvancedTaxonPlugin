@@ -1,0 +1,13 @@
+{% set taxon = hookable_metadata.context.taxon|default(advanced_taxon_taxon_from_request()) %}
+
+{% if taxon is not null and taxon.isUniverse %}
+    <div class="col-12">
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/universe.html.twig' with {
+            taxon: taxon
+        } only %}
+    </div>
+{% else %}
+    <div id="at-advanced-filters-main-column" class="col-12 col-lg-9 order-lg-2">
+        {% hook 'main' %}
+    </div>
+{% endif %}

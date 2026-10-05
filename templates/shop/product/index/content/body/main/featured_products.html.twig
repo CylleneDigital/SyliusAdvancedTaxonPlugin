@@ -1,0 +1,27 @@
+{% set taxon = hookable_metadata.context.taxon|default(advanced_taxon_taxon_from_request()) %}
+{% set position = hookable_metadata.configuration.position|default('before_filters') %}
+{% set featuredProductsTitle = taxon is not null and taxon.featuredProductsTitle ? taxon.featuredProductsTitle : 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.title'|trans %}
+{% set featuredProductsDescription = taxon is not null and taxon.featuredProductsDescription ? taxon.featuredProductsDescription : 'cyllene_digital_sylius_advanced_taxon.shop.featured_products.description'|trans %}
+
+{# Rendered at both positions: the products are only read where the taxon shows them. #}
+{% set shown = taxon is not null and not taxon.isUniverse and taxon.isFeaturedProductsActive and taxon.featuredProductsPosition == position %}
+{% set featuredProducts = shown ? advanced_taxon_visible_products(taxon.featuredProducts) : [] %}
+
+{% if featuredProducts|length > 0 %}
+    <div class="at-featured-products-wrap mb-3" {{ sylius_test_html_attribute('featured-products-position', position) }}>
+        <h2 class="h4 mb-2">{{ featuredProductsTitle }}</h2>
+        <p class="text-muted small mb-3">
+            {{ featuredProductsDescription }}
+        </p>
+
+        {% if taxon.isSlider %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/advanced_taxon_featured_products/slider.html.twig' with {
+                featuredProducts: featuredProducts
+            } only %}
+        {% else %}
+            {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/shop/product/index/content/body/main/header/advanced_taxon_featured_products/grid.html.twig' with {
+                featuredProducts: featuredProducts
+            } only %}
+        {% endif %}
+    </div>
+{% endif %}

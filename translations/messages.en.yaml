@@ -1,0 +1,210 @@
+cyllene_digital_sylius_advanced_taxon:
+    shop:
+        advanced_filters:
+            title: Advanced filters
+            help: Refine the list with multiple values per filter.
+            all_filters: All filters
+            price: Price
+            min: Min
+            max: Max
+            taxons: Sub-taxons
+            reset: Reset
+            search: Search
+            search_in: 'Search in %name%'
+            no_result: No matching value
+            clear_search: Clear the search
+        products:
+            view_mode:
+                aria_label: Product display mode
+                grid: Grid
+                list: List
+            view_product: View
+        featured_children:
+            title: Featured categories
+            description: Discover the featured categories of this taxon, highlighted to help you quickly reach the most important sections.
+        mega_menu:
+            aria_label: Main navigation
+            featured_categories: Featured categories
+            view_category: View category
+        mobile_menu:
+            toggle_navigation: Toggle navigation
+            open: Open menu
+            back: Back
+            see_all: View all products
+            aria_label: Navigation menu
+        featured_products:
+            title: Featured products
+            description: Discover our featured products, carefully selected to provide you with an exceptional shopping experience. These products are chosen for their quality, popularity, and relevance to your needs. Enjoy this exclusive selection and explore items that stand out for their excellence.
+            slider:
+                desktop_previous: View previous products
+                desktop_next: View next products
+                mobile_scroll_hint: Swipe horizontally to discover more products
+        slider:
+            previous: Previous slide
+            next: Next slide
+    ui:
+        close: Close
+        advanced_customizations: Advanced customizations
+        featured_elements: Featured elements
+        advanced_medias: Advanced media
+        facet_section_title: Mass-assignment conditions
+        facet_section_description: Define conditions to automatically attach matching products to this taxon.
+        facet_conditions_title: Filter conditions
+        facet_conditions_help: All conditions are cumulative (AND)
+        facet_mass_assignment_warning_title: Warning
+        facet_mass_assignment_warning: Products matching these conditions are attached to this taxon when it is saved, and kept up to date whenever the conditions change. To follow the catalog afterwards (new products, attribute or stock changes), the synchronization command has to run on a schedule.
+        universe: Universe
+    form:
+        choose_icon: Choose an icon
+        color: Color
+        has_color: Use a color
+        has_color_help: The color goes with the icon where the display options below allow it.
+        icon: Icon
+        icon_help: A Tabler icon name such as "shirt", or "prefix:name" for another library. The button opens the icon picker.
+        icon_type: Icon type
+        icon_type_help: Only switches the field below. The icon or pictogram stored on the taxon is the one displayed.
+        icon_file: Pictogram file
+        current_pictogram: Current pictogram
+        icon_file_help: PNG, JPEG, WebP or GIF, 2 MB at most. It replaces the previous pictogram.
+        icon_type_choices:
+            icon: Icon
+            image: Picture
+        advanced_filters_enabled: Enable advanced filters in the shop
+        advanced_filters_enabled_help: When enabled, the taxon page shows an All filters button and a left sidebar with dynamic facets.
+        is_universe: This taxon is a universe
+        is_universe_help: When enabled, the shop taxon page uses a dedicated full-width universe layout, without a left column.
+        universe_background_use_taxon_color: Use the taxon color as universe page background
+        universe_background_use_taxon_color_help: When enabled, the taxon color is applied as a decorative background on the universe page.
+        universe_title_background_enabled: Apply a colored background behind the universe page title
+        universe_title_background_enabled_help: When enabled and the taxon has a color, that color is used as the background of the universe page title.
+        show_customization_in_menu: Show color and icon customization in main menu and mega menu
+        show_customization_in_menu_help: When disabled, the taxon is displayed as plain text in menus.
+        show_customization_on_taxon_page: Show color and icon customization on taxon page
+        show_customization_on_taxon_page_help: When disabled, taxon page labels are displayed without color or icon.
+        show_customization_in_breadcrumbs: Show color and icon customization in breadcrumbs
+        show_customization_in_breadcrumbs_help: When disabled, breadcrumb labels are displayed without color or icon.
+        conditional: Conditional taxon (mass assignment)
+        conditional_auto_help: This status is computed automatically from the conditions below.
+        include_children_products: Include products from child taxons
+        include_children_products_description: When enabled, the taxon product listing also includes products linked to child taxons.
+        featured_children: Featured child taxons
+        featured_children_description: These child taxons will be highlighted in the main menu as well as on the taxon pages.
+        featured_products: Featured products
+        featured_products_description: These products will appear at the top of taxon pages, differently from other products, and can be used in themes and templates for custom displays.
+        is_featured_products_active: Enable featured products display
+        is_featured_products_active_description: Controls whether featured products are shown for this taxon in the shop.
+        featured_products_position: Featured products position
+        featured_products_position_description: Choose whether featured products are displayed before or after native Sylius filters on the taxon page.
+        featured_products_position_choices:
+            before_filters: Before filters
+            after_filters: After filters
+        featured_items:
+            featured_products_title: Featured products block title
+            featured_products_title_help: 'Empty: "Featured products"; on the parent universe page, the taxon name.'
+            featured_products_description: Featured products block description
+            featured_children_title: Featured taxons block title
+            featured_children_title_help: 'Empty: "Featured categories".'
+            featured_children_description: Featured taxons block description
+            universe_page_title: Universe page title
+            universe_page_title_help: 'Empty: the taxon name.'
+            universe_page_description: Universe page description
+            universe_featured_products_title: Featured products title (universe)
+            universe_featured_products_title_help: Shown only when filled.
+            universe_featured_products_description: Featured products description (universe)
+        is_slider: Display featured products as a slider
+        is_slider_description: When enabled, featured products are displayed in a horizontal slider instead of a grid.
+        has_mega_menu: Enable mega menu
+        has_mega_menu_description: When enabled for this channel, the main shop menu is displayed as a mega menu with level 2 and level 3 taxons in columns.
+        facet:
+            condition_type: Condition type
+            operator: Operator
+            reference: Reference (attr / opt / etc.)
+            value: Value
+            value_placeholder: Enter a value…
+            add_condition: Add a condition
+            remove_condition: Remove this condition
+            preview_conditions: Test conditions
+            preview_modal_title: Matching products preview
+            preview_waiting: Run the test to calculate the matching products count.
+            preview_loading: Calculating…
+            preview_matching: '%count% product(s) match the criteria.'
+            preview_unavailable: Preview unavailable.
+            preview_error: Unable to calculate the preview at the moment.
+            preview_empty: No products found.
+            preview_more: '… and %count% more product(s).'
+            preview_view: View
+            preview_unnamed: (Unnamed)
+        media:
+            display_mode_help: 'Stacked: in position order. Random: a new order on each page view.'
+            slider_display_mode_help: 'Stacked: in position order. Random: a new order on each page view. Slider: one media at a time, in position order, changing every 5 seconds.'
+            spotlight_display_mode_help: 'Stacked: the media with the lowest position. Random: one media drawn on each page view.'
+            add: Add media
+            remove: Remove
+            title: Title
+            title_help: 'Image title (shown on hover) and text of the card; the description is its alternative text. Empty: the taxon name.'
+            description: Description
+            path: Media path
+            url: URL
+            url_help: 'https://…, http://… or a shop path starting with "/". Any other value is dropped.'
+            position: Position
+            position_help: Lowest first.
+            show_card_text: Show title and description in the card
+            show_card_text_help: When disabled, the card displays only the image.
+            right_products_position_choices:
+                start: Insert at the beginning of the product list
+                end: Insert at the end of the product list
+                random_middle: Insert randomly in the middle of the product list
+            display_mode_choices:
+                stacked: Stacked
+                random: Random
+                slider: Slider
+            zones:
+                main:
+                    title: Main image
+                    description: Image shown at the top of the taxon page, above its name. With several images, the one with the lowest position is used.
+                    items: Images of the zone
+                top:
+                    title: Top zone
+                    description: Media in this zone will be displayed at the top of the taxon page.
+                    display_mode: Display mode for top zone
+                    items: Media of top zone
+                bottom:
+                    title: Bottom zone
+                    description: Media in this zone will be displayed at the bottom of the taxon page.
+                    display_mode: Display mode for bottom zone
+                    items: Media of bottom zone
+                left:
+                    title: Left zone
+                    description: Media in this zone will be displayed in the left column of the taxon page, below the advanced filters or the list of child taxons.
+                    display_mode: Display mode for left column
+                    items: Media of left column
+                right:
+                    title: Display as product card
+                    description: Media in this zone will be injected as product-like cards inside the taxon product listing.
+                    products_position: Insertion position in product listing
+                    items: Media to inject in product listing
+                featured:
+                    title: Spotlight zone
+                    description: This image is displayed in the mega menu and in universe page category cards.
+                    display_mode: Display mode for spotlight media
+                    items: Spotlight media
+                slider_universe:
+                    title: Universe slider
+                    description: Large media for the main universe-page slider, with optional link per media.
+                    items: Universe slider media
+    facet:
+        type:
+            attribute: Product attribute
+            option: Product option
+            name: Product name
+            description: Product description
+            stock: Stock availability
+            taxon_membership: Taxon membership
+        operator:
+            equals: Equals
+            not_equals: Not equal to
+            contains: Contains
+            not_contains: Does not contain
+            in: In
+            not_in: Not in
+            is_in_stock: Is in stock

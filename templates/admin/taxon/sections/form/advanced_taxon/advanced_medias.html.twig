@@ -1,0 +1,27 @@
+{% import '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/macros.html.twig' as macros %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'cyllene_digital_sylius_advanced_taxon.ui.advanced_medias'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            {% for zone in [
+                { name: 'main', icon: 'at:photo', collection: form.mediaMain },
+                { name: 'top', icon: 'at:layout-navbar', collection: form.mediaTop, displayMode: form.mediaDisplayModeTop },
+                { name: 'bottom', icon: 'at:layout-bottombar', collection: form.mediaBottom, displayMode: form.mediaDisplayModeBottom },
+                { name: 'left', icon: 'at:layout-sidebar', collection: form.mediaLeft, displayMode: form.mediaDisplayModeLeft },
+                { name: 'right', icon: 'at:layout-cards', collection: form.mediaProduct, displayMode: form.mediaDisplayModeProduct },
+                { name: 'featured', icon: 'at:photo-star', collection: form.mediaFeatured, displayMode: form.mediaDisplayModeFeatured },
+            ] %}
+                <section class="col-12">
+                    <div class="border rounded p-3 h-100">
+                        {{ macros.media_zone(zone.name, zone.icon, zone.collection, zone.displayMode ?? null) }}
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    </div>
+</div>

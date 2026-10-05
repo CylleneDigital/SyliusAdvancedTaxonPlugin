@@ -1,0 +1,51 @@
+name: Security
+
+on:
+    push:
+        branches:
+            - main
+    pull_request: ~
+    schedule:
+        -
+            cron: "0 7 * * 1"
+    workflow_dispatch: ~
+
+permissions:
+    contents: read
+
+jobs:
+    audit:
+        runs-on: ubuntu-24.04
+        timeout-minutes: 15
+        name: "Composer audit"
+
+        steps:
+            -
+                uses: actions/checkout@v7
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+                with:
+                    php-version: "8.4"
+                    coverage: none
+
+            -
+                name: Install dependencies
+                run: composer update --no-interaction --no-progress --prefer-dist
+
+            # `--abandoned=report` surfaces abandoned packages without failing the job: Sylius
+            # development dependencies may be abandoned without a security flaw.
+            -
+                name: Audit dependencies
+                run: composer audit --ansi --abandoned=report
+
+            # The resolution above takes the newest packages (Sylius 2.3, Symfony 8). Shops also run the
+            # oldest supported lines: Sylius 2.1 on PHP 8.3, hence Symfony 7.4.
+            -
+                name: Audit the Sylius 2.1 resolution
+                run: |
+                    composer config platform.php 8.3.0
+                    composer require --no-update --no-interaction "sylius/sylius:~2.1.0" "sylius/test-application:~2.1.0@alpha"
+                    composer update --no-interaction --no-progress --prefer-dist
+                    composer audit --ansi --abandoned=report

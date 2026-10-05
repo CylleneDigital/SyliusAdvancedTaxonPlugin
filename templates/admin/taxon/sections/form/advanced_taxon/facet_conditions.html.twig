@@ -1,0 +1,181 @@
+{# One condition row. A macro rather than a form theme block, so that it renders the prototype too. #}
+{% macro condition_row(condition) %}
+    <div class="col-12 my-2 py-2" data-facet-condition-row>
+        <div class="row g-2 align-items-end border rounded p-2 py-4 mb-1 bg-surface-secondary">
+            <div class="col-12 col-md-3">
+                {{ form_label(condition.conditionType, null, { label_attr: { class: 'fw-semibold mb-1' } }) }}
+                {{ form_widget(condition.conditionType) }}
+            </div>
+
+            {# The reference (attribute, option or taxon) is picked in a select filled by the controller, which copies it to the hidden field. #}
+            <div class="col-12 col-md-3" data-facet-reference-container>
+                <label class="form-label fw-semibold mb-1" for="{{ condition.vars.id }}_reference">
+                    {{ 'cyllene_digital_sylius_advanced_taxon.form.facet.reference'|trans }}
+                </label>
+                <select class="form-select form-select-sm" id="{{ condition.vars.id }}_reference" data-facet-reference-select>
+                    <option value="">-</option>
+                </select>
+                {{ form_widget(condition.referenceCode) }}
+            </div>
+
+            <div class="col-6 col-md-3">
+                {{ form_label(condition.operator, null, { label_attr: { class: 'fw-semibold mb-1' } }) }}
+                {{ form_widget(condition.operator) }}
+            </div>
+
+            <div class="col-12 col-md" data-facet-value-container>
+                {{ form_label(condition.value, null, { label_attr: { class: 'fw-semibold mb-1' } }) }}
+                {{ form_widget(condition.value) }}
+            </div>
+
+            <div class="col-auto d-flex align-items-end">
+                <button
+                    type="button"
+                    class="btn btn-md btn-outline-danger"
+                    data-action="click->at-admin-taxon-facet-conditions#removeCondition"
+                    title="{{ 'cyllene_digital_sylius_advanced_taxon.form.facet.remove_condition'|trans }}"
+                    aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.form.facet.remove_condition'|trans }}"
+                >
+                    {{ ux_icon('tabler:x', { class: 'icon m-0', 'aria-hidden': 'true' }) }}
+                </button>
+            </div>
+        </div>
+        {% if not condition.vars.valid %}
+            <div class="text-danger small px-2" {{ sylius_test_html_attribute('facet-condition-errors') }}>
+                {{ form_errors(condition) }}
+                {{ form_errors(condition.conditionType) }}
+                {{ form_errors(condition.referenceCode) }}
+                {{ form_errors(condition.operator) }}
+                {{ form_errors(condition.value) }}
+            </div>
+        {% endif %}
+        {{ form_widget(condition.position) }}
+    </div>
+{% endmacro %}
+
+{% set facetCondition = 'CylleneDigital\\SyliusAdvancedTaxonPlugin\\Entity\\FacetCondition' %}
+<div
+    data-controller="at-admin-taxon-facet-conditions"
+    data-action="change->at-admin-taxon-facet-conditions#handleChange"
+    data-at-admin-taxon-facet-conditions-preview-url-value="{{ path('cyllene_digital_sylius_advanced_taxon_admin_facet_preview') }}"
+    data-at-admin-taxon-facet-conditions-messages-value="{{ {
+        matching: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_matching'|trans,
+        unavailable: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_unavailable'|trans,
+        error: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_error'|trans,
+        empty: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_empty'|trans,
+        more: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_more'|trans,
+        view: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_view'|trans,
+        unnamed: 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_unnamed'|trans,
+    }|json_encode }}"
+    data-at-admin-taxon-facet-conditions-choices-value="{{ advanced_taxon_facet_choices()|json_encode }}"
+    data-at-admin-taxon-facet-conditions-rules-value="{{ {
+        operatorsByType: constant(facetCondition ~ '::OPERATORS_BY_TYPE'),
+        typesWithReference: constant(facetCondition ~ '::TYPES_WITH_REFERENCE'),
+        typesWithoutValue: constant(facetCondition ~ '::TYPES_WITHOUT_VALUE'),
+    }|json_encode }}"
+    data-at-admin-taxon-facet-conditions-csrf-token-value="{{ csrf_token('cyllene_digital_sylius_advanced_taxon_facet_preview') }}"
+>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title mb-0">
+                {{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_section_title'|trans }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small mb-3">
+                {{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_section_description'|trans }}
+            </p>
+
+            <div class="mb-3 border-bottom pb-3">
+                {{ form_row(form.isConditionalIndicator, {
+                    'label_attr': {'class': 'form-check-label fw-semibold'}
+                }) }}
+            </div>
+
+            <div class="alert alert-warning mb-3" role="alert">
+                <div>
+                    <h4 class="alert-heading">{{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_mass_assignment_warning_title'|trans }}</h4>
+                    <div>{{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_mass_assignment_warning'|trans }}</div>
+                </div>
+            </div>
+
+            <div class="mb-2 d-flex align-items-center justify-content-between">
+                <h3 class="fs-4 fw-semibold mb-0">
+                    {{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_conditions_title'|trans }}
+                </h3>
+                <span class="text-muted small">
+                    {{ 'cyllene_digital_sylius_advanced_taxon.ui.facet_conditions_help'|trans }}
+                </span>
+            </div>
+
+            <div
+                class="my-2"
+                data-at-admin-taxon-facet-conditions-target="list"
+                data-prototype="{{ _self.condition_row(form.facetConditions.vars.prototype)|e('html_attr') }}"
+                data-prototype-name="__facet__"
+            >
+                <div class="row g-0 my-3 py-3" data-at-admin-taxon-facet-conditions-target="items">
+                    {% for condition in form.facetConditions %}
+                        {{ _self.condition_row(condition) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if form.facetConditions.vars.errors|length > 0 %}
+                <div class="alert alert-danger small py-1 px-2 mt-1">
+                    {% for error in form.facetConditions.vars.errors %}
+                        <div>{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <button
+                type="button"
+                class="btn btn-md btn-outline-primary mt-2"
+                data-action="click->at-admin-taxon-facet-conditions#addCondition"
+                {{ sylius_test_html_attribute('add-condition') }}
+            >
+                {{ ux_icon('tabler:plus', {class: 'icon icon-sm me-1', 'aria-hidden': 'true'}) }}
+                {{ 'cyllene_digital_sylius_advanced_taxon.form.facet.add_condition'|trans }}
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-md btn-outline-secondary mt-2 ms-2"
+                data-action="click->at-admin-taxon-facet-conditions#previewConditions"
+                data-bs-toggle="modal"
+                data-bs-target="#facet-preview-modal"
+            >
+                {{ ux_icon('tabler:search', {class: 'icon icon-sm me-1', 'aria-hidden': 'true'}) }}
+                {{ 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_conditions'|trans }}
+            </button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="facet-preview-modal" tabindex="-1" aria-labelledby="facet-preview-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="facet-preview-modal-title">
+                        {{ 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_modal_title'|trans }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.ui.close'|trans }}"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3" data-at-admin-taxon-facet-conditions-target="previewSummary">
+                        {{ 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_waiting'|trans }}
+                    </p>
+
+                    <div class="alert alert-danger d-none" data-at-admin-taxon-facet-conditions-target="previewError"></div>
+
+                    <div class="d-none" data-at-admin-taxon-facet-conditions-target="previewLoading">
+                        <div class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+                        <span>{{ 'cyllene_digital_sylius_advanced_taxon.form.facet.preview_loading'|trans }}</span>
+                    </div>
+
+                    <ul class="list-group" data-at-admin-taxon-facet-conditions-target="previewList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

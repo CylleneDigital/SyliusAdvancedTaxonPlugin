@@ -1,0 +1,12 @@
+{% set taxon = hookable_metadata.context.taxon %}
+
+{% set mainImage = taxon.images|default([])|filter(image => image is not null and image.path is not empty and (image.type is null or image.type == '' or image.type == 'main'))|sort((left, right) => (left.position ?? 0) <=> (right.position ?? 0))|first %}
+
+{% if mainImage %}
+    <div class="mb-5">
+        <img {{ sylius_test_html_attribute('taxon-main-image') }} src="{{ asset(mainImage.path|imagine_filter('sylius_shop_taxon_thumbnail')) }}"
+             alt="{{ taxon.name }}"
+             class="img-fluid"
+        >
+    </div>
+{% endif %}

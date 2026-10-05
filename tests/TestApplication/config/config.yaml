@@ -1,0 +1,37 @@
+imports:
+    - { resource: "packages/*.yaml" }
+    - { resource: "@CylleneDigitalSyliusAdvancedTaxonPlugin/config/config.yaml" }
+    - { resource: "services_test.php" }
+
+twig:
+    paths:
+        '%kernel.project_dir%/../../../tests/TestApplication/templates': ~
+
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    TestApplication:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
+                        prefix: Tests\CylleneDigital\SyliusAdvancedTaxonPlugin
+
+sylius_taxonomy:
+    resources:
+        taxon:
+            classes:
+                model: Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\Taxon
+
+sylius_channel:
+    resources:
+        channel:
+            classes:
+                model: Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\Channel
+
+sylius_core:
+    resources:
+        taxon_image:
+            classes:
+                model: Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\TaxonImage

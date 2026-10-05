@@ -1,0 +1,53 @@
+{% set childCard = advanced_taxon_universe_child_card_data(child) %}
+
+<div class="col-12 col-sm-6 col-xl-4">
+    <div class="at-universe-child-card{% if childCard.hasChildColor %} at-universe-child-card--colored{% endif %}" {% if childCard.hasChildColor %}style="--at-universe-child-color: {{ child.color }};"{% endif %} {{ sylius_test_html_attribute('universe-child-top-link', child.name) }}>
+        <div class="at-universe-child-card-body">
+            <a class="at-universe-child-card-name" href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}">
+                <span class="at-universe-child-card-name-label">{{ child.name }}</span>
+                {% if childCard.childChildren|length > 0 %}
+                    <span class="at-universe-child-card-name-icon" aria-hidden="true">{{ ux_icon('tabler:chevron-right') }}</span>
+                {% endif %}
+            </a>
+        </div>
+
+        <div class="at-universe-child-card-media-wrap">
+            {# Same destination as the name above: kept out of the tab order and of screen readers. #}
+            <a class="at-universe-child-card-media-link" tabindex="-1" aria-hidden="true" href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}">
+                <div class="at-universe-child-card-media">
+                    {% if childCard.mediaUrl is not null %}
+                        <img src="{{ childCard.mediaUrl }}" alt="" loading="lazy" class="w-100 h-100 object-fit-cover at-universe-child-card-image">
+                    {% else %}
+                        <div class="at-universe-child-card-placeholder"></div>
+                    {% endif %}
+                </div>
+            </a>
+
+            {% if childCard.childChildren|length > 0 %}
+                <div class="at-universe-child-card-children">
+                    <ul class="list-unstyled mb-0">
+                        <li class="at-universe-child-card-children-title">
+                            <a class="at-universe-child-card-children-link at-universe-child-card-children-link--title" href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}">
+                                {{ child.name }}
+                            </a>
+                        </li>
+
+                        {% for grandChild in childCard.childChildren %}
+                            <li>
+                                <a class="at-universe-child-card-children-link" href="{{ path('sylius_shop_product_index', {'slug': grandChild.slug, '_locale': grandChild.translation.locale}) }}">
+                                    {{ grandChild.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                        <li class="at-universe-child-card-children-cta-wrap">
+                            <a class="at-universe-child-card-children-link at-universe-child-card-children-link--cta" href="{{ path('sylius_shop_product_index', {'slug': child.slug, '_locale': child.translation.locale}) }}">
+                                {{ 'cyllene_digital_sylius_advanced_taxon.shop.mega_menu.view_category'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

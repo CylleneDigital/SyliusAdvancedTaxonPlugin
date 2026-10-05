@@ -1,0 +1,117 @@
+<div data-controller="at-admin-taxon-icon-picker">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">
+                {{ 'cyllene_digital_sylius_advanced_taxon.ui.advanced_customizations'|trans }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    {{ form_row(form.hasColor) }}
+                    {{ form_row(form.color) }}
+                </div>
+                <div class="col-md-4">
+                    {{ form_row(form.iconType, {
+                        'attr': {
+                                'data-at-admin-taxon-icon-picker-target': 'typeSelect',
+                            'data-action': 'change->at-admin-taxon-icon-picker#updateIconMode'
+                        }
+                    }) }}
+                </div>
+                <div class="col-md-4" data-at-admin-taxon-icon-picker-target="iconRow">
+                    {{ form_row(form.icon, {
+                        'attr': {
+                            'data-at-admin-taxon-icon-picker-target': 'iconInput'
+                        }
+                    }) }}
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        data-icon-picker-open
+                        data-action="click->at-admin-taxon-icon-picker#openModal"
+                    >
+                        {{ 'cyllene_digital_sylius_advanced_taxon.form.choose_icon'|trans }}
+                    </button>
+                </div>
+                <div class="col-md-4" data-at-admin-taxon-icon-picker-target="fileRow">
+                    {{ form_row(form.iconFile) }}
+                    {% set storedIcon = form.vars.data.icon ?? '' %}
+                    {% if storedIcon starts with 'image:' %}
+                        <div class="d-flex align-items-center gap-2" {{ sylius_test_html_attribute('current-pictogram') }}>
+                            <img src="{{ storedIcon|slice(6)|imagine_filter('cyllene_advanced_taxon_icon') }}" alt="" class="img-thumbnail at-admin-pictogram-preview">
+                            <span class="form-text m-0">{{ 'cyllene_digital_sylius_advanced_taxon.form.current_pictogram'|trans }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-12">
+                    {{ form_row(form.showCustomizationInMenu) }}
+                    {{ form_row(form.showCustomizationOnTaxonPage) }}
+                    {{ form_row(form.showCustomizationInBreadcrumbs) }}
+                    {{ form_row(form.universeTitleBackgroundEnabled) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% set iconLibraries = advanced_taxon_icon_libraries() %}
+
+    <div
+        class="modal fade"
+        id="advanced-taxon-icon-modal"
+        tabindex="-1"
+        aria-labelledby="advanced-taxon-icon-modal-label"
+        aria-hidden="true"
+        data-at-admin-taxon-icon-picker-target="modal"
+    >
+        <div class="modal-dialog modal-md modal-dialog-scrollable at-admin-icon-modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="advanced-taxon-icon-modal-label">{{ 'cyllene_digital_sylius_advanced_taxon.form.choose_icon'|trans }}</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-action="click->at-admin-taxon-icon-picker#closeModal"
+                        aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.ui.close'|trans }}"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column gap-4">
+                        {% for library in iconLibraries %}
+                            {% if library.icons is not empty %}
+                                <div>
+                                    <div class="small text-muted text-uppercase fw-bold mb-2">{{ library.label }}</div>
+                                    <div class="d-grid gap-2 at-admin-icon-grid">
+                                        {% for icon in library.icons %}
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-secondary d-inline-flex align-items-center justify-content-center at-admin-icon-grid-button"
+                                                data-icon-value="{{ library.icon_prefix ~ ':' ~ icon }}"
+                                                data-at-admin-taxon-icon-picker-target="iconButton"
+                                                data-action="click->at-admin-taxon-icon-picker#selectIcon"
+                                                title="{{ library.icon_prefix ~ ':' ~ icon }}"
+                                                aria-label="{{ library.icon_prefix ~ ':' ~ icon }}"
+                                                aria-pressed="false"
+                                            >
+                                                {{ ux_icon(library.icon_prefix ~ ':' ~ icon, { class: 'icon at-admin-icon-grid-icon', 'aria-hidden': 'true' }) }}
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-action="click->at-admin-taxon-icon-picker#closeModal"
+                    >
+                        {{ 'cyllene_digital_sylius_advanced_taxon.ui.close'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

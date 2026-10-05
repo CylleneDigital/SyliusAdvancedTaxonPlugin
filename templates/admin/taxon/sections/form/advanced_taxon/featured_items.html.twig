@@ -1,0 +1,39 @@
+{% import '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/form/macros.html.twig' as macros %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">
+            {{ 'cyllene_digital_sylius_advanced_taxon.ui.featured_elements'|trans }}
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-12">
+                {{ form_row(form.featuredChildren) }}
+            </div>
+            <hr>
+            <div class="col-12">
+                {{ form_row(form.featuredProducts) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.isFeaturedProductsActive) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.featuredProductsPosition) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.isSlider) }}
+            </div>
+            <div class="col-12">
+                <h3 class="h3 mb-3">{{ 'sylius.ui.translations'|trans }}</h3>
+                {{ macros.translation_fields(form.featuredItemsTranslations, 'taxon-featured-items-translations', [
+                    'featuredProductsTitle',
+                    'featuredProductsDescription',
+                    'featuredChildrenTitle',
+                    'featuredChildrenDescription',
+                ]) }}
+            </div>
+        </div>
+    </div>
+</div>
+

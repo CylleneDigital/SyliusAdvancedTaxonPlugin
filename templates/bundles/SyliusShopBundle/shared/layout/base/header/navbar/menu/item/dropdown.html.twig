@@ -1,0 +1,6 @@
+{# Standard (non mega) menu only: the dropdown of a first-level taxon, through the item#dropdown hook. #}
+<div class="dropdown-menu">
+    {% for child_taxon in advanced_taxon_ordered_children(hookable_metadata.context.taxon) %}
+        {% include '@CylleneDigitalSyliusAdvancedTaxonPlugin/bundles/SyliusShopBundle/shared/layout/base/header/navbar/menu/item/tree.html.twig' with { taxon: child_taxon } only %}
+    {% endfor %}
+</div>

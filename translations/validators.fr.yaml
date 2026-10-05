@@ -1,0 +1,14 @@
+cyllene_digital_sylius_advanced_taxon:
+    facet_condition:
+        invalid_type: "Ce type de condition n'est pas pris en charge."
+        invalid_operator: 'Cet opérateur ne peut pas être utilisé avec ce type de condition.'
+        reference_required: "Sélectionnez l'attribut, l'option ou le taxon visé par cette condition."
+        reference_not_found: "L'attribut, l'option ou le taxon « %code% » n'existe pas ou ne peut pas servir dans une condition."
+        self_reference: 'Un taxon ne peut pas être la référence de sa propre condition.'
+        value_required: 'Saisissez la valeur à laquelle cette condition compare.'
+        too_long: 'Cette valeur est trop longue : %limit% caractères au maximum.'
+    product:
+        main_taxon_universe: "L'univers « %taxon% » ne peut pas être le taxon principal d'un produit : une page univers ne liste pas de produits."
+    icon:
+        invalid_file: 'Le pictogramme doit être une image PNG, JPEG, WebP ou GIF de 2 Mo maximum.'
+        not_found: "L'icône « %icon% » est introuvable dans les bibliothèques d'icônes de la boutique."
