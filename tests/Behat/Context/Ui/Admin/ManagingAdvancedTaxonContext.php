@@ -240,7 +240,9 @@ final class ManagingAdvancedTaxonContext implements Context
     #[Then('the :zone zone media positions should be :positions')]
     public function theZoneMediaPositionsShouldBe(string $zone, string $positions): void
     {
-        Assert::same($this->taxonForm->getZoneMediaPositions($zone), explode(',', $positions));
+        $actual = $this->taxonForm->getZoneMediaPositions($zone);
+
+        Assert::same($actual, explode(',', $positions), sprintf('The "%s" zone media positions are "%s", expected "%s".', $zone, implode(',', $actual), $positions));
     }
 
     /**

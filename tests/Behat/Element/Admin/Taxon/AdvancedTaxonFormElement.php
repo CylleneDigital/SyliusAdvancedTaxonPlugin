@@ -118,13 +118,13 @@ final class AdvancedTaxonFormElement extends Element
     public function addMedia(string $zone): void
     {
         $this->showZone($zone);
-        $this->find($this->getZone($zone), '[data-form-collection="add"]')->click();
+        $this->clickMediaButton($zone, '[data-form-collection="add"]', 1);
     }
 
     public function removeFirstMedia(string $zone): void
     {
         $this->showZone($zone);
-        $this->find($this->getZone($zone), '[data-form-collection="item"] [data-form-collection="delete"]')->click();
+        $this->clickMediaButton($zone, '[data-form-collection="item"] [data-form-collection="delete"]', -1);
     }
 
     public function addNameCondition(string $value): void
@@ -208,7 +208,26 @@ final class AdvancedTaxonFormElement extends Element
 
     private function getZone(string $zone): NodeElement
     {
-        return $this->find($this->getDocument(), sprintf('.media-collection-%s[data-form-type="collection"]', str_replace('_', '-', $zone)));
+        return $this->find($this->getDocument(), $this->getZoneSelector($zone));
+    }
+
+    private function getZoneSelector(string $zone): string
+    {
+        return sprintf('.media-collection-%s[data-form-type="collection"]', str_replace('_', '-', $zone));
+    }
+
+    /**
+     * Clicks through the DOM: the mouse click of the driver, aimed at coordinates read beforehand,
+     * was lost now and then on the CI, leaving the zone one media short.
+     */
+    private function clickMediaButton(string $zone, string $button, int $mediaAdded): void
+    {
+        $zoneSelector = $this->getZoneSelector($zone);
+        $items = sprintf('%s [data-form-collection="list"] > [data-form-collection="item"]', $zoneSelector);
+        $expected = count($this->getDocument()->findAll('css', $items)) + $mediaAdded;
+
+        $this->getSession()->executeScript(sprintf('document.querySelector(%s).click()', json_encode($zoneSelector . ' ' . $button)));
+        $this->waitFor(sprintf('document.querySelectorAll(%s).length === %d', json_encode($items), $expected));
     }
 
     private function showZone(string $zone): void
