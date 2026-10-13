@@ -124,7 +124,7 @@
         ],
         "frontend-clear": [
             "cd vendor/sylius/test-application && yarn install && yarn build",
-            "vendor/bin/console assets:install"
+            "vendor/bin/console assets:install vendor/sylius/test-application/public"
         ],
         "test-app-init": [
             "@database-reset",
