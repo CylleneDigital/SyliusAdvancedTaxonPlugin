@@ -2,7 +2,8 @@
 # Migration / mapping drift check: prints the SQL left to apply on the plugin schema and fails, or
 # prints nothing. It covers the plugin tables and the columns the plugin adds to the Sylius tables,
 # and leaves out the rest of the Sylius schema: a core drift is not ours to fix and would mask ours.
-# Run it on MySQL or PostgreSQL: on MariaDB, DBAL introspection reports every nullable column again.
+# Not on a MariaDB declared with a MySQL server version: DBAL introspection reports every nullable
+# column again there.
 set -eu
 
 drift="$(vendor/bin/console doctrine:schema:update --dump-sql "$@" | grep -iE \
