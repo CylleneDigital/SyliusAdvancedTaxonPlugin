@@ -123,7 +123,7 @@ jobs:
 
             -
                 name: Build Sylius Test Application
-                uses: SyliusLabs/BuildTestAppAction@fbdfc158a99f540fc3bbe554b46120d14444f2f4 # v4.3.0
+                uses: SyliusLabs/BuildTestAppAction@c3b108b5f3c299c55f429a8cf0ed88734d4f4979 # v4.3.1
                 with:
                     # The admin and shop pages the tests render include the Webpack Encore entries:
                     # without a front-end build they answer 500 without saying why.
