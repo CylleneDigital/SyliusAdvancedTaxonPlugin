@@ -234,7 +234,7 @@ final class ManagingAdvancedTaxonContext implements Context
             preg_match('/<input[^>]*\[position\][^>]*\svalue="(?<position>\d+)"/', $this->taxonForm->getZonePrototype($zone), $matches),
             sprintf('The "%s" zone does not pre-fill any media position.', $zone),
         );
-        Assert::same($matches['position'] ?? '', (string) $position, sprintf('Unexpected pre-filled position for the "%s" zone.', $zone));
+        Assert::same($matches['position'], (string) $position, sprintf('Unexpected pre-filled position for the "%s" zone.', $zone));
     }
 
     #[Then('the :zone zone media positions should be :positions')]

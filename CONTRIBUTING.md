@@ -225,7 +225,9 @@ Sylius plugins, do not add personal rules to it.
 ## Conventions
 
 - **PHPStan level `max`** on `src/` and `tests/` (`phpstan.neon`, test application entities
-  included). Lowering the level or adding `ignoreErrors` needs a justification in the pull request.
+  included), with its Doctrine and Webmozart Assert extensions, loaded by
+  `phpstan/extension-installer`. Lowering the level or adding `ignoreErrors` needs a justification
+  in the pull request.
 - **ECS** via `sylius-labs/coding-standard` (`ecs.php`), on `src/`, `tests/` and the test
   application sources.
 - **Tests are mandatory** for bug fixes: the test must fail before the fix. The queries

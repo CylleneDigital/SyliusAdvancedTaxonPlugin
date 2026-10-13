@@ -17,7 +17,6 @@ class TaxonImageTranslation extends AbstractTranslation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    /** @phpstan-ignore property.unusedType */
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -25,6 +24,7 @@ class TaxonImageTranslation extends AbstractTranslation
 
     #[ORM\ManyToOne(targetEntity: TaxonImageInterface::class, inversedBy: 'translations')]
     #[ORM\JoinColumn(name: 'translatable_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    /** @phpstan-ignore doctrine.associationType, doctrine.associationType (mapped on the Sylius interface, resolved to the application entity) */
     protected ?TranslatableInterface $translatable = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

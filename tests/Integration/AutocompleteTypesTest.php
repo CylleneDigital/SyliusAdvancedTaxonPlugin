@@ -117,7 +117,7 @@ final class AutocompleteTypesTest extends KernelTestCase
 
         $results = [];
         foreach ($rows as $result) {
-            Assert::isInstanceOf($result, $resultClass);
+            \assert($result instanceof $resultClass);
             $results[] = $result;
         }
 
