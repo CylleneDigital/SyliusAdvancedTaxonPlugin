@@ -206,8 +206,10 @@ vendor/bin/behat --colors --strict --no-interaction -f progress
 `tests/check-schema-drift.sh` is the migration / mapping drift check: it must print **nothing**.
 Any SQL for a `cyllene_advanced_taxon_*` table, or for a column the plugin adds to `sylius_taxon`,
 `sylius_channel` or `sylius_taxon_image`, means the migration and the entity mapping have diverged.
-Run it, and the `--down` / `--up` replay, on MySQL or PostgreSQL: on MariaDB, DBAL introspection
-reports every nullable column again, and fails on a MariaDB 11 table. PHPStan, ECS and the template
+On a MariaDB declared with a MySQL server version, as advised above, DBAL introspection reports
+every nullable column again and fails on a MariaDB 11 table: run it, and the `--down` / `--up`
+replay, on MySQL or PostgreSQL. The CI MariaDB jobs declare MariaDB as such and build the schema
+from the mappings, the replay being their run of the plugin migration. PHPStan, ECS and the template
 lint only run on the primary job (Sylius 2.3, PHP 8.4, Symfony 7.4, MySQL 8.4), which also measures
 the code coverage. Before Sylius 2.3, the CI keeps `doctrine/orm` below 3.7 (Sylius 2.1 mappings fail
 its validation) and Behat on 3 (Sylius 2.1 and 2.2 declare their steps in annotations, which Behat 4
