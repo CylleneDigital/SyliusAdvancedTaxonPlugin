@@ -19,7 +19,6 @@ class TaxonFeaturedItemsTranslation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    /** @phpstan-ignore property.unusedType */
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -27,6 +26,7 @@ class TaxonFeaturedItemsTranslation
 
     #[ORM\ManyToOne(targetEntity: TaxonInterface::class, inversedBy: 'featuredItemsTranslations')]
     #[ORM\JoinColumn(name: 'taxon_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    /** @phpstan-ignore doctrine.associationType (mapped on the Sylius interface, resolved to the application entity) */
     private ?AdvancedTaxonInterface $taxon = null;
 
     #[ORM\Column(name: 'featured_products_title', type: 'string', length: 255, nullable: true)]

@@ -1,10 +1,13 @@
 services:
     php:
+        # The host user: PHP-FPM and the console then write var/ with the same owner, yours.
+        user: ${DOCKER_USER:-1000:1000}
         volumes:
             - .:/app:rw,cached
         working_dir: /app
         environment:
             APP_ENV: test
+            PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-UTC}
             DATABASE_URL: mysql://root@mysql/cyllene_digital_sylius_advanced_taxon_plugin_test
             BEHAT_BASE_URL: http://nginx/
         depends_on:
@@ -20,6 +23,9 @@ services:
     nginx:
         ports:
             - "8080:80"
+        environment:
+            # The image serves ${WORKING_DIR}/public: the test application's, not the plugin's.
+            WORKING_DIR: /app/vendor/sylius/test-application
         volumes:
             - .:/app:rw,cached
         depends_on:

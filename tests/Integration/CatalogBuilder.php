@@ -249,7 +249,7 @@ final class CatalogBuilder
         Assert::isInstanceOf($factory, FactoryInterface::class);
 
         $resource = $factory->createNew();
-        Assert::isInstanceOf($resource, $class);
+        \assert($resource instanceof $class);
 
         return $resource;
     }

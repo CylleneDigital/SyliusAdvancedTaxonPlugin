@@ -3,6 +3,9 @@
 
 DOCKER_PHP = docker compose exec -T php
 
+# compose.override.dist.yml runs PHP as this user, so that var/ stays yours.
+export DOCKER_USER ?= $(shell id -u):$(shell id -g)
+
 phpunit:
 	vendor/bin/phpunit --colors=always
 
@@ -27,7 +30,7 @@ ecs:
 lint-container:
 	vendor/bin/console lint:container
 
-## Ephemeral Docker stack for Behat (MySQL + PHP + nginx)
+## Ephemeral Docker stack for Behat (MySQL + PHP + nginx + headless Chrome)
 docker-up:
 	@test -f compose.override.yml || cp compose.override.dist.yml compose.override.yml
 	docker compose up -d
@@ -41,8 +44,8 @@ test-app-init:
 	$(DOCKER_PHP) vendor/bin/console assets:install vendor/sylius/test-application/public
 
 test-app-frontend:
-	docker run --rm -v "$(CURDIR):/app" -w /app/vendor/sylius/test-application node:22-alpine \
-		sh -c "corepack enable && yarn install && yarn build"
+	docker run --rm -u $(DOCKER_USER) -e HOME=/tmp -v "$(CURDIR):/app" -w /app/vendor/sylius/test-application node:22-alpine \
+		sh -c "corepack yarn install && corepack yarn build"
 
 behat-docker:
 	$(DOCKER_PHP) vendor/bin/behat --strict --no-interaction -f progress

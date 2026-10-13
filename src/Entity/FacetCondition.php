@@ -80,11 +80,11 @@ class FacetCondition
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    /** @phpstan-ignore property.unusedType */
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: TaxonInterface::class, inversedBy: 'facetConditions')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    /** @phpstan-ignore doctrine.associationType (mapped on the Sylius interface, resolved to the application entity) */
     private ?AdvancedTaxonInterface $taxon = null;
 
     #[ORM\Column(length: 32, name: 'condition_type')]

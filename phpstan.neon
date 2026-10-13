@@ -7,3 +7,7 @@ parameters:
         - tests/Functional
         - tests/Behat
         - tests/TestApplication/src
+    doctrine:
+        # Sylius resources are created empty, then filled: a required column or relation stays
+        # nullable on the PHP side.
+        allowNullablePropertyForRequiredField: true
