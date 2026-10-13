@@ -82,8 +82,9 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - The public directory served by the test app is `vendor/sylius/test-application/public`.
 - `composer.lock` is not versioned: CI resolves each job with its real PHP, Sylius and Symfony
   versions.
-- `@javascript` scenarios need a Chrome with remote debugging on `127.0.0.1:9222` and the test
-  application served **in the test environment** at `BEHAT_BASE_URL`.
+- Any Behat run needs a Chrome with remote debugging on `127.0.0.1:9222` (the driver asks for its
+  version at startup, even with `--tags='~@javascript'`); the `@javascript` scenarios also need the
+  test application served **in the test environment** at `BEHAT_BASE_URL`.
 - The integration, functional and Behat suites need the migrated test database.
 - Code coverage is only measured in CI, on the Sylius 2.3 / PHP 8.4 / Symfony 7.4 / MySQL 8.4 job
   (pcov).

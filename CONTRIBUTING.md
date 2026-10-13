@@ -51,21 +51,22 @@ and DBAL cannot introspect the default MariaDB 11 collation.
 
 ### Docker stack
 
-Ephemeral stack: MySQL + PHP + nginx. `compose.override.yml` is gitignored: copy it from the dist
-file (or let `make docker-up` create it). It has **no Chrome service**.
+Ephemeral stack: MySQL + PHP + nginx + a headless Chrome sharing the PHP container's network.
+`compose.override.yml` is gitignored: copy it from the dist file (or let `make docker-up` create
+it). PHP runs as your user (`DOCKER_USER`, set by the Makefile), so `var/` stays yours.
 
 ```bash
-composer install                 # on the host, or: docker compose exec php composer install
+composer install                 # on the host, or after docker-up: docker compose exec php composer install
 make docker-up                   # copies compose.override.dist.yml if missing, then up -d
                                  # MySQL is published on host port 3307 (3306 is often taken)
 make test-app-init               # database + migrations + assets:install (into test-application/public)
 make test-app-frontend           # yarn build in vendor/sylius/test-application (admin and shop @ui)
-docker compose exec -T php vendor/bin/behat --strict --no-interaction -f progress --tags='~@javascript'
+make behat-docker                # every scenario, the @javascript ones included
 make docker-down                 # stop and remove volumes when finished
 ```
 
-`make behat-docker` runs **every** scenario, so its `@javascript` ones fail without a Chrome the PHP
-container can reach; use the command above, or run the `@javascript` scenarios on the host.
+The test application is then served in the test environment at <http://127.0.0.1:8080/>. Outside
+`make`, pass your user yourself: `DOCKER_USER="$(id -u):$(id -g)" docker compose up -d`.
 
 ### Dev shop
 
@@ -100,22 +101,19 @@ for the mega menu.
 the Mink `symfony` session (no browser); 5 are tagged `@javascript` and drive a real Chrome: the
 icon picker, the media rows added in the taxon form and the conditions (preview, save, refusal).
 
-Scenarios without a browser:
+The [Docker stack](#docker-stack) brings both of the following. On the host, as configured in
+`behat.dist.php`:
 
-```bash
-vendor/bin/behat --strict --no-interaction -f progress --tags='~@javascript'
-```
-
-`@javascript` scenarios need, as configured in `behat.dist.php`:
-
-1. Chrome headless with remote debugging on `127.0.0.1:9222`:
+1. Chrome headless with remote debugging on `127.0.0.1:9222`. Every Behat run needs it, even one
+   limited to the scenarios without a browser (`--tags='~@javascript'`): the Chrome driver asks
+   Chrome for its version as soon as Behat starts.
 
    ```bash
    google-chrome --headless=new --remote-debugging-port=9222 --no-sandbox
    ```
 
-2. the test application served **in the test environment** at `BEHAT_BASE_URL`
-   (`http://127.0.0.1:8080/` in `tests/TestApplication/.env`), after `make test-app-init` /
+2. for the `@javascript` scenarios, the test application served **in the test environment** at
+   `BEHAT_BASE_URL` (`http://127.0.0.1:8080/` in `tests/TestApplication/.env`), after `make test-app-init` /
    `make test-app-frontend` or their host equivalents:
 
    ```bash

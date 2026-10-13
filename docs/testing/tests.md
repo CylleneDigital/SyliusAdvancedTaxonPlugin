@@ -77,7 +77,8 @@ The `doctrine_orm` hook purges the database before each scenario; it does not cr
 the test database has to exist and be migrated first.
 
 The `@javascript` scenarios run in Chrome against the application served at `BEHAT_BASE_URL`
-([CONTRIBUTING](../../CONTRIBUTING.md#behat)). The form fields live in Bootstrap tabs and accordions:
+([CONTRIBUTING](../../CONTRIBUTING.md#behat)). Behat needs that Chrome to start at all, even with
+`--tags='~@javascript'`: the driver asks it for its version when it is built. The form fields live in Bootstrap tabs and accordions:
 the admin form element opens them first, since the browser only interacts with visible fields. The
 browser saves in another process, so the contexts refresh an entity before asserting on it.
 
