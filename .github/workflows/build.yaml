@@ -53,9 +53,10 @@ jobs:
                         symfony: "^8.0"
                         php: "8.3"
                 include:
-                    # Extra databases on the primary combination. The build action declares MariaDB
-                    # with a bare version, which DBAL reads as MySQL: that is what the Sylius 2.3
-                    # migrations need, they skip a database declared as MariaDB.
+                    # Extra databases on the primary combination. On MariaDB the Sylius migrations
+                    # skip themselves under DBAL 4, where `MariaDBPlatform` no longer extends
+                    # `MySQLPlatform`: the schema is built from the mappings there, and the replay
+                    # step below is what runs the plugin migration.
                     -
                         php: "8.4"
                         symfony: "^7.4"
@@ -67,12 +68,14 @@ jobs:
                         symfony: "^7.4"
                         sylius: "~2.3.0"
                         database: "mariadb:10.11"
+                        database_setup: "schema"
                         node: "22.x"
                     -
                         php: "8.4"
                         symfony: "^7.4"
                         sylius: "~2.3.0"
                         database: "mariadb:11.4"
+                        database_setup: "schema"
                         node: "22.x"
                     -
                         php: "8.4"
@@ -123,7 +126,7 @@ jobs:
 
             -
                 name: Build Sylius Test Application
-                uses: SyliusLabs/BuildTestAppAction@fbdfc158a99f540fc3bbe554b46120d14444f2f4 # v4.3.0
+                uses: SyliusLabs/BuildTestAppAction@c3b108b5f3c299c55f429a8cf0ed88734d4f4979 # v4.3.1
                 with:
                     # The admin and shop pages the tests render include the Webpack Encore entries:
                     # without a front-end build they answer 500 without saying why.
@@ -131,6 +134,7 @@ jobs:
                     cache_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
                     cache_restore_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-"
                     database: "${{ matrix.database }}"
+                    database_setup: "${{ matrix.database_setup || 'migrations' }}"
                     node_version: "${{ matrix.node }}"
                     php_version: "${{ matrix.php }}"
                     php_coverage: "${{ matrix.coverage || 'none' }}"
@@ -156,21 +160,17 @@ jobs:
 
             # Runs the plugin migration's down() (never exercised otherwise), then up() again: the drift
             # check below then also proves down() left nothing behind that up() would collide with.
-            # Not on MariaDB: with the MySQL platform DBAL picks there, introspecting a MariaDB 11 table
-            # (default collation utf8mb4_uca1400_ai_ci) fails. MySQL and PostgreSQL cover the replay.
+            # On MariaDB, where the schema comes from the mappings, this is the only run of up().
             -
                 name: Revert and replay the plugin migration
-                if: ${{ !startsWith(matrix.database, 'mariadb') }}
                 run: |
                     vendor/bin/console doctrine:migrations:execute 'CylleneDigital\SyliusAdvancedTaxonPlugin\Migrations\Version20260828173000' --down -n
                     vendor/bin/console doctrine:migrations:execute 'CylleneDigital\SyliusAdvancedTaxonPlugin\Migrations\Version20260828173000' --up -n
 
             # Any SQL left to apply on the plugin tables or on the columns the plugin adds to the Sylius
-            # tables means the migration and the mapping have diverged. Not on MariaDB: DBAL introspection
-            # reports every nullable column again there, MySQL and PostgreSQL cover the check.
+            # tables means the migration and the mapping have diverged.
             -
                 name: Validate plugin migration against the mapping
-                if: ${{ !startsWith(matrix.database, 'mariadb') }}
                 run: sh tests/check-schema-drift.sh
 
             # Static analysis, coding standard and template linting do not depend on the database

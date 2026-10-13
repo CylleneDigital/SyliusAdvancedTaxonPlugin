@@ -39,9 +39,8 @@ Consequences:
 `down()` drops the five plugin tables and the 26 added columns, with their data, and the three
 sequences on PostgreSQL.
 
-The CI runs the migration on MySQL, MariaDB and PostgreSQL 15, 16 and 17, and the `--down` / `--up`
-replay and the drift check on MySQL and PostgreSQL: with the MySQL platform DBAL uses on MariaDB, it
-cannot introspect a MariaDB 11 table (default collation) and reports every nullable column again.
+The CI runs the migration, its `--down` / `--up` replay and the drift check on MySQL, MariaDB and
+PostgreSQL 15, 16 and 17.
 
 ## Registration
 
@@ -92,7 +91,8 @@ DATABASE_URL="mysql://app:app@127.0.0.1:3306/cyllene_digital_sylius_advanced_tax
 
 ## Drift check
 
-The CI builds the database from the migrations (`APP_ENV=test`), then runs
+The CI builds the database from the migrations (`APP_ENV=test`), or from the mappings on MariaDB,
+where the Sylius migrations are skipped (see above), then runs
 ([CONTRIBUTING.md](../../CONTRIBUTING.md#what-has-to-pass-before-a-pull-request)):
 
 ```bash
@@ -109,7 +109,9 @@ sh tests/check-schema-drift.sh
   the migration and the mapping have diverged. The rest of the Sylius schema is left out so that a
   core drift does not mask it. A column added to a Sylius table goes into the script's list too.
 
-The CI runs the replay and the check on MySQL and PostgreSQL, not on MariaDB (see above).
+On MariaDB the database is declared as such in the CI, and the replay is the only run of the plugin
+migration. On a MariaDB declared with a MySQL server version, as above, the check is not usable:
+DBAL reports every nullable column again and cannot introspect the default MariaDB 11 collation.
 
 ## Changing the schema
 

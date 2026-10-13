@@ -55,9 +55,9 @@ The plugin targets Sylius 2.1, 2.2 and 2.3, Symfony 7.4 and 8 (8 with Sylius 2.3
   attributes are sanitized on write (`AdvancedTaxonValueSanitizer`).
 
 - **A schema change is a new migration** in `src/Migrations/` (DBAL `Schema` API): `v1.0.0` shipped
-  `Version20260828173000`, which is never edited again. Free of drift on MySQL and PostgreSQL (CI
-  runs `down()` / `up()` then `tests/check-schema-drift.sh`, which lists the columns added to the
-  Sylius tables: keep it in step with the migrations).
+  `Version20260828173000`, which is never edited again. Free of drift on MySQL, MariaDB and
+  PostgreSQL (CI runs `down()` / `up()` then `tests/check-schema-drift.sh`, which lists the columns
+  added to the Sylius tables: keep it in step with the migrations).
 - The traits, interfaces, Twig hooks and functions, bundle configuration, message, command, admin
   route and schema are the public contract ([`docs/architecture/public-contract.md`](docs/architecture/public-contract.md)):
   they only break in a major version, with an entry in `UPGRADE.md`.
@@ -92,8 +92,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 
 - **On MariaDB with DBAL 4**, the Sylius core migrations are marked as executed but skipped unless
   the server version is a MySQL one: the symptom is a schema holding only the
-  `cyllene_advanced_taxon_*` tables. CI keeps the build action's `serverVersion=11.4`, which DBAL
-  reads as MySQL.
+  `cyllene_advanced_taxon_*` tables. The build action declares MariaDB as such
+  (`serverVersion=11.4.0-MariaDB`): the CI MariaDB jobs build the schema from the mappings
+  (`database_setup: schema`), and the `down()` / `up()` replay is their only run of the plugin
+  migration.
 - **Sylius 2.1 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI caps the
   ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open.
 - **Behat**: the Sylius suites are not imported (2.1 / 2.2 ship them in YAML, 2.3 in PHP); the plugin
