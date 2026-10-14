@@ -113,7 +113,7 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   migration.
 - **Sylius 2.1 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI caps the
   ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open
-  ([0032](docs/adr/0032-upstream-workarounds-never-constrain-shops.md)).
+  ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
 - **Behat**: the Sylius suites are not imported (2.1 / 2.2 ship them in YAML, 2.3 in PHP); the plugin
   suites only use the Sylius contexts, which are services. The plugin contexts use PHP attributes (`#[Given]`, `#[AfterScenario]`):
   Behat 4, the one Symfony 8 needs, no longer reads annotations; the CI keeps Behat 3 before Sylius 2.3,
@@ -133,7 +133,7 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   to `sylius_admin:delete_modal` (empty delete buttons in every admin grid). Drop the constraint
   once Sylius passes defaults itself ([Sylius#19278](https://github.com/Sylius/Sylius/issues/19278)).
   An upstream workaround never goes into the plugin's own constraints
-  ([0032](docs/adr/0032-upstream-workarounds-never-constrain-shops.md)).
+  ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
 - `sylius_test_html_attribute()` attributes (`data-test-*`) are what the Behat pages target: keep
   them when reworking a shop template.
 
