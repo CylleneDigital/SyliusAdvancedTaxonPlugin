@@ -264,6 +264,9 @@ Everything not listed above, in particular:
 
 Decorating or replacing an internal service works, but is not covered by semver.
 
+The [decision records](../adr/README.md) explain choices, some of them about internals: a record
+promises nothing, only this page says what is stable.
+
 ## Support policy
 
 | Line | What is covered |

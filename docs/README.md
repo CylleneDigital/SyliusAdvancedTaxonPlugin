@@ -11,7 +11,7 @@ list: [Features](features.md). Installation in short and production notes: the r
 | Merchant (back office) | [Back-office guide](admin/user-guide.md), [Storefront](shop/storefront.md), [Conditional taxons](domain/conditional-taxons.md) |
 | Sylius integrator | [Installation](integration/installation.md), [Configuration](integration/configuration.md), [Theming and Twig hooks](integration/theming.md), [Assets](integration/assets.md), [Twig functions](shop/twig-functions.md), [Public contract](architecture/public-contract.md), [Troubleshooting](integration/troubleshooting.md) |
 | Ops (deployment) | [Migrations](persistence/migrations.md), [Database schema](persistence/schema.md), [Configuration: Messenger](integration/configuration.md), [Uninstall](integration/uninstall.md), [UPGRADE](../UPGRADE.md) |
-| Plugin contributor | [Architecture overview](architecture/overview.md), [Code map](development/code-map.md), [Tests](testing/tests.md), [CONTRIBUTING](../CONTRIBUTING.md) |
+| Plugin contributor | [Architecture overview](architecture/overview.md), [Decision records](adr/README.md), [Code map](development/code-map.md), [Tests](testing/tests.md), [CONTRIBUTING](../CONTRIBUTING.md) |
 
 ## Table of contents
 
@@ -45,6 +45,7 @@ list: [Features](features.md). Installation in short and production notes: the r
 
 - [Architecture overview](architecture/overview.md): layers, main flows, principles
 - [Public contract](architecture/public-contract.md): what is stable (semver major), support policy
+- [Decision records](adr/README.md): one file per architecture decision - its context, the decision, what follows from it
 - [Database schema](persistence/schema.md): added columns and tables
 - [Migrations](persistence/migrations.md): the single migration, portability, drift check
 
