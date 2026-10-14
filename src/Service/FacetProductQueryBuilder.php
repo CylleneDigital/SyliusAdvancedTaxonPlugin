@@ -107,8 +107,8 @@ final readonly class FacetProductQueryBuilder
      */
     private function normalizeAdvancedFilters(array $filters): array
     {
-        // Every selected code adds joins and facet queries: an unbounded query string would let anyone
-        // build a query MySQL refuses (61 tables at most) or the database chokes on.
+        // Every selected code adds a subquery to the listing and to every facet query, and a facet
+        // query of its own: an unbounded query string would let anyone send heavy queries.
         $codesLeft = self::MAX_FILTER_CODES;
         $normalizedAttributes = self::normalizeValuesByCode($filters['attributes'] ?? [], $codesLeft);
         $normalizedOptions = self::normalizeValuesByCode($filters['options'] ?? [], $codesLeft);
@@ -595,7 +595,7 @@ final readonly class FacetProductQueryBuilder
     }
 
     /**
-     * Unavailable in CLI contexts (for example while synchronizing conditional taxons).
+     * Unavailable outside a shop request (CLI).
      */
     private function getCurrentChannel(): ?ChannelInterface
     {

@@ -71,7 +71,7 @@ src/
 | DependencyInjection | `Configuration`, `CylleneDigitalSyliusAdvancedTaxonExtension` | `icon_libraries` config, Doctrine mapping, migrations, Liip filter sets, the `at` UX Icons set |
 
 Services are defined explicitly in `config/services/*.php`, without autowiring nor autoconfiguration,
-as Symfony recommends for reusable bundles. The wiring rules are in
+as Symfony recommends for reusable bundles ([why](../adr/0028-explicit-services-no-autowiring.md)). The wiring rules are in
 [Code map](../development/code-map.md#wiring).
 
 A file-by-file map is in [Code map](../development/code-map.md).
@@ -122,7 +122,10 @@ A file-by-file map is in [Code map](../development/code-map.md).
 5. `ConditionalTaxonProductAssigner` computes the matching product ids with
    `ConditionalTaxonQueryBuilder::buildQuery()` and attaches / detaches `ProductTaxon` links.
 
-Details: [Conditional taxons](../domain/conditional-taxons.md).
+Details: [Conditional taxons](../domain/conditional-taxons.md). Why the products are materialized,
+and why the synchronization waits for the end of the flush:
+[0011](../adr/0011-conditional-taxons-materialized-as-product-taxon-links.md),
+[0014](../adr/0014-synchronization-dispatched-through-messenger-after-the-flush.md).
 
 ### Admin preview of conditions
 
@@ -144,14 +147,17 @@ featured children and images in grouped queries.
 
 | Principle | Where it shows |
 |-----------|----------------|
-| Never replace a Sylius model | Traits + interfaces only; relations target `TaxonInterface`, `ProductInterface`, `TaxonImageInterface` (Doctrine `resolve_target_entities`); code tests `instanceof AdvancedTaxonInterface` |
-| The taxon listing is the Sylius grid | No parallel product query in templates; facets count what the grid lists |
-| Fail closed | A stored condition that is not applicable (incomplete, or whose attribute, option or taxon does not exist) makes the taxon match nothing (`buildQuery()` adds `1 = 0`), negative operators included |
-| No `LIKE` on JSON columns | Select attribute values are read once per attribute code and matched in PHP, then filtered by id (`IN` with inlined integers) |
-| Twig hooks are imported, not prepended | `config/config.yaml` is imported by the application after the Sylius configuration, so the plugin hooks win over the Sylius core hooks they override |
-| Sanitize on write | `setColor()`, `setIcon()`, `setUrl()` go through `AdvancedTaxonValueSanitizer`; the media display mode setters fall back to their default on an unknown value; `advanced_taxon_media_href()` sanitizes media links again on read |
-| Show only what is visible | Featured products and children are filtered at render time (`advanced_taxon_visible_products()`, `advanced_taxon_visible_taxons()`): disabled products, products outside the current channel and disabled taxons are left out |
-| Stateless services | Services are `final` and mostly `readonly`; the six holding per-request memory (`SelectAttributeValueResolver`, `FacetReferenceChecker`, `FacetRuntime`, `VisibilityRuntime`, `ConditionalTaxonSyncListener`, `TaxonIconRemovalListener`) implement `ResetInterface`, so they are reset between requests (FrankenPHP worker mode, Messenger workers) |
+| [Never replace a Sylius model](../adr/0001-never-replace-a-sylius-model.md) | Traits + interfaces only; relations target `TaxonInterface`, `ProductInterface`, `TaxonImageInterface` (Doctrine `resolve_target_entities`); code tests `instanceof AdvancedTaxonInterface` |
+| [The taxon listing is the Sylius grid](../adr/0006-taxon-listing-is-the-sylius-grid.md) | No parallel product query in templates; facets count what the grid lists |
+| [Fail closed](../adr/0015-non-applicable-condition-matches-nothing.md) | A stored condition that is not applicable (incomplete, or whose attribute, option or taxon does not exist) makes the taxon match nothing (`buildQuery()` adds `1 = 0`), negative operators included |
+| [No `LIKE` on JSON columns](../adr/0009-no-like-on-json-columns.md) | Select attribute values are read once per attribute code and matched in PHP, then filtered by id (`IN` with inlined integers) |
+| [Twig hooks are imported, not prepended](../adr/0004-twig-hooks-imported-not-prepended.md) | `config/config.yaml` is imported by the application after the Sylius configuration, so the plugin hooks win over the Sylius core hooks they override |
+| [Sanitize on write](../adr/0020-values-sanitized-on-write.md) | `setColor()`, `setIcon()`, `setUrl()` go through `AdvancedTaxonValueSanitizer`; the media display mode setters fall back to their default on an unknown value; `advanced_taxon_media_href()` sanitizes media links again on read |
+| [Show only what is visible](../adr/0010-featured-items-filtered-at-render-time.md) | Featured products and children are filtered at render time (`advanced_taxon_visible_products()`, `advanced_taxon_visible_taxons()`): disabled products, products outside the current channel, disabled taxons and featured children moved under another parent (template filter) are left out |
+| [Stateless services](../adr/0029-per-request-memory-services-are-reset.md) | Services are `final` and mostly `readonly`; the six holding per-request memory (`SelectAttributeValueResolver`, `FacetReferenceChecker`, `FacetRuntime`, `VisibilityRuntime`, `ConditionalTaxonSyncListener`, `TaxonIconRemovalListener`) implement `ResetInterface`, so they are reset between requests (FrankenPHP worker mode, Messenger workers) |
+
+Why each of them holds, and what was left as it is on purpose: the
+[decision records](../adr/README.md).
 
 ## Entry files
 

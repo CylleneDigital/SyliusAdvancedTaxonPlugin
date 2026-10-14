@@ -116,8 +116,8 @@ DBAL reports every nullable column again and cannot introspect the default Maria
 ## Changing the schema
 
 1. Change the mapping in the trait or entity.
-2. Change `addedColumns()` or `createPluginTables()` in the migration (before `v1.0.0`), or add a
-   migration using the same DBAL `Schema` approach (after).
+2. Add a new migration in `src/Migrations/`, written against the DBAL `Schema` API: the released one
+   is never edited ([why](../adr/0031-schema-change-is-a-new-migration.md)).
 3. Run the drift check above on MySQL and PostgreSQL.
 4. Write the change in [UPGRADE.md](../../UPGRADE.md) when it affects existing data or the
    [public contract](../architecture/public-contract.md#database).

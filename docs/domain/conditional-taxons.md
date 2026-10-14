@@ -3,7 +3,7 @@
 A conditional taxon gets its products from rules instead of manual assignment. The plugin
 **materializes** the rules: matching products are attached to the taxon as regular Sylius
 `ProductTaxon` links, so the storefront, the API, the search and the product forms see a normal
-taxon. Nothing is resolved at query time. Admin usage: [User guide](../admin/user-guide.md).
+taxon. Nothing is resolved at query time ([why](../adr/0011-conditional-taxons-materialized-as-product-taxon-links.md)). Admin usage: [User guide](../admin/user-guide.md).
 
 ## Model
 
@@ -53,7 +53,7 @@ the only values a condition reads.
 `contains` patterns are escaped: `%`, `_` and the escape character typed by the merchant are literal.
 Every comparison ignores the case, on every database: the SQL ones (name, description, attribute
 text, option value) compare `LOWER()` of both sides, the select attribute choices are compared in
-PHP.
+PHP ([why](../adr/0016-conditions-compare-case-insensitively.md)).
 
 ### Negative operators
 
@@ -100,12 +100,11 @@ the taxon itself for `taxon_membership`, value present when required. `setRefere
 code trimmed, so that a stray space never makes the reference miss. If any stored condition is not applicable, or if there is
 none, the query gets `1 = 0` and the taxon matches **no** product. Incomplete data written without
 validation (API, fixtures, import, SQL), or a reference deleted or mistyped, never widens the
-selection to the whole catalog: without this check, a negative operator on a missing reference
-(`NOT EXISTS` always true) would match every product.
+selection ([why](../adr/0015-non-applicable-condition-matches-nothing.md)).
 
 ## Synchronization
 
-`ConditionalTaxonProductAssigner::syncTaxon(AdvancedTaxonInterface $taxon, ?string $localeCode = null)`
+`ConditionalTaxonProductAssigner::syncTaxon(AdvancedTaxonInterface $taxon)`
 returns `{detached, attached, matched}` and does not flush.
 
 | Case | Result |
@@ -121,13 +120,14 @@ Rules:
 - **Disabled products are kept.** `buildQuery()` does not filter on `enabled`: a product disabled for a
   while keeps its assignment and position. The storefront lists enabled products only.
 - **The synchronization owns the links.** A product assigned by hand to a conditional taxon is
-  detached at the next synchronization if it does not match.
+  detached at the next synchronization if it does not match
+  ([why](../adr/0012-conditional-taxon-owns-its-product-links.md)).
 - **Leaving conditional mode detaches everything**, including products that were assigned by hand
   before the taxon became conditional.
-- Links are removed through the unit of work (`removeProductTaxon()` + `remove()`), so Doctrine
-  events fire (search indexers…); they are loaded by chunks of 1000.
-- **Locale.** `name` and `description` are read in `$localeCode`, by default the Sylius default
-  locale (`sylius.translation_locale_provider`, `getDefaultLocaleCode()`).
+- Links are removed through the unit of work (`removeProductTaxon()` + `remove()`), loaded by
+  chunks of 1000 ([why](../adr/0013-products-detached-through-the-unit-of-work.md)).
+- **Locale.** `name` and `description` are read in the Sylius default locale
+  (`sylius.translation_locale_provider`, `getDefaultLocaleCode()`).
 - **Channel.** The match is not restricted to a channel.
 
 ### Triggers
@@ -149,8 +149,8 @@ skipped. A deleted taxon is skipped (its links go with it, `ON DELETE CASCADE`).
 
 The `SynchronizeConditionalTaxon(taxonId)` messages go out once the flush is over: at the end of the
 request (`kernel.response`, before the response is sent), of the console command
-(`console.terminate`) or of the message a worker handled (`WorkerMessageHandledEvent`). Doctrine
-does not support a flush inside `postFlush`, and a synchronous handler flushes. A flag prevents
+(`console.terminate`) or of the message a worker handled (`WorkerMessageHandledEvent`), never in
+`postFlush` ([why](../adr/0014-synchronization-dispatched-through-messenger-after-the-flush.md)). A flag prevents
 re-entrance while dispatching. Code that flushes outside these three (a plain script) leaves the
 synchronization to the [command](#console-command).
 
@@ -193,24 +193,25 @@ stock.
 
 The conditions tab posts the rows being edited to `AdminFacetPreviewController`
 ([route contract](../architecture/public-contract.md#admin-route)), which calls
-`ConditionalTaxonQueryBuilder::previewConditions()`:
+`ConditionalTaxonQueryBuilder::previewConditions()`
+([why it mirrors the synchronization](../adr/0018-condition-preview-mirrors-the-synchronization.md)):
 
 - rows that are not applicable (incomplete, still being filled, or whose reference does not exist)
   are **skipped**; the others are previewed. With no applicable row, the answer is `count: 0`;
 - the products are the ones the synchronization assigns: disabled products included, `name` and
   `description` read in the Sylius default locale (`sylius.translation_locale_provider`), the
   translation being optional;
-- the answer holds the total count and up to 20 products (the query has no `ORDER BY`); at most 32
+- the answer holds the total count and up to 20 products, by id; at most 32
   conditions are read.
 
 ## Known limitations
 
 | Limitation | Effect |
 |------------|--------|
-| Option conditions compare the **translated** option value, not the option value code | Renaming an option value in every locale breaks the condition: positive conditions stop matching, `not_in` stops excluding |
+| Option conditions compare the **translated** option value, not the option value code ([why](../adr/0017-option-conditions-match-the-translated-value.md)) | Renaming an option value in every locale breaks the condition: positive conditions stop matching, `not_in` stops excluding |
 | Deleting a referenced attribute, option or taxon | The condition is no longer applicable: the taxon matches no product, and the next synchronization (command or condition change) detaches all its products |
 | `name` / `description` use the Sylius default locale | A product without a translation in that locale never matches `equals` / `contains` on these types |
 | `taxon_membership` on another conditional taxon | Reads that taxon's current links: the command processes taxons by id, so a dependency synchronized later is only seen at the next run |
 | `syncAllConditionalTaxons()` clears the entity manager | Meant for the console; calling it in a request detaches every loaded entity |
 | No trigger on catalog changes | Products created or changed after the last save are only picked up by the command |
-| A condition on a select attribute reads every value of that attribute | The choices are matched in PHP (no `LIKE` on a JSON column), then the matching products are passed to the query by id: on a very large catalog, a frequent value makes a long `IN` list |
+| A condition on a select attribute reads every value of that attribute | The choices are matched in PHP ([no `LIKE` on a JSON column](../adr/0009-no-like-on-json-columns.md)), then the matching products are passed to the query by id: on a very large catalog, a frequent value makes a long `IN` list |

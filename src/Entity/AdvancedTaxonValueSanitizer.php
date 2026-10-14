@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CylleneDigital\SyliusAdvancedTaxonPlugin\Entity;
 
 /**
- * Sanitizes the free-form values rendered on the storefront (icon references and media links).
+ * Sanitizes the free-form values rendered on the storefront (colors, icon references and media links).
  */
 final class AdvancedTaxonValueSanitizer
 {

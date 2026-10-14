@@ -92,7 +92,7 @@ final class FacetRuntime implements RuntimeExtensionInterface, ResetInterface
     }
 
     /**
-     * Returns the references a facet condition can target (code => label), by condition type, for
+     * Returns the references a facet condition can target (label => code), by condition type, for
      * the facet condition JS. Labels are read in the current locale with scalar queries: the admin
      * form never hydrates the whole catalog structure.
      *

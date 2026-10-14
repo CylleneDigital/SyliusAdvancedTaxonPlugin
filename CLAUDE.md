@@ -30,34 +30,48 @@ The plugin targets Sylius 2.1, 2.2 and 2.3, Symfony 7.4 and 8 (8 with Sylius 2.3
 
 ## Invariants
 
+Each rule is here in full, with the names the code uses; its reasons are in the decision record it
+links ([`docs/adr/`](docs/adr/README.md)). Read the record before changing a rule, and write a new
+record rather than editing an accepted one - the records hold no path nor figure, this file does.
+
 - **Never replace a Sylius model.** The application owns `Taxon`, `Channel` and `TaxonImage`; the
   plugin only ships traits (mapping as attributes) and interfaces. Relations target the Sylius
   interfaces (`TaxonInterface`, `ProductInterface`, `TaxonImageInterface`), resolved by
-  `resolve_target_entities`. Code tests `instanceof AdvancedTaxonInterface`, never a class.
+  `resolve_target_entities`. Code tests `instanceof AdvancedTaxonInterface`, never a class
+  ([0001](docs/adr/0001-never-replace-a-sylius-model.md)).
 - **The taxon listing is the Sylius grid.** `ShopProductListQueryBuilder` calls
   `createShopListQueryBuilder()` and adds the children products and the advanced filters: no
   parallel product query in templates. Facet counts come from `createBaseProductsQb()`, which must
-  select exactly what the grid lists.
+  select exactly what the grid lists ([0006](docs/adr/0006-taxon-listing-is-the-sylius-grid.md),
+  [0007](docs/adr/0007-facet-counts-start-from-the-grid-query.md)).
 - **Conditional taxons fail closed.** A stored condition that is not applicable (wrong operator,
-  missing reference or value) makes the taxon match nothing, never the whole catalog.
+  missing reference or value) makes the taxon match nothing, never the whole catalog
+  ([0015](docs/adr/0015-non-applicable-condition-matches-nothing.md)).
 - **No LIKE on JSON columns** (not portable to PostgreSQL): select attribute values are resolved in
-  PHP, then filtered by identifier.
+  PHP, then filtered by identifier ([0009](docs/adr/0009-no-like-on-json-columns.md)).
 - **Services are explicit**: one file per area in `config/services/`, ids prefixed with
   `cyllene_digital_sylius_advanced_taxon.` (the controller keeps its class as id), no autowiring nor
-  autoconfiguration (Symfony bundle best practice). A class implementing `ResetInterface` needs the
-  `kernel.reset` tag by hand.
+  autoconfiguration. A class implementing `ResetInterface` needs the
+  `kernel.reset` tag by hand ([0028](docs/adr/0028-explicit-services-no-autowiring.md),
+  [0029](docs/adr/0029-per-request-memory-services-are-reset.md)).
 - **Template icons are local**: `tabler:` when Sylius ships the icon, otherwise a Tabler SVG added to
-  `assets/icons/` and used as `at:<name>`. A unit test fails on any other prefix (Iconify).
+  `assets/icons/` and used as `at:<name>` (Sylius ships 82 Tabler icons only, any other is fetched
+  from Iconify at render time). A unit test fails on an icon written in a template that no local set
+  ships
+  ([0021](docs/adr/0021-template-icons-are-local.md)).
 - **Twig hooks are imported, not prepended**: `config/config.yaml` must be loaded after the Sylius
-  configuration, since a prepended hook loses against the Sylius core hooks it overrides.
+  configuration, since a prepended hook loses against the Sylius core hooks it overrides
+  ([0004](docs/adr/0004-twig-hooks-imported-not-prepended.md)).
 - **Pictograms are Sylius images** (`image:<path>` in the icon field, Sylius image uploader and
   storage, Liip filter `cyllene_advanced_taxon_icon`). Values rendered in `style` or `href`
-  attributes are sanitized on write (`AdvancedTaxonValueSanitizer`).
+  attributes are sanitized on write (`AdvancedTaxonValueSanitizer`)
+  ([0019](docs/adr/0019-pictograms-are-sylius-images.md), [0020](docs/adr/0020-values-sanitized-on-write.md)).
 
 - **A schema change is a new migration** in `src/Migrations/` (DBAL `Schema` API): `v1.0.0` shipped
   `Version20260828173000`, which is never edited again. Free of drift on MySQL, MariaDB and
   PostgreSQL (CI runs `down()` / `up()` then `tests/check-schema-drift.sh`, which lists the columns
-  added to the Sylius tables: keep it in step with the migrations).
+  added to the Sylius tables: keep it in step with the migrations)
+  ([0031](docs/adr/0031-schema-change-is-a-new-migration.md)).
 - The traits, interfaces, Twig hooks and functions, bundle configuration, message, command, admin
   route and schema are the public contract ([`docs/architecture/public-contract.md`](docs/architecture/public-contract.md)):
   they only break in a major version, with an entry in `UPGRADE.md`.
@@ -98,7 +112,8 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   (`database_setup: schema`), and the `down()` / `up()` replay is their only run of the plugin
   migration.
 - **Sylius 2.1 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI caps the
-  ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open.
+  ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open
+  ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
 - **Behat**: the Sylius suites are not imported (2.1 / 2.2 ship them in YAML, 2.3 in PHP); the plugin
   suites only use the Sylius contexts, which are services. The plugin contexts use PHP attributes (`#[Given]`, `#[AfterScenario]`):
   Behat 4, the one Symfony 8 needs, no longer reads annotations; the CI keeps Behat 3 before Sylius 2.3,
@@ -113,12 +128,12 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **The taxon form template renders `form._token` itself** (`form_with_tabs.html.twig`): with
   `render_rest` off, nothing else does on Sylius 2.1.
 - `sylius:debug:twig-hooks` exists from `sylius/twig-hooks` 0.12, Sylius 2.3 only.
-- **Template icons must be local**: Sylius ships 82 Tabler icons only; another one goes to
-  `assets/icons/` as `at:<name>`, or it is fetched from Iconify at render time.
 - **`symfony/ux-twig-component` is kept below 3.5 in `require-dev`**: 3.5 lets an explicit `null`
   override a `{% props %}` default, and the Sylius grid delete action passes a null label and icon
   to `sylius_admin:delete_modal` (empty delete buttons in every admin grid). Drop the constraint
   once Sylius passes defaults itself ([Sylius#19278](https://github.com/Sylius/Sylius/issues/19278)).
+  An upstream workaround never goes into the plugin's own constraints
+  ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
 - `sylius_test_html_attribute()` attributes (`data-test-*`) are what the Behat pages target: keep
   them when reworking a shop template.
 
@@ -134,6 +149,8 @@ The same facts live in several places; change one, change them all:
 - the Twig hooks: `config/twig_hooks/*.yaml` and `docs/integration/theming.md`;
 - the Twig functions: `src/Twig/*.php`, `docs/shop/twig-functions.md` and `docs/architecture/public-contract.md`;
 - the Behat features: `features/`, `tests/Behat/Resources/suites.php` and `docs/testing/tests.md`;
+- a decision taken or reversed: a new record in `docs/adr/`, its line in `docs/adr/README.md`, and
+  the link from the rule here;
 - what a screen looks like: the screenshots in `docs/assets/` after a visible change.
 
 ## What does not belong here

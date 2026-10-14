@@ -19,8 +19,8 @@ use Sylius\Component\Core\Model\ProductInterface;
  * compiled to `NOT EXISTS` subqueries: a product must own no value matching the excluded one. A plain
  * `!=` on a joined alias would be wrong as soon as a product owns several values.
  *
- * A condition that cannot be applied (operator of another type, missing reference or value) makes
- * the whole query match nothing.
+ * In the query of a taxon, a condition that cannot be applied (operator of another type, missing
+ * reference or value) makes it match nothing; the preview skips it, as a row still being filled in.
  */
 final readonly class ConditionalTaxonQueryBuilder
 {

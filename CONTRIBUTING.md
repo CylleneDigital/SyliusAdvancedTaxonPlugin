@@ -235,9 +235,10 @@ Sylius plugins, do not add personal rules to it.
   integration tests on a real database; prefer a Behat scenario when the bug is visible in the shop
   or the back office.
 - The plugin never replaces a Sylius model: new fields on `Taxon`, `Channel` or `TaxonImage` go into
-  the matching trait and interface, and the migration.
+  the matching trait and interface, and a new migration
+  ([why](docs/adr/0001-never-replace-a-sylius-model.md), [migrations](docs/adr/0031-schema-change-is-a-new-migration.md)).
 - Services are defined explicitly in `config/services/`, without autowiring
-  ([code map](docs/development/code-map.md#wiring)).
+  ([code map](docs/development/code-map.md#wiring), [why](docs/adr/0028-explicit-services-no-autowiring.md)).
 - Update **`UPGRADE.md`** when the public contract changes; the change itself is described in the
   pull request, which feeds the release notes. Public contract items are listed in
   [docs/architecture/public-contract.md](docs/architecture/public-contract.md); they only break in
@@ -246,6 +247,10 @@ Sylius plugins, do not add personal rules to it.
 - The codebase is written in **English** (code, comments, commits).
 - A map of the code is in [docs/development/code-map.md](docs/development/code-map.md); the test
   strategy in [docs/testing/tests.md](docs/testing/tests.md).
+- Why the plugin is built the way it is, and what was left as it is on purpose, is in the
+  [decision records](docs/adr/README.md): read the one a change touches first. A pull request
+  that takes a decision, or reverses one, adds a record - an accepted record is superseded, not
+  edited.
 
 ## What does not belong here
 

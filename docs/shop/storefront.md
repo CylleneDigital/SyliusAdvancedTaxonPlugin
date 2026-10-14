@@ -119,7 +119,8 @@ With a single product on the page, random media go after it. No card is added to
 | **Spotlight zone** | mega menu hover image, child taxon cards | one media |
 | **Universe slider** | [hero slider](#hero-slider) of a universe page | position |
 
-**Stacked** lists the media by position; **Random** shuffles them on every view. Top, left and bottom
+**Stacked** lists the media by position; **Random** shuffles them on every view (behind an HTTP cache,
+once per cache entry: [why](../adr/0023-random-media-display-modes-kept.md)). Top, left and bottom
 media are full-width images, lazy loaded, with the media title as `title` and the description as
 `alt` (the taxon name when empty). They are not links. **Slider** (top and bottom zones, from two
 media) shows one media at a time in position order, with the markup of the [hero slider](#hero-slider)

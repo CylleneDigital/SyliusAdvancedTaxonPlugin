@@ -313,7 +313,9 @@ mode **every call picks again**: call it once per render and keep the result. `n
 ## Visibility (`VisibilityRuntime`)
 
 Featured products and featured children are stored as picked in the back office. These functions
-leave out what must not reach the storefront any more. No memoization.
+leave out what must not reach the storefront any more
+([why at render time](../adr/0010-featured-items-filtered-at-render-time.md)). Channel membership is
+cached for the request (reset between requests).
 
 ### `advanced_taxon_visible_products`
 

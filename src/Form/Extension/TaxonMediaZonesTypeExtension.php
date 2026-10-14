@@ -55,7 +55,8 @@ final class TaxonMediaZonesTypeExtension extends AbstractTypeExtension
      * links: the other zones ignore a destination URL.
      *
      * The optional `display_mode_*` keys declare the display mode field of the zone:
-     * `display_mode_choices` holds its options and `display_mode_label` its label. A zone without
+     * `display_mode_choices` holds its options, `display_mode_label` its label and `display_mode_help`
+     * its help text. A zone without
      * them (the main image, the universe slider) only exposes its media collection.
      *
      * @var array<string, array{
@@ -164,8 +165,6 @@ final class TaxonMediaZonesTypeExtension extends AbstractTypeExtension
                 'prototype_name' => '__media_' . $zone['type'] . '__',
                 'button_add_label' => 'cyllene_digital_sylius_advanced_taxon.form.media.add',
                 'button_delete_label' => 'cyllene_digital_sylius_advanced_taxon.form.media.remove',
-                // New media are appended to the zone, so their position is pre-filled with the
-                // highest position already used by the zone media, incremented by one.
                 'prototype_data' => $this->createPrefilledMedia($taxon, $zone['type']),
                 'entry_options' => [
                     'label' => false,

@@ -135,6 +135,7 @@ full list and the support policy:
 - [Back-office guide](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/admin/user-guide.md): for merchants
 - [Theming and Twig hooks](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/integration/theming.md): for integrators
 - [Technical documentation](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/README.md): every page, by audience
+- [Decision records](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/adr/README.md): why the plugin is built the way it is, one decision per file
 
 ## Status
 

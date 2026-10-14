@@ -423,7 +423,8 @@ final class FacetProductQueryBuilderTest extends KernelTestCase
         $light = $this->catalog->product('Light', [$channel]);
         $this->catalog->attributeValue($light, $weight, 1);
 
-        // Conditions only read text values: on an integer attribute, a negation would match all.
+        // Conditions only read text and select values: on an integer attribute, a negation would
+        // otherwise match every product.
         self::assertSame([], $this->matchingNames([$this->condition(FacetCondition::TYPE_ATTRIBUTE, 'not_equals', (string) $weight->getCode(), '5')], [$heavy, $light]));
     }
 
