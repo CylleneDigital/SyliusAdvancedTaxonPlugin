@@ -10,8 +10,8 @@ plugin uses `SyliusPluginTrait`, which redefines `getContainerExtension()`.
 
 ## Decision
 
-The bundle is a plain `Bundle` with `SyliusPluginTrait` and a classic `Extension` class, like the
-other Sylius plugins.
+The bundle is a plain `Bundle` with `SyliusPluginTrait` and a classic `Extension` class, the
+structure the trait expects.
 
 ## Consequences
 

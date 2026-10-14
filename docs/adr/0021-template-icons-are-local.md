@@ -12,9 +12,8 @@ template icon outside the few Tabler icons Sylius ships would then depend on the
 ## Decision
 
 Templates only use Tabler icons: the ones Sylius ships, or a Tabler SVG added to the plugin's own
-set under a prefix of its own. A unit test fails on an icon written in a template that no local set
-ships. The plugin set does not reuse a library prefix: a local set named after a library would
-silently hide that library for the whole shop.
+set under a prefix of its own. The plugin set does not reuse a library prefix: a local set named
+after a library would silently hide that library for the whole shop.
 
 ## Consequences
 

@@ -46,4 +46,4 @@ Consequences, Related) and a line in the table below.
 | 0029 | [Services holding per-request memory are reset](0029-per-request-memory-services-are-reset.md) |
 | 0030 | [A `Bundle` class with `SyliusPluginTrait`, not `AbstractBundle`](0030-bundle-class-with-sylius-plugin-trait.md) |
 | 0031 | [A schema change is a new migration, written against the DBAL `Schema` API](0031-schema-change-is-a-new-migration.md) |
-| 0032 | [A workaround for an upstream bug never constrains the shops](0032-upstream-workarounds-never-constrain-shops.md) |
+| 0032 | [The plugin does not cap a dependency for an upstream bug](0032-upstream-workarounds-never-constrain-shops.md) |
