@@ -235,8 +235,8 @@ Sylius plugins, do not add personal rules to it.
   integration tests on a real database; prefer a Behat scenario when the bug is visible in the shop
   or the back office.
 - The plugin never replaces a Sylius model: new fields on `Taxon`, `Channel` or `TaxonImage` go into
-  the matching trait and interface, and the migration
-  ([why](docs/adr/0001-never-replace-a-sylius-model.md)).
+  the matching trait and interface, and a new migration
+  ([why](docs/adr/0001-never-replace-a-sylius-model.md), [migrations](docs/adr/0031-schema-change-is-a-new-migration.md)).
 - Services are defined explicitly in `config/services/`, without autowiring
   ([code map](docs/development/code-map.md#wiring), [why](docs/adr/0028-explicit-services-no-autowiring.md)).
 - Update **`UPGRADE.md`** when the public contract changes; the change itself is described in the

@@ -21,4 +21,8 @@ other Sylius plugins.
 
 ## Related
 
+- [0004. Twig hooks are imported, not prepended](0004-twig-hooks-imported-not-prepended.md)
+- [0019. Pictograms are Sylius images](0019-pictograms-are-sylius-images.md)
+- [0021. Template icons are local](0021-template-icons-are-local.md)
 - [0028. Services are declared explicitly, without autowiring](0028-explicit-services-no-autowiring.md)
+- [0031. A schema change is a new migration, written against the DBAL `Schema` API](0031-schema-change-is-a-new-migration.md)

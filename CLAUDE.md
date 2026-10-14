@@ -51,11 +51,13 @@ record rather than editing an accepted one - the records hold no path nor figure
   PHP, then filtered by identifier ([0009](docs/adr/0009-no-like-on-json-columns.md)).
 - **Services are explicit**: one file per area in `config/services/`, ids prefixed with
   `cyllene_digital_sylius_advanced_taxon.` (the controller keeps its class as id), no autowiring nor
-  autoconfiguration (Symfony bundle best practice). A class implementing `ResetInterface` needs the
+  autoconfiguration. A class implementing `ResetInterface` needs the
   `kernel.reset` tag by hand ([0028](docs/adr/0028-explicit-services-no-autowiring.md),
   [0029](docs/adr/0029-per-request-memory-services-are-reset.md)).
 - **Template icons are local**: `tabler:` when Sylius ships the icon, otherwise a Tabler SVG added to
-  `assets/icons/` and used as `at:<name>`. A unit test fails on any other prefix (Iconify)
+  `assets/icons/` and used as `at:<name>` (Sylius ships 82 Tabler icons only, any other is fetched
+  from Iconify at render time). A unit test fails on an icon written in a template that no local set
+  ships
   ([0021](docs/adr/0021-template-icons-are-local.md)).
 - **Twig hooks are imported, not prepended**: `config/config.yaml` must be loaded after the Sylius
   configuration, since a prepended hook loses against the Sylius core hooks it overrides
@@ -74,7 +76,7 @@ record rather than editing an accepted one - the records hold no path nor figure
   route and schema are the public contract ([`docs/architecture/public-contract.md`](docs/architecture/public-contract.md)):
   they only break in a major version, with an entry in `UPGRADE.md`.
 - **No `CHANGELOG.md`**: the GitHub release notes are the changelog, `UPGRADE.md` says what a shop
-  has to do ([0032](docs/adr/0032-no-changelog.md)).
+  has to do.
 
 ## Flex recipe
 
@@ -110,7 +112,8 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   (`database_setup: schema`), and the `down()` / `up()` replay is their only run of the plugin
   migration.
 - **Sylius 2.1 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI caps the
-  ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open.
+  ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open
+  ([0032](docs/adr/0032-upstream-workarounds-never-constrain-shops.md)).
 - **Behat**: the Sylius suites are not imported (2.1 / 2.2 ship them in YAML, 2.3 in PHP); the plugin
   suites only use the Sylius contexts, which are services. The plugin contexts use PHP attributes (`#[Given]`, `#[AfterScenario]`):
   Behat 4, the one Symfony 8 needs, no longer reads annotations; the CI keeps Behat 3 before Sylius 2.3,
@@ -125,14 +128,12 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **The taxon form template renders `form._token` itself** (`form_with_tabs.html.twig`): with
   `render_rest` off, nothing else does on Sylius 2.1.
 - `sylius:debug:twig-hooks` exists from `sylius/twig-hooks` 0.12, Sylius 2.3 only.
-- **Template icons must be local**: Sylius ships 82 Tabler icons only; another one goes to
-  `assets/icons/` as `at:<name>`, or it is fetched from Iconify at render time.
 - **`symfony/ux-twig-component` is kept below 3.5 in `require-dev`**: 3.5 lets an explicit `null`
   override a `{% props %}` default, and the Sylius grid delete action passes a null label and icon
   to `sylius_admin:delete_modal` (empty delete buttons in every admin grid). Drop the constraint
   once Sylius passes defaults itself ([Sylius#19278](https://github.com/Sylius/Sylius/issues/19278)).
   An upstream workaround never goes into the plugin's own constraints
-  ([0033](docs/adr/0033-upstream-workarounds-never-constrain-shops.md)).
+  ([0032](docs/adr/0032-upstream-workarounds-never-constrain-shops.md)).
 - `sylius_test_html_attribute()` attributes (`data-test-*`) are what the Behat pages target: keep
   them when reworking a shop template.
 

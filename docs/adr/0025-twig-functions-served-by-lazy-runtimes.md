@@ -5,13 +5,13 @@
 
 ## Context
 
-The plugin declares many Twig functions, most of them used by a single kind of page. Declaring
-them on extensions that hold their dependencies builds every dependency on every page.
+The plugin declares many Twig functions, most of them used by a single kind of page. Declaring them
+on extensions that hold their dependencies builds every dependency on every page.
 
 ## Decision
 
-One Twig extension declares the functions; each is served by a runtime, built on the first call
-of one of its functions.
+One Twig extension declares the functions; each is served by a runtime, built on the first call of
+one of its functions.
 
 ## Consequences
 

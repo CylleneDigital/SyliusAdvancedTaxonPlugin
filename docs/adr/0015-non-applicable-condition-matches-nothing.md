@@ -5,21 +5,21 @@
 
 ## Context
 
-A stored condition can stop being applicable: an operator its type does not accept, a missing
-value, an attribute, option or taxon that was deleted. Ignoring it would widen the taxon, up to
-the whole catalog when it was the only condition.
+A stored condition can be or become not applicable: an operator its type does not accept (written by
+the API or an import), a missing value, an attribute, option or taxon that was deleted. Ignoring it
+would widen the taxon, up to the whole catalog when it was the only condition.
 
 ## Decision
 
 Conditional taxons fail closed: a condition that cannot apply makes the taxon match nothing,
-negative operators included. A branch the validation makes unreachable throws instead of skipping
-the condition.
+negative operators included. A branch the applicability check makes unreachable throws instead of
+skipping the condition.
 
 ## Consequences
 
 - A broken condition empties the taxon instead of flooding it: visible, and harmless.
-- The validation rejects what it can on save (wrong operator, missing reference or value, unknown
-  or self reference); what breaks later is caught by the query.
+- The validation rejects what it can on save (wrong operator, missing reference or value, unknown or
+  self reference); what breaks later is caught by the query.
 
 ## Related
 

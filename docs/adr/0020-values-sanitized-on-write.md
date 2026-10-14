@@ -11,10 +11,10 @@ declaration.
 
 ## Decision
 
-The setters sanitize these values: a color that is not a hexadecimal color, an icon that is not
-an icon name or an image reference, a link that is neither an HTTP(S) URL nor a same-origin path
-are dropped. Media links are sanitized
-again when read. The media display mode setters fall back to their default on an unknown value.
+The setters sanitize these values: a color that is not a hexadecimal color, an icon that is not an
+icon name or an image reference, a link that is neither an HTTP(S) URL nor a same-origin path are
+dropped. Media links are sanitized again when rendered. The setters of the display choices fall back
+to their default on an unknown value.
 
 ## Consequences
 

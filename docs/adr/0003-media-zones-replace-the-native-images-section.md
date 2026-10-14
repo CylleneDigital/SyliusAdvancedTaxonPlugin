@@ -6,17 +6,17 @@
 ## Context
 
 The plugin places taxon images in zones (main image, top, bottom, left, inside the product list,
-featured, universe slider), each with its own settings, stored as Sylius taxon images with a type.
-Keeping the native Images collection next to the zones would have two forms managing the same
-images, and the native collection would delete the zone media when the taxon is saved. Showing
+featured, universe slider), most with their own display settings, stored as Sylius taxon images with
+a type. Keeping the native Images collection next to the zones would have two forms managing the
+same images, and the native collection would delete the zone media when the taxon is saved. Showing
 the native collection only for the types the plugin does not use would still give two image
 interfaces in one form.
 
 ## Decision
 
 The native Images section is removed from the taxon form and replaced by the zones. A main image
-zone takes over the images Sylius stores without type; they get the type of that zone when the
-taxon is saved, and the shop keeps showing the first one as the taxon image.
+zone takes over the images Sylius stores without type; they get the type of that zone when the taxon
+is saved, and the shop shows the first one, by position, as the taxon image.
 
 ## Consequences
 

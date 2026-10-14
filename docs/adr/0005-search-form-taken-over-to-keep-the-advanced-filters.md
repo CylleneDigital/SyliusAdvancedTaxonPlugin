@@ -5,16 +5,16 @@
 
 ## Context
 
-The search form of the Sylius product listing only sends the search text: submitting it dropped
+The search form of the Sylius product listing only sends the search text: submitting it would drop
 the advanced filters, the sort, the limit and the view. Hidden fields added through the nested
 search hook would land inside the input group and break its rounded corners. A Stimulus controller
 copying the parameters would not work without JavaScript and adds code.
 
 ## Decision
 
-The plugin replaces the search hookable of the listing filters with a form that sends the
-current advanced filters, sort, limit and view back, and starts again from the first page. Its
-clear button only removes the search.
+The plugin replaces the search hookable of the listing filters with a form that sends the current
+advanced filters, sort, limit and view back, and starts again from the first page. Its clear button
+only removes the search.
 
 ## Consequences
 

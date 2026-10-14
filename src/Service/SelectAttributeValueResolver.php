@@ -40,7 +40,7 @@ final class SelectAttributeValueResolver implements ResetInterface
     /**
      * Returns the identifiers of the select attribute values of an attribute whose choices match.
      *
-     * @param callable(list<string>): bool $matches receives the keys and the labels of one choice
+     * @param callable(list<string>): bool $matches receives the key and the labels of one choice
      *
      * @return list<int>
      */

@@ -5,19 +5,19 @@
 
 ## Context
 
-The taxon form has many fields. A help text on each would load the form, multiply the texts to
-translate and repeat the user guide until both diverge. Tooltips hide the help, work poorly on
-touch screens and need JavaScript.
+The taxon form has many fields. Explanations repeated in the form would multiply the texts to
+translate and repeat the user guide until both diverge. Tooltips hide the help, work poorly on touch
+screens and need JavaScript.
 
 ## Decision
 
-A field gets a one-line help text only when its effect is not obvious: a side effect, a scope
-narrower than expected, an expected format. The user guide stays the reference.
+Help is a short text under the field, never a tooltip. It says what the field does when the label
+does not, or what it expects; the explanations stay in the user guide, which is the reference.
 
 ## Consequences
 
-- A new field gets a help text only if it meets that bar.
-- The form stays readable; the details are in the guide.
+- The help is visible without interaction, on any screen.
+- A help text that grows into an explanation moves to the guide.
 
 ## Related
 

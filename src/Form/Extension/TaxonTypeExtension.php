@@ -165,9 +165,8 @@ final class TaxonTypeExtension extends AbstractTypeExtension
                 }
             }
 
-            // A taxon is treated as conditional when at least one facet condition is configured.
-            // Its matching products are materialized by ConditionalTaxonSyncListener, once the
-            // taxon has effectively been flushed.
+            // Its products are synchronized by a message dispatched once the flush is over
+            // (ConditionalTaxonSyncListener).
             $taxon->setConditional(!$taxon->getFacetConditions()->isEmpty());
         });
     }

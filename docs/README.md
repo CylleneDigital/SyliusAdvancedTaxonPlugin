@@ -10,7 +10,7 @@ list: [Features](features.md). Installation in short and production notes: the r
 |---------|-------------------|
 | Merchant (back office) | [Back-office guide](admin/user-guide.md), [Storefront](shop/storefront.md), [Conditional taxons](domain/conditional-taxons.md) |
 | Sylius integrator | [Installation](integration/installation.md), [Configuration](integration/configuration.md), [Theming and Twig hooks](integration/theming.md), [Assets](integration/assets.md), [Twig functions](shop/twig-functions.md), [Public contract](architecture/public-contract.md), [Troubleshooting](integration/troubleshooting.md) |
-| Ops (deployment) | [Migrations](persistence/migrations.md), [Database schema](persistence/schema.md), [Configuration: Messenger](integration/configuration.md), [Uninstall](integration/uninstall.md), [UPGRADE](../UPGRADE.md) |
+| Ops (deployment) | [Migrations](persistence/migrations.md), [Database schema](persistence/schema.md), [Configuration: Messenger](integration/configuration.md#conditional-taxon-synchronization-messenger), [Uninstall](integration/uninstall.md), [UPGRADE](../UPGRADE.md) |
 | Plugin contributor | [Architecture overview](architecture/overview.md), [Decision records](adr/README.md), [Code map](development/code-map.md), [Tests](testing/tests.md), [CONTRIBUTING](../CONTRIBUTING.md) |
 
 ## Table of contents

@@ -5,14 +5,14 @@
 
 ## Context
 
-Some media zones offer a random display mode (shuffled media, a random spotlight, media inserted
-at random places in the listing). A page that changes on every view cannot be cached as such by an
-HTTP cache.
+Some media zones offer a random display mode (shuffled media, a random spotlight, media inserted at
+random places in the listing). A page that changes on every view cannot be cached as such by an HTTP
+cache.
 
 ## Decision
 
-The random modes are kept: they are a merchandising feature, chosen per taxon. Behind an HTTP
-cache, the draw is frozen for the lifetime of each cache entry.
+The random modes are kept: they are a merchandising feature, chosen per taxon. Behind an HTTP cache,
+the draw is frozen for the lifetime of each cache entry.
 
 ## Consequences
 
@@ -21,3 +21,4 @@ cache, the draw is frozen for the lifetime of each cache entry.
 ## Related
 
 - [0003. Plugin media zones replace the native taxon Images section](0003-media-zones-replace-the-native-images-section.md)
+- [0020. Values rendered in `style` or `href` are sanitized on write](0020-values-sanitized-on-write.md)

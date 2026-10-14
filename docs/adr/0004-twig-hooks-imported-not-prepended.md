@@ -5,9 +5,9 @@
 
 ## Context
 
-Several plugin hooks override hookables of the Sylius core. A configuration prepended by the
-bundle extension is loaded before the application's and the Sylius one, so the Sylius core hooks
-would win over the plugin hooks that replace them.
+Several plugin hooks override hookables of the Sylius core. A configuration prepended by the bundle
+extension is loaded before the application's and the Sylius one, so the Sylius core hooks would win
+over the plugin hooks that replace them.
 
 ## Decision
 

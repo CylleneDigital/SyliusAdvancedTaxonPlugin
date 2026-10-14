@@ -5,10 +5,9 @@
 
 ## Context
 
-A conditional taxon gets its products from rules (attribute, option, name, description, stock,
-taxon membership). Resolving the
-rules when the taxon is listed would only serve the plugin listing: the API, the search, the
-product forms and the other plugins read the product-taxon links Sylius stores.
+A conditional taxon gets its products from rules (attribute, option, name, description, stock, taxon
+membership). Resolving the rules when the taxon is listed would only serve the plugin listing: the
+API, the search, the product forms and the other plugins read the product-taxon links Sylius stores.
 
 ## Decision
 
@@ -19,8 +18,8 @@ Nothing is resolved when the shop reads the taxon.
 ## Consequences
 
 - Every part of Sylius sees a conditional taxon as a normal one.
-- A product that starts or stops matching (a new attribute value, a new product) is only attached
-  or detached by the next synchronization: the command is meant to be scheduled.
+- A product that starts or stops matching (a new attribute value, a new product) is only attached or
+  detached by the next synchronization: the command is meant to be scheduled.
 
 ## Related
 

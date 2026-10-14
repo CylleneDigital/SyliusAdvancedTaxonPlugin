@@ -14,7 +14,6 @@
     border-bottom: 1px solid #dee2e6;
 }
 
-// Horizontal navigation bar.
 .at-mn-list {
     display: flex;
     list-style: none;
@@ -73,7 +72,6 @@
     display: block;
 }
 
-// Centred inner container.
 .at-mn-panel-inner {
     display: flex;
     align-items: flex-start;
@@ -116,7 +114,6 @@
     &:hover { opacity: 0.8; }
 }
 
-// Regular columns.
 .at-mn-cols {
     display: flex;
     flex-wrap: wrap;
@@ -229,7 +226,6 @@
     }
 }
 
-// Semi-transparent backdrop.
 .at-mn-drawer-backdrop {
     position: absolute;
     inset: 0;
@@ -272,7 +268,6 @@
     &[data-mn-state="right"]  { transform: translateX(100%); pointer-events: none;  }
 }
 
-// Screen header bar.
 .at-mn-screen-head {
     display: flex;
     align-items: center;
@@ -331,7 +326,6 @@
     &:hover { text-decoration: underline; }
 }
 
-// List of navigation items.
 .at-mn-screen-list {
     list-style: none;
     padding: 0;

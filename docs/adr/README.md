@@ -22,7 +22,7 @@ Consequences, Related) and a line in the table below.
 | 0005 | [The plugin takes over the Sylius search form so it keeps the advanced filters](0005-search-form-taken-over-to-keep-the-advanced-filters.md) |
 | 0006 | [The taxon listing is the Sylius grid](0006-taxon-listing-is-the-sylius-grid.md) |
 | 0007 | [Facet counts start from the query the grid lists](0007-facet-counts-start-from-the-grid-query.md) |
-| 0008 | [Advanced filters are counted subqueries, with caps on codes and values](0008-advanced-filters-are-counted-subqueries-with-caps.md) |
+| 0008 | [Attribute and option filters are counted subqueries, with caps](0008-advanced-filters-are-counted-subqueries-with-caps.md) |
 | 0009 | [No `LIKE` on JSON columns](0009-no-like-on-json-columns.md) |
 | 0010 | [Featured items are filtered for visibility at render time](0010-featured-items-filtered-at-render-time.md) |
 | 0011 | [Conditional taxons are materialized as product-taxon links](0011-conditional-taxons-materialized-as-product-taxon-links.md) |
@@ -46,7 +46,4 @@ Consequences, Related) and a line in the table below.
 | 0029 | [Services holding per-request memory are reset](0029-per-request-memory-services-are-reset.md) |
 | 0030 | [A `Bundle` class with `SyliusPluginTrait`, not `AbstractBundle`](0030-bundle-class-with-sylius-plugin-trait.md) |
 | 0031 | [A schema change is a new migration, written against the DBAL `Schema` API](0031-schema-change-is-a-new-migration.md) |
-| 0032 | [No `CHANGELOG.md`](0032-no-changelog.md) |
-| 0033 | [A workaround for an upstream bug never constrains the shops](0033-upstream-workarounds-never-constrain-shops.md) |
-| 0034 | [Static analysis and coverage run on the primary CI job only](0034-static-analysis-on-the-primary-ci-job.md) |
-| 0035 | [The contributor stack ships a Chrome service](0035-contributor-stack-ships-chrome.md) |
+| 0032 | [A workaround for an upstream bug never constrains the shops](0032-upstream-workarounds-never-constrain-shops.md) |

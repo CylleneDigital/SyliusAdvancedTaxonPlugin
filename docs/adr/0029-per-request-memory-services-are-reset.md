@@ -12,8 +12,9 @@ the next.
 
 ## Decision
 
-Services are `final` and stateless where they can be. Those that hold per-request memory
-implement `ResetInterface`, and get the `kernel.reset` tag in their definition.
+Services are `final` and stateless where they can be. Those that hold per-request memory implement
+`ResetInterface`, and get the `kernel.reset` tag in their definition. A weak map keyed by an entity
+needs no reset: it frees itself with the entity.
 
 ## Consequences
 
@@ -24,4 +25,5 @@ implement `ResetInterface`, and get the `kernel.reset` tag in their definition.
 ## Related
 
 - [0014. The synchronization is dispatched through Messenger once the flush is over, synchronous unless routed](0014-synchronization-dispatched-through-messenger-after-the-flush.md)
+- [0025. Twig functions are served by lazy runtimes](0025-twig-functions-served-by-lazy-runtimes.md)
 - [0028. Services are declared explicitly, without autowiring](0028-explicit-services-no-autowiring.md)

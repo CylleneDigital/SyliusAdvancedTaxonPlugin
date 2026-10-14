@@ -39,10 +39,6 @@ export default class extends Controller {
         document.removeEventListener('keydown', this._keyHandler);
     }
 
-    // ------------------------------------------------------------------ //
-    // Public actions (callable via data-action)
-    // ------------------------------------------------------------------ //
-
     open() {
         this.element.classList.add('at-mn-drawer--open');
         this.element.setAttribute('aria-hidden', 'false');
@@ -97,7 +93,6 @@ export default class extends Controller {
         this._focusActiveScreen();
     }
 
-    /** Navigate back to the previous screen. */
     goBack() {
         if (this._stack.length <= 1) { this.close(); return; }
         const currentId = this._stack.pop();
@@ -109,10 +104,6 @@ export default class extends Controller {
         this._syncScreens();
         this._focusActiveScreen();
     }
-
-    // ------------------------------------------------------------------ //
-    // Private helpers
-    // ------------------------------------------------------------------ //
 
     _handleBurgerClick(event) {
         // Prevent Bootstrap (or any other handler) from processing this click.

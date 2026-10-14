@@ -6,21 +6,21 @@
 ## Context
 
 Symfony recommends that a reusable bundle does not rely on autowiring nor autoconfiguration: its
-services must not depend on what the host application happens to alias or tag, and autowiring
-would turn every class of the plugin into an injectable service, public by accident.
+services must not depend on what the host application happens to alias or tag, and autowiring would
+turn every class of the plugin into an injectable service, public by accident.
 
 ## Decision
 
-Every service is declared by hand, one file per area, with a prefixed id and every argument and
-tag written out. The controller is the exception to the prefix: it keeps its class as id, since its
+Every service is declared by hand, one file per area, with a prefixed id and every argument and tag
+written out. The controller is the exception to the prefix: it keeps its class as id, since its
 route names it that way. The interfaces an application may decorate are aliased to their service.
 
 ## Consequences
 
 - A new constructor argument is added to the service definition.
 - A tag autoconfiguration would have set is added by hand.
-- Only the attributes read at runtime are used in the classes; the ones that only
-  autoconfiguration reads would do nothing.
+- Only the attributes read at runtime are used in the classes; the ones that only autoconfiguration
+  reads would do nothing.
 
 ## Related
 

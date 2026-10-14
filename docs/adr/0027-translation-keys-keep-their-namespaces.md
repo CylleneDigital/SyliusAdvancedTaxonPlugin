@@ -5,9 +5,8 @@
 
 ## Context
 
-The translation keys of the plugin sit under a few namespaces (shop, form, ui, facet), while
-other plugins put their labels under a single `ui` namespace. Aligning them renames keys an
-application may have overridden.
+The translation keys of the plugin sit under a few namespaces (shop, form, ui, facet). Moving them
+under a single namespace renames keys an application may have overridden.
 
 ## Decision
 

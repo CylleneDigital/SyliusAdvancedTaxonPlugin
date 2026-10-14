@@ -70,8 +70,8 @@ middleware of `sylius.command_bus` does. A full synchronization flushes and clea
 
 ## Wiring
 
-- Services are defined explicitly, without autowiring nor autoconfiguration, as Symfony recommends
-  for reusable bundles: `config/services.php` imports one file per area from `config/services/`
+- Services are defined explicitly, without autowiring nor autoconfiguration
+  ([why](../adr/0028-explicit-services-no-autowiring.md)): `config/services.php` imports one file per area from `config/services/`
   (`facet`, `grid`, `conditional_taxon`, `media`, `form`, `twig`, `controller`). Ids are prefixed with
   `cyllene_digital_sylius_advanced_taxon.` and private, except the controller, whose id is its class
   (the route refers to it); tags (`twig.extension`, `form.type_extension`,
@@ -84,7 +84,7 @@ middleware of `sylius.command_bus` does. A full synchronization flushes and clea
   metadata: `#[AsCommand]`, `#[AsEntityAutocompleteField]` (alias and route), `#[IsGranted]`.
 - `src/DependencyInjection/CylleneDigitalSyliusAdvancedTaxonExtension.php` prepends the Doctrine
   mapping, the migrations, the Liip Imagine filter sets and the `at` UX Icons set (`assets/icons/`). The Twig hooks are imported through
-  `config/config.yaml`, not prepended: they override Sylius core hooks.
+  `config/config.yaml`, not prepended ([why](../adr/0004-twig-hooks-imported-not-prepended.md)).
 
 ## Front-end assets
 
@@ -95,10 +95,11 @@ middleware of `sylius.command_bus` does. A full synchronization flushes and clea
 
 Conventions:
 
-- No inline script in templates: a behaviour is a Stimulus controller, registered in its entrypoint
-  with the `at-` prefix.
+- No inline script in templates ([why](../adr/0024-no-script-in-templates.md)): a behaviour lives in
+  the entrypoints, as a Stimulus controller registered with the `at-` prefix.
 - Texts shown by a controller come from the translations, passed as a Stimulus value.
 - Static layout rules live in the SCSS files under `assets/*/scss/`.
 - A template icon is `tabler:` when Sylius ships it, otherwise a Tabler SVG added to `assets/icons/`
-  and used as `at:<name>`; a test fails on any other prefix.
+  and used as `at:<name>` ([why](../adr/0021-template-icons-are-local.md)); a test fails on an icon
+  written in a template that no local set ships.
 - A row added to a form collection takes its index from `assets/admin/js/collection-index.js`.

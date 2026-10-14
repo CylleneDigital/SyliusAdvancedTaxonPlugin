@@ -6,8 +6,8 @@
 ## Context
 
 A taxon features products and child taxons picked in the back office. Later on, a product can be
-disabled or leave the channel, a taxon can be disabled or moved under another parent. Validating
-the selection on save would not catch these later changes.
+disabled or leave the channel, a taxon can be disabled or moved under another parent. Validating the
+selection on save would not catch these later changes.
 
 ## Decision
 

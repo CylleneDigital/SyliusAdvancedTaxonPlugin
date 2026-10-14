@@ -5,15 +5,15 @@
 
 ## Context
 
-Products can be attached to a taxon by hand before it becomes conditional, or after. Keeping
-them as manual assignments next to the materialized ones would make the content of a conditional
-taxon depend on its history, not on its rules.
+Products can be attached to a taxon by hand before it becomes conditional, or after. Keeping them as
+manual assignments next to the materialized ones would make the content of a conditional taxon
+depend on its history, not on its rules.
 
 ## Decision
 
-The synchronization alone manages the links of a conditional taxon: products attached by hand
-that do not match are detached. Removing the last condition, or turning the taxon back into a
-regular one, detaches all its products.
+The synchronization alone manages the links of a conditional taxon: products attached by hand that
+do not match are detached. Removing the last condition, or turning the taxon back into a regular
+one, detaches all its products.
 
 ## Consequences
 

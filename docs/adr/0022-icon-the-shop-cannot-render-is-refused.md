@@ -10,13 +10,14 @@ library the shop does not have disappears without any error.
 
 ## Decision
 
-On save, the taxon form asks the icon renderer to render the icon and refuses it with a
-validation error when it cannot.
+On save, the taxon form asks the icon renderer to render a new icon and adds a form error when it
+cannot.
 
 ## Consequences
 
 - An administrator sees at once that an icon does not exist.
-- An icon that becomes unavailable later (a library removed) still disappears silently.
+- An icon already stored is not checked again: one that becomes unavailable later (a library
+  removed) still disappears silently.
 
 ## Related
 

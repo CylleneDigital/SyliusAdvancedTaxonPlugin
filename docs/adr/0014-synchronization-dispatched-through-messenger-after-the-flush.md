@@ -6,21 +6,21 @@
 ## Context
 
 Saving a conditional taxon has to recompute its products. Doing it in a Doctrine `postFlush`
-listener means flushing inside a flush, which Doctrine does not support: the collection deletions
-of the outer flush, not cleaned up yet, run again and lose data. Doing it in a worker only would
-force every shop to run one.
+listener means flushing inside a flush, which Doctrine does not support: the collection deletions of
+the outer flush, not cleaned up yet, run again and lose data. Doing it in a worker only would force
+every shop to run one.
 
 ## Decision
 
-The taxons to synchronize are collected during the flush; a message per taxon is dispatched on
-the Sylius command bus once the flush is over, at the end of the request, of the console command
-or of the message a worker handled. The handler is registered on that bus only, whose transaction
+The taxons to synchronize are collected during the flush; a message per taxon is dispatched on the
+Sylius command bus once the flush is over, at the end of the request, of the console command or of
+the message a worker handled. The handler is registered on that bus only, whose transaction
 middleware flushes. With no routing, the message is handled synchronously.
 
 ## Consequences
 
-- No dependency on a transport: a shop routes the message to an asynchronous one when saving a
-  taxon must not wait for the assignments.
+- No dependency on a transport: a shop routes the message to an asynchronous one when saving a taxon
+  must not wait for the assignments.
 - Synchronously, a failing synchronization answers an error although the taxon is already saved.
 - Code that flushes outside a request, a command or a worker (a plain script) leaves the
   synchronization to the command.
