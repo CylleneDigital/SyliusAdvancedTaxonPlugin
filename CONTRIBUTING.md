@@ -97,9 +97,10 @@ for the mega menu.
 
 ### Behat
 
-47 scenarios under `features/`, one suite per feature (`tests/Behat/Resources/suites.php`). 42 use
-the Mink `symfony` session (no browser); 5 are tagged `@javascript` and drive a real Chrome: the
-icon picker, the media rows added in the taxon form and the conditions (preview, save, refusal).
+48 scenarios under `features/`, one suite per feature (`tests/Behat/Resources/suites.php`). 42 use
+the Mink `symfony` session (no browser); 6 are tagged `@javascript` and drive a real Chrome: the
+icon picker, the media rows added in the taxon form, the conditions (preview, save, refusal) and
+the mobile menu drawer.
 
 The [Docker stack](#docker-stack) brings both of the following. On the host, as configured in
 `behat.dist.php`:

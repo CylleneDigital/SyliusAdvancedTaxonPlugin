@@ -141,8 +141,8 @@ full list and the support policy:
 
 **Tested** by 198 PHPUnit tests (units; integration tests on a real database for every condition
 type and operator, the facets, the grid pagination and the synchronization; functional tests of the
-back office) and 47 Behat scenarios, 5 of them in headless Chrome (icon picker, media rows,
-conditions preview, save and refusal). Both suites pass on Sylius 2.1, 2.2 and 2.3; the PHPUnit suite
+back office) and 48 Behat scenarios, 6 of them in headless Chrome (icon picker, media rows,
+conditions preview, save and refusal, mobile menu). Both suites pass on Sylius 2.1, 2.2 and 2.3; the PHPUnit suite
 also on PostgreSQL 17.
 
 The continuous integration matrix covers Sylius 2.1, 2.2 and 2.3, PHP 8.3, 8.4 and 8.5, Symfony 7.4

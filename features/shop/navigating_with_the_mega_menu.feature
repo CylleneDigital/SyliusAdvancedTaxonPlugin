@@ -38,3 +38,13 @@ Feature: Navigating with the mega menu
         And the "Watches" taxon hides its color and icon in the menu
         When I open the shop homepage
         Then the "Watches" taxon should be shown without its color in the menu
+
+    @ui @javascript
+    Scenario: Browsing the mega menu on a small screen
+        Given this channel has the mega menu enabled
+        When I open the shop homepage on a small screen
+        And I open the mobile menu
+        And I open the "Watches" taxon in the mobile menu
+        Then the mobile menu should link to the "Classic" taxon
+        When I close the mobile menu with the Escape key
+        Then the mobile menu should be closed
