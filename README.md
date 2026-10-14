@@ -149,8 +149,8 @@ The continuous integration matrix covers Sylius 2.1, 2.2 and 2.3, PHP 8.3, 8.4 a
 and 8, on MySQL 8.0 and 8.4, MariaDB 10.11 and 11.4, and PostgreSQL 15 to 17, every Behat scenario
 included.
 
-One limit comes from Sylius: with DBAL 4, its own migrations are skipped on a database declared as
-MariaDB ([details](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/persistence/migrations.md)).
+On MariaDB, use Sylius 2.3.1 or later with DBAL 4: Sylius 2.3.0 skips its own migrations there
+([details](https://github.com/CylleneDigital/SyliusAdvancedTaxonPlugin/blob/main/docs/persistence/migrations.md#mariadb-with-dbal-4)).
 
 ## Contributing
 

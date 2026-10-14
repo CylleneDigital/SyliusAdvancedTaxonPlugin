@@ -69,13 +69,15 @@ doctrine_migrations:
 
 ### The database only holds the `cyllene_advanced_taxon_*` tables
 
-**Cause.** MariaDB with Doctrine DBAL 4. The Sylius core migrations run only when the platform is
-MySQL (`Sylius\Bundle\CoreBundle\Doctrine\Migrations\AbstractMigration::isMySql()`). With DBAL 4,
-`MariaDBPlatform` no longer extends `MySQLPlatform`: every Sylius migration is skipped and recorded
-as executed, and only the plugin migration creates its tables.
+**Cause.** Sylius 2.3.0 on MariaDB with Doctrine DBAL 4. Its core migrations run only when the
+platform is MySQL (`Sylius\Bundle\CoreBundle\Doctrine\Migrations\AbstractMigration::isMySql()`).
+With DBAL 4, `MariaDBPlatform` no longer extends `MySQLPlatform`: every Sylius migration is skipped
+and recorded as executed, and only the plugin migration creates its tables. Sylius 2.3.1 recognizes
+MariaDB again; Sylius 2.1 and 2.2 run on DBAL 3 and are not affected.
 
-**Fix.** Declare a **MySQL** server version in the connection URL, and create the database in
-`utf8mb4_unicode_ci` (the collation of the plugin tables on MySQL platforms):
+**Fix.** Upgrade to Sylius 2.3.1 or later. On Sylius 2.3.0, declare a **MySQL** server version in
+the connection URL instead, and create the database in `utf8mb4_unicode_ci` (the collation of the
+plugin tables on MySQL platforms):
 
 ```dotenv
 DATABASE_URL="mysql://app:app@127.0.0.1:3306/app_%kernel.environment%?charset=utf8mb4&serverVersion=8.0.36"

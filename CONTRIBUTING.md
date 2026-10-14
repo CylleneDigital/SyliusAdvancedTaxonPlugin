@@ -45,9 +45,9 @@ Compose MySQL below instead (published on host port **3307**, user `root`, empty
 DATABASE_URL=mysql://root@127.0.0.1:3307/cyllene_digital_sylius_advanced_taxon_plugin_%kernel.environment%
 ```
 
-On MariaDB, declare a MySQL server version (`serverVersion=8.0.36`) and create the database in
-`utf8mb4_unicode_ci`: on a database declared as MariaDB, DBAL 4 skips the Sylius core migrations,
-and DBAL cannot introspect the default MariaDB 11 collation.
+On MariaDB, declare MariaDB as such (`serverVersion=11.4.0-MariaDB`) and run Sylius 2.3.1 or later:
+Sylius 2.3.0 skips its core migrations there
+([details](docs/persistence/migrations.md#mariadb-with-dbal-4)).
 
 ### Docker stack
 
@@ -204,10 +204,8 @@ vendor/bin/behat --colors --strict --no-interaction -f progress
 `tests/check-schema-drift.sh` is the migration / mapping drift check: it must print **nothing**.
 Any SQL for a `cyllene_advanced_taxon_*` table, or for a column the plugin adds to `sylius_taxon`,
 `sylius_channel` or `sylius_taxon_image`, means the migration and the entity mapping have diverged.
-On a MariaDB declared with a MySQL server version, as advised above, DBAL introspection reports
-every nullable column again and fails on a MariaDB 11 table: run it, and the `--down` / `--up`
-replay, on MySQL or PostgreSQL. The CI MariaDB jobs declare MariaDB as such and build the schema
-from the mappings, the replay being their run of the plugin migration. PHPStan, ECS and the template
+On a MariaDB declared with a MySQL server version, DBAL introspection reports every nullable
+column again: declare MariaDB as such, or run the check on MySQL or PostgreSQL. PHPStan, ECS and the template
 lint only run on the primary job (Sylius 2.3, PHP 8.4, Symfony 7.4, MySQL 8.4), which also measures
 the code coverage. Before Sylius 2.3, the CI keeps `doctrine/orm` below 3.7 (Sylius 2.1 mappings fail
 its validation) and Behat on 3 (Sylius 2.1 and 2.2 declare their steps in annotations, which Behat 4

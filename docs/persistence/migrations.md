@@ -77,13 +77,14 @@ tables. If the Sylius tables do not exist when it runs, it adds no column to the
 
 ### MariaDB with DBAL 4
 
-The Sylius core migrations extend `Sylius\Bundle\CoreBundle\Doctrine\Migrations\AbstractMigration`,
-which skips them unless the platform is `MySQLPlatform`. With DBAL 4, the MariaDB platform no longer
-extends it: the Sylius migrations are marked as executed but skipped, and the symptom is a schema
-holding only the `cyllene_advanced_taxon_*` tables.
+The Sylius core migrations extend `Sylius\Bundle\CoreBundle\Doctrine\Migrations\AbstractMigration`.
+In Sylius 2.3.0 it skips them unless the platform is `MySQLPlatform`, which the MariaDB platform no
+longer extends with DBAL 4: the Sylius migrations are marked as executed but skipped, and the
+symptom is a schema holding only the `cyllene_advanced_taxon_*` tables. Sylius 2.3.1 recognizes
+MariaDB again; Sylius 2.1 and 2.2 run on DBAL 3.
 
-On MariaDB, declare a MySQL server version and create the database in `utf8mb4_unicode_ci`
-([CONTRIBUTING.md](../../CONTRIBUTING.md#database-on-the-host)):
+On Sylius 2.3.0, declare a MySQL server version instead and create the database in
+`utf8mb4_unicode_ci` ([troubleshooting](../integration/troubleshooting.md#the-database-only-holds-the-cyllene_advanced_taxon_-tables)):
 
 ```dotenv
 DATABASE_URL="mysql://app:app@127.0.0.1:3306/cyllene_digital_sylius_advanced_taxon_plugin_%kernel.environment%?charset=utf8mb4&serverVersion=8.0.36"
@@ -91,8 +92,7 @@ DATABASE_URL="mysql://app:app@127.0.0.1:3306/cyllene_digital_sylius_advanced_tax
 
 ## Drift check
 
-The CI builds the database from the migrations (`APP_ENV=test`), or from the mappings on MariaDB,
-where the Sylius migrations are skipped (see above), then runs
+The CI builds the database from the migrations (`APP_ENV=test`), then runs
 ([CONTRIBUTING.md](../../CONTRIBUTING.md#what-has-to-pass-before-a-pull-request)):
 
 ```bash
@@ -109,9 +109,9 @@ sh tests/check-schema-drift.sh
   the migration and the mapping have diverged. The rest of the Sylius schema is left out so that a
   core drift does not mask it. A column added to a Sylius table goes into the script's list too.
 
-On MariaDB the database is declared as such in the CI, and the replay is the only run of the plugin
-migration. On a MariaDB declared with a MySQL server version, as above, the check is not usable:
-DBAL reports every nullable column again and cannot introspect the default MariaDB 11 collation.
+On a MariaDB declared with a MySQL server version (the Sylius 2.3.0 workaround above), the check
+is not usable: DBAL reports every nullable column again and cannot introspect the default MariaDB 11
+collation. The CI declares MariaDB as such.
 
 ## Changing the schema
 
