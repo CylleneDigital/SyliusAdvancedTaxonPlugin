@@ -53,10 +53,7 @@ jobs:
                         symfony: "^8.0"
                         php: "8.3"
                 include:
-                    # Extra databases on the primary combination. On MariaDB the Sylius migrations
-                    # skip themselves under DBAL 4, where `MariaDBPlatform` no longer extends
-                    # `MySQLPlatform`: the schema is built from the mappings there, and the replay
-                    # step below is what runs the plugin migration.
+                    # Extra databases on the primary combination.
                     -
                         php: "8.4"
                         symfony: "^7.4"
@@ -68,14 +65,12 @@ jobs:
                         symfony: "^7.4"
                         sylius: "~2.3.0"
                         database: "mariadb:10.11"
-                        database_setup: "schema"
                         node: "22.x"
                     -
                         php: "8.4"
                         symfony: "^7.4"
                         sylius: "~2.3.0"
                         database: "mariadb:11.4"
-                        database_setup: "schema"
                         node: "22.x"
                     -
                         php: "8.4"
@@ -134,7 +129,6 @@ jobs:
                     cache_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
                     cache_restore_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-"
                     database: "${{ matrix.database }}"
-                    database_setup: "${{ matrix.database_setup || 'migrations' }}"
                     node_version: "${{ matrix.node }}"
                     php_version: "${{ matrix.php }}"
                     php_coverage: "${{ matrix.coverage || 'none' }}"
@@ -160,7 +154,6 @@ jobs:
 
             # Runs the plugin migration's down() (never exercised otherwise), then up() again: the drift
             # check below then also proves down() left nothing behind that up() would collide with.
-            # On MariaDB, where the schema comes from the mappings, this is the only run of up().
             -
                 name: Revert and replay the plugin migration
                 run: |

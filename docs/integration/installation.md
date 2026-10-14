@@ -12,7 +12,7 @@ a non-Flex installation, except step 2.
 | Symfony | `^7.4`, or `^8.0` with Sylius 2.3 |
 | Database | MySQL 8.0 / 8.4, MariaDB 10.11 / 11.4, PostgreSQL 15 to 17 (CI matrix) |
 
-MariaDB needs a MySQL `serverVersion`: see
+On MariaDB with DBAL 4, use Sylius 2.3.1 or later: see
 [Troubleshooting](troubleshooting.md#the-database-only-holds-the-cyllene_advanced_taxon_-tables).
 
 ## Requirements

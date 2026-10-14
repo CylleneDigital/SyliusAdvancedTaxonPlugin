@@ -105,12 +105,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 
 ## Known pitfalls
 
-- **On MariaDB with DBAL 4**, the Sylius core migrations are marked as executed but skipped unless
-  the server version is a MySQL one: the symptom is a schema holding only the
-  `cyllene_advanced_taxon_*` tables. The build action declares MariaDB as such
-  (`serverVersion=11.4.0-MariaDB`): the CI MariaDB jobs build the schema from the mappings
-  (`database_setup: schema`), and the `down()` / `up()` replay is their only run of the plugin
-  migration.
+- **Sylius 2.3.0 on MariaDB with DBAL 4** marks its core migrations as executed but skips them
+  (`AbstractMigration::isMySql()`, fixed in 2.3.1 by Sylius#19272): the symptom is a schema holding
+  only the `cyllene_advanced_taxon_*` tables. Sylius 2.1 and 2.2 stay on DBAL 3. The CI resolves
+  2.3.1 or later and runs the migrations on MariaDB, declared as such (`serverVersion=11.4.0-MariaDB`).
 - **Sylius 2.1 mappings fail `doctrine/orm` 3.7 validation** (`ShipmentUnit#shipment`): CI caps the
   ORM below 3.7 before Sylius 2.3, the plugin's own constraint stays open
   ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
@@ -128,12 +126,6 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
 - **The taxon form template renders `form._token` itself** (`form_with_tabs.html.twig`): with
   `render_rest` off, nothing else does on Sylius 2.1.
 - `sylius:debug:twig-hooks` exists from `sylius/twig-hooks` 0.12, Sylius 2.3 only.
-- **`symfony/ux-twig-component` is kept below 3.5 in `require-dev`**: 3.5 lets an explicit `null`
-  override a `{% props %}` default, and the Sylius grid delete action passes a null label and icon
-  to `sylius_admin:delete_modal` (empty delete buttons in every admin grid). Drop the constraint
-  once Sylius passes defaults itself ([Sylius#19278](https://github.com/Sylius/Sylius/issues/19278)).
-  An upstream workaround never goes into the plugin's own constraints
-  ([0032](docs/adr/0032-no-dependency-cap-for-an-upstream-bug.md)).
 - `sylius_test_html_attribute()` attributes (`data-test-*`) are what the Behat pages target: keep
   them when reworking a shop template.
 
