@@ -4,9 +4,9 @@ import { Controller } from '@hotwired/stimulus';
  * Stimulus controller for the mobile mega menu drill-down drawer.
  *
  * Usage: add data-controller="at-mobile-menu" on the drawer element.
- * The burger button (#at-mn-burger) can be anywhere in the DOM; the controller
- * finds it by ID and binds to it using a capture-phase listener so Bootstrap
- * Offcanvas event handlers cannot intercept the click first.
+ * The burger button (#at-mn-burger) sits outside the drawer, out of reach of a
+ * data-action: the controller finds it by ID and listens to its clicks. The click
+ * keeps propagating, so analytics listening on the document still see it.
  *
  * Data attributes on inner elements:
  *   data-action="at-mobile-menu#goTo"    data-at-mobile-menu-goto-param="[screen-id]"
@@ -17,15 +17,14 @@ export default class extends Controller {
 
     initialize() {
         this._stack = ['at-mn-screen-root'];
-        this._openHandler  = this._handleBurgerClick.bind(this);
+        this._openHandler  = this.open.bind(this);
         this._keyHandler   = this._handleKey.bind(this);
     }
 
     connect() {
         const burger = document.getElementById('at-mn-burger');
         if (burger) {
-            // Capture phase: fires before any bubbling Bootstrap handlers.
-            burger.addEventListener('click', this._openHandler, true);
+            burger.addEventListener('click', this._openHandler);
         }
         document.addEventListener('keydown', this._keyHandler);
         this._syncScreens();
@@ -34,7 +33,7 @@ export default class extends Controller {
     disconnect() {
         const burger = document.getElementById('at-mn-burger');
         if (burger) {
-            burger.removeEventListener('click', this._openHandler, true);
+            burger.removeEventListener('click', this._openHandler);
         }
         document.removeEventListener('keydown', this._keyHandler);
     }
@@ -103,12 +102,6 @@ export default class extends Controller {
         if (prevEl)    { prevEl.dataset.mnState    = 'active'; }
         this._syncScreens();
         this._focusActiveScreen();
-    }
-
-    _handleBurgerClick(event) {
-        // Prevent Bootstrap (or any other handler) from processing this click.
-        event.stopImmediatePropagation();
-        this.open();
     }
 
     _handleKey(event) {

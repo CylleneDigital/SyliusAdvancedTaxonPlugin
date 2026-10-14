@@ -64,7 +64,7 @@ product`, `this channel`). The shop templates carry `data-test-*` attributes
 | `shop/browsing_taxon_pages` | Featured child taxons and products, media zones (top, left, bottom, slider mode), main image, media cards in the list, at the start or among the products, and in the list view, name with color and icon |
 | `shop/filtering_products_with_advanced_filters` | Filter values and counts, filtering, filters kept by the grid search, filters only when enabled |
 | `shop/browsing_universe_pages` | Universe title, child taxons instead of a product list, featured products of the children |
-| `shop/navigating_with_the_mega_menu` | Mega menu per channel, featured categories, mobile menu button, color in the menu |
+| `shop/navigating_with_the_mega_menu` | Mega menu per channel, featured categories, mobile menu button, color in the menu, mobile drawer opened from the burger, drilled into and closed with Escape (`@javascript`) |
 | `taxon/materializing_conditional_taxons` | Conditions added, edited and removed, incomplete condition (fail closed), renaming, disabled products, deletion, command |
 
 ```bash

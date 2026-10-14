@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Ui\Shop;
 
 use Behat\Behat\Context\Context;
+use Behat\Hook\AfterScenario;
 use Behat\Step\Then;
 use Behat\Step\When;
 use FriendsOfBehat\PageObjectExtension\Page\PageInterface;
@@ -42,6 +43,37 @@ final class BrowsingAdvancedTaxonContext implements Context
     public function iOpenTheShopHomepage(): void
     {
         $this->homePage->open(['_locale' => 'en_US']);
+    }
+
+    #[When('I open the shop homepage on a small screen')]
+    public function iOpenTheShopHomepageOnASmallScreen(): void
+    {
+        $this->homePage->open(['_locale' => 'en_US']);
+        $this->menu->useSmallScreen();
+    }
+
+    #[When('I open the mobile menu')]
+    public function iOpenTheMobileMenu(): void
+    {
+        $this->menu->openMobileMenu();
+    }
+
+    #[When('I open the :taxon taxon in the mobile menu')]
+    public function iOpenTheTaxonInTheMobileMenu(string $taxon): void
+    {
+        $this->menu->openTaxonInMobileMenu($taxon);
+    }
+
+    #[When('I close the mobile menu with the Escape key')]
+    public function iCloseTheMobileMenuWithTheEscapeKey(): void
+    {
+        $this->menu->closeMobileMenuWithEscape();
+    }
+
+    #[AfterScenario('@javascript')]
+    public function restoreTheScreen(): void
+    {
+        $this->menu->restoreScreen();
     }
 
     #[When('I filter the products by :value in the :filter filter')]
@@ -219,5 +251,17 @@ final class BrowsingAdvancedTaxonContext implements Context
     public function theTaxonShouldBeShownWithoutItsColorInTheMenu(TaxonInterface $taxon): void
     {
         Assert::null($this->menu->getMenuItemColor((string) $taxon->getName()));
+    }
+
+    #[Then('the mobile menu should link to the :taxon taxon')]
+    public function theMobileMenuShouldLinkToTheTaxon(string $taxon): void
+    {
+        Assert::true($this->menu->isTaxonLinkedInMobileMenu($taxon));
+    }
+
+    #[Then('the mobile menu should be closed')]
+    public function theMobileMenuShouldBeClosed(): void
+    {
+        Assert::false($this->menu->isMobileMenuOpen());
     }
 }
