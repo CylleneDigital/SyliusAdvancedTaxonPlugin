@@ -118,6 +118,10 @@ The QA commands are in [`CONTRIBUTING.md`](CONTRIBUTING.md). What it does not sa
   whose contexts are annotated. The Behat dependencies are the maintained
   ones (`behat/mink`, `behat/mink-browserkit-driver` 2.x): the abandoned `friends-of-behat` forks
   emit PHP 8.5 deprecations that Behat turns into failures.
+- **`tests/TestApplication/package.json` raises `@symfony/stimulus-bridge` to `^4.0.2`**: the test
+  application's `preinstall` merges it into its own `package.json`. The 3.x loader requires
+  `webpack/lib/dependencies/LoaderDependency`, gone since webpack 5.112, and the Sylius 2.1 front
+  build fails on it (`yarn install` runs without a lockfile).
 - **The test application lists the products of the child taxons natively**
   (`sylius_shop.product_grid.include_all_descendants: true`): the plugin option doing the same is
   covered by the integration tests of the grid query, not by Behat.
