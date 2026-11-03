@@ -299,6 +299,13 @@
             background: #ced4da;
             border-radius: 999px;
         }
+
+        // Values must not shrink to fit the max-height: the list scrolls instead. Bootstrap's
+        // .form-check min-height overrides the automatic minimum size of flex items, so
+        // multi-line labels would be squashed and overlap the next value.
+        > * {
+            flex-shrink: 0;
+        }
     }
 }
 
