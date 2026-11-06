@@ -185,6 +185,12 @@ The hook names and hookable names the plugin declares (`config/twig_hooks/admin.
 [Theming](../integration/theming.md). The templates they render are not stable: override them at
 your own risk.
 
+A replaced hookable keeps its Sylius name, as the taxon `tree` one does: a project hooking it keeps
+working. The plugin renders it through the live component key
+`cyllene_digital_sylius_advanced_taxon:taxon:tree`, which is stable too, since a project may render
+that component from a hookable of its own; the class behind the key, the tree data it builds and
+the properties it accepts are internal.
+
 ## Storefront query parameters
 
 Read on taxon pages (`sylius_shop_product_index`):

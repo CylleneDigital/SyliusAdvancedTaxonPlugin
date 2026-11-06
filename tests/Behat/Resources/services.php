@@ -8,10 +8,12 @@ use Sylius\Component\Core\Filesystem\Adapter\FilesystemAdapterInterface;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Domain\MaterializingConditionalTaxonsContext;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Setup\AdvancedTaxonContext;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Ui\Admin\ManagingAdvancedTaxonContext;
+use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Ui\Admin\SearchingTheTaxonTreeContext;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Context\Ui\Shop\BrowsingAdvancedTaxonContext;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Element\Admin\Channel\MegaMenuFormElement;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Element\Admin\Common\FormErrorsElement;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Element\Admin\Taxon\AdvancedTaxonFormElement;
+use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Element\Admin\Taxon\TaxonTreeElement;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Element\Shop\MenuElement;
 use Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Behat\Page\Shop\Taxon\IndexPage;
 
@@ -32,6 +34,10 @@ return static function (ContainerConfigurator $container): void {
         ->parent('sylius.behat.element')
         ->private();
 
+    $services->set('cyllene_digital_sylius_advanced_taxon.behat.element.admin.taxon.tree', TaxonTreeElement::class)
+        ->parent('sylius.behat.element')
+        ->private();
+
     $services->set('cyllene_digital_sylius_advanced_taxon.behat.element.admin.channel.mega_menu_form', MegaMenuFormElement::class)
         ->parent('sylius.behat.element')
         ->private();
@@ -49,6 +55,7 @@ return static function (ContainerConfigurator $container): void {
             service('doctrine.orm.default_entity_manager'),
             service('sylius.factory.taxon_image'),
             service(FilesystemAdapterInterface::class),
+            service('sylius.factory.taxon'),
         ]);
 
     $services->set('cyllene_digital_sylius_advanced_taxon.behat.context.ui.admin.managing_advanced_taxon', ManagingAdvancedTaxonContext::class)
@@ -58,6 +65,11 @@ return static function (ContainerConfigurator $container): void {
             service('cyllene_digital_sylius_advanced_taxon.behat.element.admin.form_errors'),
             service('doctrine.orm.default_entity_manager'),
             service(FilesystemAdapterInterface::class),
+        ]);
+
+    $services->set('cyllene_digital_sylius_advanced_taxon.behat.context.ui.admin.searching_the_taxon_tree', SearchingTheTaxonTreeContext::class)
+        ->args([
+            service('cyllene_digital_sylius_advanced_taxon.behat.element.admin.taxon.tree'),
         ]);
 
     $services->set('cyllene_digital_sylius_advanced_taxon.behat.context.ui.shop.browsing_advanced_taxon', BrowsingAdvancedTaxonContext::class)

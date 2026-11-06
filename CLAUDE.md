@@ -44,6 +44,12 @@ record rather than editing an accepted one - the records hold no path nor figure
   parallel product query in templates. Facet counts come from `createBaseProductsQb()`, which must
   select exactly what the grid lists ([0006](docs/adr/0006-taxon-listing-is-the-sylius-grid.md),
   [0007](docs/adr/0007-facet-counts-start-from-the-grid-query.md)).
+- **The admin taxon tree is shaped by its component, not by a script.** The plugin component extends
+  the Sylius one and only decides what the tree data holds: the taxons a search keeps, and whether
+  each one is open. The rows, the actions and the Sylius Stimulus controller stay untouched, the
+  search field is a live model of the component, and the template leaves the tree widget's "open
+  everything" option off so that it reads the open state from the data
+  ([0033](docs/adr/0033-taxon-tree-shaped-by-the-component.md)).
 - **Conditional taxons fail closed.** A stored condition that is not applicable (wrong operator,
   missing reference or value) makes the taxon match nothing, never the whole catalog
   ([0015](docs/adr/0015-non-applicable-condition-matches-nothing.md)).

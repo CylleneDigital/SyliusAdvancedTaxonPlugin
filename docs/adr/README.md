@@ -47,3 +47,4 @@ Consequences, Related) and a line in the table below.
 | 0030 | [A `Bundle` class with `SyliusPluginTrait`, not `AbstractBundle`](0030-bundle-class-with-sylius-plugin-trait.md) |
 | 0031 | [A schema change is a new migration, written against the DBAL `Schema` API](0031-schema-change-is-a-new-migration.md) |
 | 0032 | [The plugin does not cap a dependency for an upstream bug](0032-no-dependency-cap-for-an-upstream-bug.md) |
+| 0033 | [The taxon tree is shaped by the component, not filtered in the browser](0033-taxon-tree-shaped-by-the-component.md) |

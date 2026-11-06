@@ -1,0 +1,49 @@
+{# Rendered with \CylleneDigital\SyliusAdvancedTaxonPlugin\Twig\Component\Taxon\TreeComponent #}
+
+{% import '@SyliusAdmin/shared/helper/loader.html.twig' as loader %}
+
+{# Read once: getTree() queries every taxon and shapes the tree, and the template uses it twice. #}
+{% set tree = this.tree %}
+{% set noResult = search is not empty and tree is empty %}
+
+{# autoOpen stays off so that the tree follows the open state the component sends with each taxon:
+   folded down to the roots on a large catalog, opened on the branches a search matches. #}
+<div {{ attributes.defaults(stimulus_controller('@sylius/admin-bundle/taxon-tree', {autoOpen: false, treeData: tree|json_encode})) }}>
+    <div class="input-group mb-3">
+        <span class="input-group-text">{{ ux_icon('tabler:search', {'class': 'icon', 'aria-hidden': 'true'}) }}</span>
+        <input
+            type="search"
+            class="form-control"
+            autocomplete="off"
+            value="{{ search }}"
+            aria-label="{{ 'cyllene_digital_sylius_advanced_taxon.ui.taxon_tree_search'|trans }}"
+            placeholder="{{ 'cyllene_digital_sylius_advanced_taxon.ui.taxon_tree_search_placeholder'|trans }}"
+            data-model="debounce(300)|search"
+            {{ sylius_test_html_attribute('taxon-tree-search') }}
+        >
+    </div>
+
+    {# Rendered whether or not a taxon matches: a live component that changed the shape of its HTML
+       would have its tree container replaced, and the tree with it. #}
+    <div class="alert alert-info{{ noResult ? '' : ' d-none' }}" role="status" {{ sylius_test_html_attribute('taxon-tree-no-result') }}>
+        {{ noResult ? 'cyllene_digital_sylius_advanced_taxon.ui.taxon_tree_no_result'|trans({'%term%': search}) : '' }}
+    </div>
+
+    <div class="card mb-5{{ noResult ? ' d-none' : '' }}">
+        {{ loader.render() }}
+        <div class="card-body">
+            <div class="d-none" {{ stimulus_target('@sylius/admin-bundle/taxon-tree', 'itemPrototyp') }}>
+                <div class="d-flex justify-content-between infinite-tree-item" {{ sylius_test_html_attribute('tree-taxon', '__TAXON_NAME__') }}>
+                    <div class="infinite-tree-node">
+                        <span class="infinite-tree-toggler" data-infinite-tree-toggler></span>
+                        <span class="infinite-tree-toggler infinite-tree-title" title="__TAXON_NAME__">__TAXON_NAME__</span>
+                    </div>
+
+                    {% hook 'tree' %}
+
+                </div>
+            </div>
+            <div {{ stimulus_target('@sylius/admin-bundle/taxon-tree', 'tree') }} {{ sylius_test_html_attribute('tree-taxons') }}></div>
+        </div>
+    </div>
+</div>

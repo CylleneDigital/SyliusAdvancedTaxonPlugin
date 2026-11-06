@@ -54,6 +54,28 @@ return new Config([
                     'tags' => '@managing_taxon_media&&@ui',
                 ],
             ],
+            'ui_searching_the_taxon_tree' => [
+                'contexts' => [
+                    'sylius.behat.context.hook.doctrine_orm',
+                    'sylius.behat.context.hook.session',
+
+                    'sylius.behat.context.transform.shared_storage',
+                    'sylius.behat.context.transform.locale',
+                    'sylius.behat.context.transform.taxon',
+
+                    'sylius.behat.context.setup.admin_security',
+                    'sylius.behat.context.setup.channel',
+                    'sylius.behat.context.setup.locale',
+                    'sylius.behat.context.setup.taxonomy',
+                    'cyllene_digital_sylius_advanced_taxon.behat.context.setup.advanced_taxon',
+
+                    'sylius.behat.context.ui.admin.managing_taxons',
+                    'cyllene_digital_sylius_advanced_taxon.behat.context.ui.admin.searching_the_taxon_tree',
+                ],
+                'filters' => [
+                    'tags' => '@searching_the_taxon_tree&&@ui',
+                ],
+            ],
             'ui_configuring_taxon_pages' => [
                 'contexts' => [
                     'sylius.behat.context.hook.doctrine_orm',

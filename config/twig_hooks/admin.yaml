@@ -24,11 +24,21 @@ sylius_twig_hooks:
             side_navigation:
                 template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
                 priority: 200
+            tree:
+                component: 'cyllene_digital_sylius_advanced_taxon:taxon:tree'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/tree.html.twig'
+                priority: 0
 
         'sylius_admin.taxon.update.content.sections#left':
             side_navigation:
                 template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/side_navigation.html.twig'
                 priority: 200
+            tree:
+                component: 'cyllene_digital_sylius_advanced_taxon:taxon:tree'
+                props:
+                    template: '@CylleneDigitalSyliusAdvancedTaxonPlugin/admin/taxon/sections/tree.html.twig'
+                priority: 0
 
         'sylius_admin.taxon.create.content.sections.form': &taxon_form_sections
             general:

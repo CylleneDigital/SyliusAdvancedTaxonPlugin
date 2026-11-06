@@ -48,6 +48,7 @@ Where each part of the plugin lives, for contributors. How the parts fit togethe
 | `src/Form/Type/` | Conditions, media, translations, autocompletes |
 | `src/Controller/AdminFacetPreviewController.php` | Preview of the products matching the conditions |
 | `config/routes.yaml`, `config/routes/admin.yaml` | Its route, under the back-office prefix |
+| `src/Twig/Component/Taxon/TreeComponent.php` | Sylius taxon tree component, with the searched term; `src/Service/TaxonTreeSearch.php` filters the tree data on the taxon names |
 | `src/Validator/Constraints/` | `ValidFacetCondition`, `NotUniverseMainTaxon` (`config/validation/Product.xml`) |
 | `src/Service/TaxonIconUploader.php`, `UploadedImageResizer.php` | Pictogram storage, media downscaling |
 | `src/EventListener/TaxonIconRemovalListener.php` | Removes the pictogram file a taxon no longer uses (taxon deleted, icon replaced), once the change is flushed |
