@@ -7,6 +7,7 @@ namespace Tests\CylleneDigital\SyliusAdvancedTaxonPlugin\Functional;
 use CylleneDigital\SyliusAdvancedTaxonPlugin\Entity\AdvancedTaxonInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Resource\Factory\FactoryInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -53,10 +54,17 @@ abstract class AdminTestCase extends WebTestCase
         parent::tearDown();
     }
 
-    protected function createTaxon(string $name): AdvancedTaxonInterface
+    /**
+     * @param bool $flush false to persist many records and flush them at once with flush()
+     */
+    protected function createTaxon(string $name, ?TaxonInterface $parent = null, bool $flush = true): AdvancedTaxonInterface
     {
         $taxon = $this->factory('sylius.factory.taxon')->createNew();
         Assert::isInstanceOf($taxon, AdvancedTaxonInterface::class);
+
+        if (null !== $parent) {
+            $taxon->setParent($parent);
+        }
 
         $code = uniqid('at_taxon_', false);
         $taxon->setCode($code);
@@ -65,7 +73,32 @@ abstract class AdminTestCase extends WebTestCase
         $taxon->setName($name);
         $taxon->setSlug($code);
 
+        if (!$flush) {
+            $this->entityManager->persist($taxon);
+
+            return $this->remember($taxon);
+        }
+
         return $this->persist($taxon);
+    }
+
+    protected function flush(): void
+    {
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param T $record
+     *
+     * @return T
+     */
+    private function remember(object $record): object
+    {
+        $this->createdRecords[] = $record;
+
+        return $record;
     }
 
     /**

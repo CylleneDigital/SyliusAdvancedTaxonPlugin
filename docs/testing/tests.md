@@ -6,7 +6,7 @@ The commands the CI runs are in [CONTRIBUTING.md](../../CONTRIBUTING.md#what-has
 |---|---|---|---|
 | Unit | `tests/Unit/` | nothing | Entities and sanitizers, form extensions, uploaders, validators, Twig runtimes (visibility, universe, menu ordering), DI extension and service definitions (reset tags) |
 | Integration | `tests/Integration/` | kernel, test database | Storefront queries (every condition type and operator, facets and their selection, channel and locale, filter normalization and caps, grid pagination), synchronization and its order, its trigger at the end of a console command, autocompletes, menu and universe preloading (query count), visibility of featured products, taxon form submissions, pictogram removal, reset of the cached services |
-| Functional | `tests/Functional/` | kernel, test database | Back office over HTTP: taxon form, conditions preview endpoint and its limits |
+| Functional | `tests/Functional/` | kernel, test database | Back office over HTTP: taxon form, taxon tree searched and folded above 100 taxons (the live component played back), conditions preview endpoint and its limits |
 | Behat | `features/`, `tests/Behat/` | kernel, test database, Chrome for `@javascript` | Back office forms, storefront pages and menus, conditional taxon synchronization |
 
 `vendor/bin/phpunit` runs the default suite `all` (every test once); `--testsuite=unit`,
@@ -45,7 +45,7 @@ Laid out like the other Cyllene plugins and Sylius itself:
 | `tests/Behat/Context/Setup/` | `Given` steps putting taxons and channels in a state without the forms |
 | `tests/Behat/Context/Ui/Admin/`, `Ui/Shop/` | `When` / `Then` steps through the pages and elements |
 | `tests/Behat/Context/Domain/` | Conditional taxon materialization, without a browser (Doctrine flush and console command) |
-| `tests/Behat/Page/`, `tests/Behat/Element/` | Page objects: the shop taxon page, the plugin part of the admin taxon and channel forms, the shop menu |
+| `tests/Behat/Page/`, `tests/Behat/Element/` | Page objects: the shop taxon page, the plugin part of the admin taxon and channel forms, the admin taxon tree and its search, the shop menu |
 | `tests/Behat/Resources/services.php` | Pages, elements and contexts, imported by `tests/TestApplication/config/services_test.php` in the `test` environment; contexts are public since Behat resolves them from the container |
 
 The Sylius steps are reused wherever they exist (channels, taxonomy, products, attributes, opening
@@ -61,6 +61,7 @@ product`, `this channel`). The shop templates carry `data-test-*` attributes
 | `admin/choosing_the_main_taxon_of_a_product` | A universe refused as main taxon |
 | `admin/managing_conditional_taxons` | Conditions preview, conditions saved and products assigned, a condition without its attribute refused and its tab flagged (`@javascript`) |
 | `admin/enabling_the_mega_menu` | Channel mega menu toggle |
+| `admin/searching_the_taxon_tree` | Taxon tree filtered on a typed name, no name matching, search cleared, a tree above 100 taxons folded down to its roots and opened by a search (`@javascript`) |
 | `shop/browsing_taxon_pages` | Featured child taxons and products, media zones (top, left, bottom, slider mode), main image, media cards in the list, at the start or among the products, and in the list view, name with color and icon |
 | `shop/filtering_products_with_advanced_filters` | Filter values and counts, filtering, filters kept by the grid search, filters only when enabled |
 | `shop/browsing_universe_pages` | Universe title, child taxons instead of a product list, featured products of the children |
