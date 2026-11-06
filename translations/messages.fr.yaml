@@ -54,6 +54,9 @@ cyllene_digital_sylius_advanced_taxon:
         facet_mass_assignment_warning_title: Attention
         facet_mass_assignment_warning: Les produits correspondant à ces conditions sont rattachés à ce taxon à son enregistrement, puis tenus à jour à chaque modification des conditions. Pour suivre ensuite le catalogue (nouveaux produits, attributs ou stock modifiés), la commande de synchronisation doit être planifiée.
         universe: Mode univers
+        taxon_tree_search: Rechercher un taxon
+        taxon_tree_search_placeholder: Rechercher un taxon par son nom
+        taxon_tree_no_result: 'Aucun nom de taxon ne correspond à « %term% ».'
     form:
         choose_icon: Choisir une icône
         color: Couleur

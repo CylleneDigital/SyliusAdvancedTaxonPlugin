@@ -40,6 +40,7 @@ Each row applies to both `sylius_admin.taxon.create.*` and `sylius_admin.taxon.u
 | Hook | Hookable | Action | Plugin template | Sylius original |
 |---|---|---|---|---|
 | `…content.sections#left` | `side_navigation` | Added, priority 200 (above the Sylius `tree`, 0) | `admin/taxon/sections/side_navigation.html.twig` | - |
+| `…content.sections#left` | `tree` | Replaced: plugin component `cyllene_digital_sylius_advanced_taxon:taxon:tree` (the Sylius tree component, searched) and template | `admin/taxon/sections/tree.html.twig` | `@SyliusAdmin/taxon/sections/tree.html.twig` (`sylius_admin:taxon:tree`) |
 | `…content.sections#right` | `form` | Replaced: same `sylius_admin:taxon:form` component and props, other template (`method: PUT` kept on update) | `admin/taxon/sections/form_with_tabs.html.twig` | `@SyliusAdmin/taxon/sections/form.html.twig` |
 | `…content.sections.form` | `general` | Disabled | - | `@SyliusAdmin/taxon/sections/form/general.html.twig` |
 | `…content.sections.form` | `translations` | Disabled | - | `@SyliusAdmin/taxon/sections/form/translations.html.twig` |
@@ -64,6 +65,12 @@ Impact on an application or another plugin:
   not rendered.
 - The Sylius taxon image block is replaced by the `Advanced media` tab. Images stay in
   `sylius_taxon_image`.
+- The `tree` hookable renders the plugin component, not `sylius_admin:taxon:tree`: the rows, the
+  actions and the Stimulus controller are still the Sylius ones, and the component only shapes the
+  tree data (filtered on the searched term, and folded above 100 taxons). The template passes
+  `autoOpen: false` to the Sylius tree controller, since `infinite-tree` reads the open state of
+  each taxon from the data only in that case (`state.open`). An application overriding this
+  hookable with `sylius_admin:taxon:tree` loses the search field and the folding.
 - The form is closed with `render_rest: false` (Sylius default): a field added to the taxon form by
   a form extension must be rendered by a template, for instance a hookable of
   `…content.sections.form.general`. To add a tab, add a hookable to `…content.sections.form`

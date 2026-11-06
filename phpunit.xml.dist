@@ -13,6 +13,9 @@
     <php>
         <server name="KERNEL_CLASS" value="Sylius\TestApplication\Kernel" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
+        <!-- Set in $_SERVER too: the test application bootstrap reads it there, so an APP_ENV
+             exported by the shell (a dev shop served by the same container) cannot win. -->
+        <server name="APP_ENV" value="test" />
 
         <env name="APP_SECRET" value="''" />
         <env name="APP_ENV" value="test" />
