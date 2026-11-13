@@ -31,6 +31,10 @@ plugin back-office screens follow the light and dark themes of the Sylius 2.3 ba
   some ([guide](admin/user-guide.md#featured-elements)).
 - Media positions are pre-filled: a new media gets the highest position of its zone plus one
   ([guide](admin/user-guide.md#media-fields)).
+- **Search a taxon**, above the tree: the tree is filtered on the taxon names as the term is typed,
+  each match keeping its parents and its own taxons, so that a catalog holding many taxons stays
+  navigable. From 100 taxons on, the tree is folded down to its first level until a term is
+  searched ([guide](admin/user-guide.md#taxon-form)).
 
 ## Back office: channel form
 

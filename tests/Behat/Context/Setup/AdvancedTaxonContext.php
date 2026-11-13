@@ -35,12 +35,38 @@ final class AdvancedTaxonContext implements Context
 
     /**
      * @param FactoryInterface<AdvancedTaxonImageInterface> $taxonImageFactory
+     * @param FactoryInterface<TaxonInterface>              $taxonFactory
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly FactoryInterface $taxonImageFactory,
         private readonly FilesystemAdapterInterface $imageStorage,
+        private readonly FactoryInterface $taxonFactory,
     ) {
+    }
+
+    /**
+     * Fills a branch, to reach the size above which the back office folds the taxon tree.
+     */
+    #[Given('/^the ("[^"]+" taxon) holds (\d+) child taxons$/')]
+    public function theTaxonHoldsChildTaxons(TaxonInterface $taxon, int $count): void
+    {
+        for ($i = 1; $i <= $count; ++$i) {
+            $child = $this->taxonFactory->createNew();
+
+            $code = sprintf('%s_child_%03d', (string) $taxon->getCode(), $i);
+            $child->setCode($code);
+            $child->setCurrentLocale(self::LOCALE);
+            $child->setFallbackLocale(self::LOCALE);
+            $child->setName(sprintf('Sub-taxon %03d', $i));
+            $child->setSlug($code);
+            $child->setParent($taxon);
+
+            $this->entityManager->persist($child);
+        }
+
+        // One flush for the whole branch: the nested tree is computed once per tree root.
+        $this->entityManager->flush();
     }
 
     #[AfterScenario]

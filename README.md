@@ -32,6 +32,8 @@ The complete list: [features](https://github.com/CylleneDigital/SyliusAdvancedTa
 
 <img src="docs/assets/admin-conditions-preview-dark.jpg" alt="Sylius back office in dark mode: preview of the 13 products matching the conditions of a conditional taxon" width="100%">
 
+<img src="docs/assets/admin-search-taxon-tree.jpg" alt="Search input added before the taxon tree." width="100%">
+
 ## Compatibility
 
 | Component | Versions |

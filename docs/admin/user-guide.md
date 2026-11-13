@@ -25,6 +25,21 @@ at once by the form buttons. When the form is refused, the tabs holding an error
 "!", the first of them opens, and the folded zones holding an error unfold. The native Sylius **Images** section is not shown: the main taxon image
 is edited in the [Main image](#advanced-media) zone.
 
+The **Search a taxon** field above the tree filters it as you type, on the taxon names of the
+current locale. A matching taxon keeps its place in the catalog: its parent taxons stay, and so do
+the taxons it holds, while the other branches are hidden. Clearing the field brings the whole tree
+back; when no name matches, the tree says so instead of listing the catalog. The field only filters
+the tree: it changes nothing on the taxon being edited.
+
+From **100 taxons** on, the tree arrives folded down to its first level, so that a large catalog
+shows a readable list instead of thousands of taxons at once: click an arrow to open a branch. A
+search opens the branches it matches, and clearing the field folds the tree back. Below that size
+the whole tree stays open, as it always did, moves included. On a folded tree, moving a taxon with
+the arrows of its row actions reopens the branch holding it so that it stays in sight; the other
+branches stay folded.
+
+<img src="../assets/admin-search-taxon-tree.jpg" alt="Left column of the taxon form in the dark theme: the six tabs, the Search a taxon by its name field, then the taxon tree folded down to its first level with an arrow on each branch" width="100%">
+
 Fields whose behavior is not obvious carry a one-line help text under them; this guide details every
 field.
 
